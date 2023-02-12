@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace wc_stats_tracker.ViewModels
+namespace WCStatsTracker.ViewModels
 {
     public class ViewModelBase : ObservableObject
     {

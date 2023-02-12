@@ -1,7 +1,15 @@
-﻿namespace wc_stats_tracker.ViewModels
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace WCStatsTracker.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public partial class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
+        private readonly ViewModelBase[] _pages =
+        {
+            new RunsPageViewModel()
+        };
+        
+        [ObservableProperty]
+        ViewModelBase _currentPage;
     }
 }

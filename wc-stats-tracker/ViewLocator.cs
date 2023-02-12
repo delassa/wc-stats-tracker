@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using System;
-using wc_stats_tracker.ViewModels;
+using WCStatsTracker.ViewModels;
 
-namespace wc_stats_tracker
+namespace WCStatsTracker
 {
     public class ViewLocator : IDataTemplate
     {

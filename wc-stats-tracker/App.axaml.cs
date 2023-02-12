@@ -3,10 +3,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using wc_stats_tracker.ViewModels;
-using wc_stats_tracker.Views;
+using WCStatsTracker.ViewModels;
+using WCStatsTracker.Views;
 
-namespace wc_stats_tracker
+namespace WCStatsTracker
 {
     public partial class App : Application
     {

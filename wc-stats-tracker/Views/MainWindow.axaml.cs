@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace wc_stats_tracker.Views
+namespace WCStatsTracker.Views
 {
     public partial class MainWindow : Window
     {

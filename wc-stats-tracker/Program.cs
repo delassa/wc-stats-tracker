@@ -2,7 +2,7 @@
 using Avalonia.Svg;
 using System;
 
-namespace wc_stats_tracker
+namespace WCStatsTracker
 {
     internal class Program
     {
