@@ -39,5 +39,9 @@ namespace wc_stats_tracker.Models
         /// Number of chests opened during the run
         /// </summary>
         private int ChestsOpened { get; set; }
+        /// <summary>
+        /// Did this run have a kt skip
+        /// </summary>
+        private bool DidKTSkip { get; set; }
     }
 }
