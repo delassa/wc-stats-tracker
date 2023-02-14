@@ -11,11 +11,12 @@ namespace WCStatsTracker.ViewModels
     public partial class RunsPageViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private List<WCRun> _runs = new();
+        private List<WCRun> _runList = new();
 
         public RunsPageViewModel()
         {
-            Runs = new List<WCRun>()
+            ViewName = "Runs";
+            RunList = new List<WCRun>()
                 {
                     new WCRun{
                         RunLength = new TimeSpan(1,20,30),

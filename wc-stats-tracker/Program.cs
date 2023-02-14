@@ -17,9 +17,10 @@ namespace WCStatsTracker
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
         {
+#if DEBUG
             GC.KeepAlive(typeof(SvgImageExtension).Assembly);
             GC.KeepAlive(typeof(Avalonia.Svg.Skia.Svg).Assembly);
-
+#endif
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace();

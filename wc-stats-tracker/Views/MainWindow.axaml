@@ -3,6 +3,7 @@
         xmlns:vm="using:WCStatsTracker.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="using:WCStatsTracker"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WCStatsTracker.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -45,13 +46,17 @@
 							<Setter Property="CornerRadius" Value="4"/>
 						</Style>
 					</StackPanel.Styles>
-					<Button Content="Runs"/>
-					<Button Content="Stats"/>
-					<Button Content="Flagsets"/>
+					<ListBox Name="MenuList" Items="{Binding Pages}">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding ViewName}"/>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
 				</StackPanel>
 			</SplitView.Pane>
 			<Grid>
-				
+				<TransitioningContentControl Content="{Binding CurrentPage}"/>
 			</Grid>
 		</SplitView>
 		
