@@ -17,12 +17,7 @@ namespace WCStatsTracker.ViewModels
             Pages = new List<ViewModelBase>();
             AddPage(new RunsPageViewModel());
             AddPage(new StatsPageViewModel());
-        }
-
-        [RelayCommand]
-        void NavigateToPage(PageType pageType) 
-        { 
-            CurrentPage = Pages[(int)pageType];
+            CurrentPage = Pages[0] ?? Pages[0];
         }
 
         public void AddPage(ViewModelBase page) 

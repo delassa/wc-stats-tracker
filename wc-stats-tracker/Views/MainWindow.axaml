@@ -46,7 +46,10 @@
 							<Setter Property="CornerRadius" Value="4"/>
 						</Style>
 					</StackPanel.Styles>
-					<ListBox Name="MenuList" Items="{Binding Pages}">
+					<ListBox Name="MenuList" 
+							 Items="{Binding Pages}"
+							 SelectionMode="Single"
+							 SelectedItem="{Binding CurrentPage}">
 						<ListBox.ItemTemplate>
 							<DataTemplate>
 								<TextBlock Text="{Binding ViewName}"/>
@@ -56,7 +59,8 @@
 				</StackPanel>
 			</SplitView.Pane>
 			<Grid>
-				<TransitioningContentControl Content="{Binding CurrentPage}"/>
+				<TransitioningContentControl 
+					Content="{Binding CurrentPage}"/>
 			</Grid>
 		</SplitView>
 		
