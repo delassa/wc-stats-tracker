@@ -11,5 +11,26 @@
 		<vm:RunsPageViewModel />
 	</Design.DataContext>
 
-	<ListBox Items="{Binding RunList}"/>
+	<Grid RowDefinitions="*,50">
+		<DataGrid Grid.Row="0"
+				  Name="RunListDataGrid" 
+				  Items="{Binding RunList}" 
+				  AutoGenerateColumns="False">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}"/>
+				<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}"/>
+				<DataGridTextColumn Header="Char" Binding="{Binding CharactersFound}"/>
+				<DataGridTextColumn Header="Esper" Binding="{Binding EspersFound}"/>
+				<DataGridTextColumn Header="Dragon" Binding="{Binding DragonsKilled}"/>
+				<DataGridTextColumn Header="Boss" Binding="{Binding BossesKilled}"/>
+				<DataGridTextColumn Header="Chest" Binding="{Binding ChestsOpened}"/>
+				<DataGridCheckBoxColumn Header="KT Skip" Binding="{Binding DidKTSkip}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Grid.Row="1" ColumnDefinitions="*,50,50">
+			<Button Grid.Column="1">
+				<Svg Path="/Assets/Icons/check-box-outline.svg" />
+			</Button>
+		</Grid>
+	</Grid>
 </UserControl>

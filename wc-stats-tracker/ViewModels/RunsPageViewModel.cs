@@ -11,7 +11,7 @@ namespace WCStatsTracker.ViewModels
     public partial class RunsPageViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private List<WCRun> _runList = new();
+        private List<WCRun> _runList;
 
         public RunsPageViewModel()
         {
