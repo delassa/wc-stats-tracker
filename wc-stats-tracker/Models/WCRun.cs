@@ -1,10 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System;
 namespace WCStatsTracker.Models;
 
 /// <summary>
@@ -48,4 +42,13 @@ public class WCRun
           /// Did this run have a kt skip
           /// </summary>
     public bool DidKTSkip { get; set; }
+    /// <summary>
+    /// The flagset for this particular run
+    /// </summary>
+    public FlagSet FlagSet { get; set; }
+    /// <summary>
+    /// The seed for this run
+    /// </summary>
+    public string? Seed { get; set; }
+
 }
