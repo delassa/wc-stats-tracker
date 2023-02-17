@@ -6,6 +6,7 @@ using Microsoft.Data.Sqlite;
 using System.IO;
 using Dapper;
 using System.Linq;
+using System;
 
 namespace WCStatsTracker.Database;
 
@@ -35,7 +36,7 @@ public class SqliteDataAccess
         if (!DbExists) CreateDatabase();
         using (IDbConnection con = new SqliteConnection(LoadConnectionString()))
         {
-            /// Todo : Save here
+            
         }
     }
 
@@ -80,12 +81,13 @@ public class SqliteDataAccess
                     ChestsOpened        INTEGER,
                     DidKTSkip           INTEGER,
                     RunFlagSet          INTEGER,
-                    FOREIGN KEY(RunFlagSet) REFERENCES FlagSet(rowid)
+                    FOREIGN KEY(RunFlagSet) REFERENCES FlagSet(Id)
                 )                  
                 ");
             con.Execute(
                 @"CREATE TABLE FlagSet
                 (
+                    Id            INTEGER NOT NULL PRIMARY KEY,
                     Name          TEXT,
                     FlagString    TEXT
                 )
