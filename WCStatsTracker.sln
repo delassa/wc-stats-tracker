@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCStatsTracker", "wc-stats-tracker\WCStatsTracker.csproj", "{37FD8BF6-6FAD-4F99-8783-35B6DE5B0370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCStatsTracker", "WCStatsTracker\WCStatsTracker.csproj", "{EE253ED7-253E-4CC5-82A9-085161F6335C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37FD8BF6-6FAD-4F99-8783-35B6DE5B0370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37FD8BF6-6FAD-4F99-8783-35B6DE5B0370}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37FD8BF6-6FAD-4F99-8783-35B6DE5B0370}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37FD8BF6-6FAD-4F99-8783-35B6DE5B0370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE253ED7-253E-4CC5-82A9-085161F6335C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE253ED7-253E-4CC5-82A9-085161F6335C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE253ED7-253E-4CC5-82A9-085161F6335C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE253ED7-253E-4CC5-82A9-085161F6335C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {161FA318-439C-4B40-9B27-8D596F4D465B}
+		SolutionGuid = {3E4412F9-6339-46E7-BFD4-70FC2D274707}
 	EndGlobalSection
 EndGlobal
