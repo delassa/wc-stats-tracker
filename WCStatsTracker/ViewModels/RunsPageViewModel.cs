@@ -17,6 +17,7 @@ public partial class RunsPageViewModel : ViewModelBase
 
     public RunsPageViewModel()
     {
+        ViewName = "Runs";
         RunList = SqliteDataAccess.LoadWCRuns();
     }
 
