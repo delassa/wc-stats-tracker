@@ -12,8 +12,9 @@ public class WCRun
     public int Id { get; set; }
     /// <summary>
     /// Length of the Run
+    /// Dapper doesn't support timespan boxing out of db so we use a string here and a method to convert it to a datetime
     /// </summary>
-    public TimeSpan RunLength { get; set; }
+    public string RunLength { get; set; }
     /// <summary>
     /// Number of characters found during the run
     /// </summary>
@@ -51,4 +52,6 @@ public class WCRun
     /// </summary>
     public string? Seed { get; set; }
 
+
+    public TimeSpan GetRunLength () => TimeSpan.Parse(RunLength);
 }
