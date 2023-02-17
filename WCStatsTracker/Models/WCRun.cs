@@ -45,7 +45,7 @@ public class WCRun
     /// <summary>
     /// The flagset for this particular run
     /// </summary>
-    public FlagSet FlagSet { get; set; }
+    public FlagSet RunFlagSet { get; set; }
     /// <summary>
     /// The seed for this run
     /// </summary>
