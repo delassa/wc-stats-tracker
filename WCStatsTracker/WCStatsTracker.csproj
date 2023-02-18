@@ -35,4 +35,16 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
+  </ItemGroup>
 </Project>
