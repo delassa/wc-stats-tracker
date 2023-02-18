@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace WCStatsTracker.Models;
 
 /// <summary>
@@ -9,12 +11,13 @@ public class WCRun
     /// <summary>
     /// Unique identifier of the run
     /// </summary>
+    [Key]
     public int Id { get; set; }
     /// <summary>
     /// Length of the Run
     /// Dapper doesn't support timespan boxing out of db so we use a string here and a method to convert it to a datetime
     /// </summary>
-    public string RunLength { get; set; }
+    public TimeSpan RunLength { get; set; }
     /// <summary>
     /// Number of characters found during the run
     /// </summary>
@@ -46,12 +49,10 @@ public class WCRun
     /// <summary>
     /// The flagset for this particular run
     /// </summary>
-    public FlagSet RunFlagSet { get; set; }
+    public virtual FlagSet FlagSet { get; set; }
     /// <summary>
     /// The seed for this run
     /// </summary>
     public string? Seed { get; set; }
 
-
-    public TimeSpan GetRunLength () => TimeSpan.Parse(RunLength);
 }

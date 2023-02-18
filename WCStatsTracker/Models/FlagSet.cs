@@ -1,4 +1,7 @@
-﻿namespace WCStatsTracker.Models;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace WCStatsTracker.Models;
 
 /// <summary>
 /// Class to represent a flagset for a particular seed
@@ -17,4 +20,6 @@ public class FlagSet
     /// Flagstring of this particular flagset
     /// </summary>
     public string FlagString { get; set; }
+
+    public virtual ICollection<WCRun> Runs { get; private set; } = new ObservableCollection<WCRun>();
 }
