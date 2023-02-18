@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using Microsoft.Data.Sqlite;
-using System.IO;
-using System.Linq;
-using WCStatsTracker.Models;
+﻿using WCStatsTracker.Models;
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace WCStatsTracker.Services;
+/// <summary>
+/// Class to handle the database insertions deletions and updates
+/// </summary>
 public class WCDatabaseService : IDatabaseService
 {
     private WCContext _dbContext;
@@ -18,14 +15,26 @@ public class WCDatabaseService : IDatabaseService
         _dbContext = new WCContext();
         _dbContext.Database.EnsureCreated();
     }
-    public void DeleteFlag(FlagSet flag)
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void DeleteRun(WCRun run)
     {
-        throw new System.NotImplementedException();
+        _dbContext.WCRuns.Remove(run);
+        _dbContext.SaveChanges();
+    }
+    public void SaveRun(WCRun run)
+    {
+        _dbContext.WCRuns.Add(run);
+        _dbContext.SaveChanges();
+    }
+    public void DeleteFlag(FlagSet flagSet)
+    {
+        _dbContext.Remove(flagSet);
+        _dbContext.SaveChanges();
+    }
+    public void SaveFlag(FlagSet flagSet)
+    {
+        _dbContext.Add(flagSet);
+        _dbContext.SaveChanges();
     }
 
     public ObservableCollection<FlagSet> GetFlagSet()
@@ -42,16 +51,6 @@ public class WCDatabaseService : IDatabaseService
         if (_dbContext.Flags.Local.Count == 0)
             return new ObservableCollection<WCRun>();
         return _dbContext.WCRuns.Local.ToObservableCollection();
-    }
-
-    public void SaveFlag(FlagSet flagSet)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void SaveRun(WCRun run)
-    {
-        throw new System.NotImplementedException();
     }
 
     ~WCDatabaseService()
