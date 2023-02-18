@@ -29,8 +29,10 @@
 			</DataGrid.Columns>
 		</DataGrid>
 		<Grid Grid.Row="1" ColumnDefinitions="*,50,50">
-			<Button Grid.Column="1">
-				<Svg Path="/Assets/Icons/check-box-outline.svg" />
+			<Button Grid.Column="1" Grid.Row="0"
+				Padding="2"
+				CornerRadius="2"> 
+				<Svg Path="/Assets/Icons/check-box-outline.svg"/>
 			</Button>
 		</Grid>
 	</Grid>
