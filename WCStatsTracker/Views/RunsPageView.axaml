@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WCStatsTracker.ViewModels"
+			 xmlns:converter="using:WCStatsTracker.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             x:Class="WCStatsTracker.Views.RunsPageView"
+			 x:DataType="vm:RunsPageViewModel"
+			 x:CompileBindings="True">
+	<Design.DataContext>
+		<vm:RunsPageViewModel />
+	</Design.DataContext>
+	<Grid RowDefinitions="*,350,50">
+		<DataGrid Grid.Row="0"
+				  Name="RunListDataGrid" 
+				  Items="{Binding RunList}" 
+				  AutoGenerateColumns="False"
+				  >
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}"/>
+				<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}"/>
+				<DataGridTextColumn Header="Char" Binding="{Binding CharactersFound}"/>
+				<DataGridTextColumn Header="Esper" Binding="{Binding EspersFound}"/>
+				<DataGridTextColumn Header="Dragon" Binding="{Binding DragonsKilled}"/>
+				<DataGridTextColumn Header="Boss" Binding="{Binding BossesKilled}"/>
+				<DataGridTextColumn Header="Chest" Binding="{Binding ChestsOpened}"/>
+				<DataGridCheckBoxColumn Header="KT Skip" Binding="{Binding DidKTSkip}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Grid.Row="1" ColumnDefinitions="*,*"
+			  Margin="10">
+			<Border BorderThickness="4">
+				<Grid ColumnDefinitions="Auto,Auto">
+					<StackPanel Spacing="0" Grid.Column="0" >
+						<StackPanel.Styles>
+							<Style Selector="TextBlock">
+								<Setter Property="HorizontalAlignment" Value="Right"/>
+								<Setter Property="Padding" Value="0,2,0,0"/>
+								<Setter Property="Margin" Value="2"/>
+								<Setter Property="Height" Value="25"/>
+							</Style>
+						</StackPanel.Styles>
+						<TextBlock Text="{Binding LabelNames[1]}"  />
+						<TextBlock Text="{Binding LabelNames[2]}"  />
+						<TextBlock Text="{Binding LabelNames[3]}"  />
+						<TextBlock Text="{Binding LabelNames[4]}"  />
+						<TextBlock Text="{Binding LabelNames[5]}"  />
+						<TextBlock Text="{Binding LabelNames[6]}"  />
+						<TextBlock Text="{Binding LabelNames[7]}"  />
+						<TextBlock Text="{Binding LabelNames[8]}"  />
+						<TextBlock Text="{Binding LabelNames[9]}"  />
+						<TextBlock Text="{Binding LabelNames[10]}" />
+				</StackPanel>
+				<StackPanel Spacing="1" Grid.Column="1">
+					<StackPanel.Styles>
+						<Style Selector="TextBox">
+							<Setter	Property="Padding" Value="2,1"/>
+							<Setter Property="Margin" Value="2"/>
+							<Setter Property="MinHeight" Value="12"/>
+							<Setter Property="Height" Value="24"/>
+						</Style>
+						<Style Selector="NumericUpDown">
+							<Setter Property="Padding" Value="2,1"/>
+							<Setter Property="Margin" Value="2"/>
+							<Setter Property="Height" Value="24"/>
+						</Style>
+					</StackPanel.Styles>
+					<TextBox Text="{Binding WorkingRunLength }"></TextBox>
+					<TextBox Text="{Binding WorkingRun.CharactersFound }"></TextBox>
+					<TextBox Text="{Binding WorkingRun.EspersFound}"></TextBox>
+					<TextBox Text="{Binding WorkingRun.DragonsKilled}"></TextBox>
+					<TextBox Text="{Binding WorkingRun.BossesKilled}"></TextBox>
+					<TextBox Text="{Binding WorkingRun.ChecksDone}"></TextBox>
+					<TextBox Text="{Binding WorkingRun.ChestsOpened}"></TextBox>
+					<CheckBox IsChecked="{Binding WorkingRun.DidKTSkip}"></CheckBox>
+					<ComboBox Items="{Binding FlagSetList}" SelectedItem="{Binding WorkingRun.FlagSet}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Name}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<TextBox Text="{Binding WorkingRun.Seed}"></TextBox>
+				</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
+		<Grid Grid.Row="2" ColumnDefinitions="50,50,*">
+			<Button Grid.Column="0"
+				Margin="5"
+				Padding="2"
+				CornerRadius="2"
+				Width="24"
+				Height="24" Command="{Binding SaveClickCommand}"> 
+				<Svg Path="/Assets/Icons/check-box-outline.svg"/>
+			</Button>
+		</Grid>
+	</Grid>
+</UserControl>

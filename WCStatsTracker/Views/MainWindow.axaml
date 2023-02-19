@@ -47,9 +47,9 @@
 						</Style>
 					</StackPanel.Styles>
 					<ListBox Name="MenuList" 
-							 Items="{Binding Pages}"
+							 Items="{Binding ContentViews}"
 							 SelectionMode="Single"
-							 SelectedItem="{Binding CurrentPage}">
+							 SelectedItem="{Binding CurrentView}">
 						<ListBox.ItemTemplate>
 							<DataTemplate>
 								<TextBlock Text="{Binding ViewName}"/>
@@ -60,7 +60,7 @@
 			</SplitView.Pane>
 			<Grid>
 				<TransitioningContentControl 
-					Content="{Binding CurrentPage}"/>
+					Content="{Binding CurrentView}"/>
 			</Grid>
 		</SplitView>
 		
