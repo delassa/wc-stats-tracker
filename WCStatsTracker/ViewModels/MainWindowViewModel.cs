@@ -31,19 +31,15 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Mocked constructor for design time display
     /// </summary>
-    public MainWindowViewModel()
+    public MainWindowViewModel() : this(new WCMockDatabaseService())
     {
-        _databaseService = new WCMockDatabaseService();
-        ContentViews = new List<ViewModelBase>();
-        AddView(new RunsPageViewModel(_databaseService));
-        AddView(new StatsPageViewModel());
-        CurrentView = ContentViews[0];
     }
     public MainWindowViewModel(IDatabaseService databaseService)
     {
         _databaseService = databaseService;
         ContentViews = new List<ViewModelBase>();
         AddView(new RunsPageViewModel(_databaseService));
+        AddView(new FlagsPageViewModel(_databaseService));
         AddView(new StatsPageViewModel());
         CurrentView = ContentViews[0];
     }
