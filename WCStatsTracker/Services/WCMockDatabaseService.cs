@@ -55,6 +55,11 @@ public class WCMockDatabaseService : IDatabaseService
         return FakeRuns;
     }
 
+    public void Save()
+    {
+        Console.WriteLine("Writing to database...");
+    }
+
     public void SaveFlag(FlagSet flagSet)
     {
         Console.WriteLine($"Saving flagset: {flagSet.Name}");

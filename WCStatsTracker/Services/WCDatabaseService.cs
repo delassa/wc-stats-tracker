@@ -40,19 +40,19 @@ public class WCDatabaseService : IDatabaseService
     public ObservableCollection<FlagSet> GetFlagSet()
     {
         _dbContext.Flags.Load();
-        if (_dbContext.Flags.Local.Count == 0)
-            return new ObservableCollection<FlagSet>();
         return _dbContext.Flags.Local.ToObservableCollection();
     }
 
     public ObservableCollection<WCRun> GetWCRuns()
     {
         _dbContext.WCRuns.Load();
-        if (_dbContext.Flags.Local.Count == 0)
-            return new ObservableCollection<WCRun>();
         return _dbContext.WCRuns.Local.ToObservableCollection();
     }
 
+    public void Save()
+    {
+        _dbContext.SaveChanges();
+    }
     ~WCDatabaseService()
     {
         _dbContext.Dispose();

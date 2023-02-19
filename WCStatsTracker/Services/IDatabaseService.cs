@@ -17,4 +17,5 @@ public interface IDatabaseService
     ObservableCollection<FlagSet> GetFlagSet();
     void SaveFlag(FlagSet flagSet);
     void DeleteFlag(FlagSet flag);
+    void Save();
 }
