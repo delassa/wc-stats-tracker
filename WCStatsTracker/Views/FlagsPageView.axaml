@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:WCStatsTracker.ViewModels"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+			 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WCStatsTracker.Views.FlagsPageView"
+	         x:DataType="vm:FlagsPageViewModel">
+
+	<Design.DataContext>
+		<vm:FlagsPageViewModel />
+	</Design.DataContext>
+	<Grid ColumnDefinitions="Auto,Auto" RowDefinitions="*,50">
+		<ListBox Grid.Column="0" Items="{Binding FlagSetList}"
+				 SelectionMode="Single"
+				 SelectedIndex="{Binding SelectedIndex}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid ColumnDefinitions="auto,auto">
+						<TextBlock Grid.Column="0" Text="{Binding Name}" />
+						<TextBlock Grid.Column="1" Text="{Binding FlagString}" />
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<Grid ColumnDefinitions="Auto,*" RowDefinitions="50,50,50" Grid.Column="1">
+			<TextBlock Grid.Row="0" Grid.Column="0" Text="Flag Name" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Flag String" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+			<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FlagNameText}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FlagStringText}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+			<Button Grid.Column="0" Grid.Row="2" Command="{Binding SaveClickCommand}" Content="Save"/>
+		</Grid>
+	</Grid>
+</UserControl>
