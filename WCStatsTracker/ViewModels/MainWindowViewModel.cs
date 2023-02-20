@@ -50,6 +50,7 @@ public partial class MainWindowViewModel : ViewModelBase
         AddView(new RunsPageViewModel(_databaseService));
         AddView(new FlagsPageViewModel(_databaseService));
         AddView(new StatsPageViewModel());
+        AddView(new OptionsPageViewModel());
         CurrentView = ContentViews[0];
     }
 
