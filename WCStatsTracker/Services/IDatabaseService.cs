@@ -14,7 +14,7 @@ public interface IDatabaseService
     ObservableCollection<WCRun> GetWCRuns();
     void SaveRun(WCRun run);
     void DeleteRun(WCRun run);
-    ObservableCollection<FlagSet> GetFlagSet();
+    ObservableCollection<FlagSet> GetFlagSets();
     void SaveFlag(FlagSet flagSet);
     void DeleteFlag(FlagSet flag);
     void Save();

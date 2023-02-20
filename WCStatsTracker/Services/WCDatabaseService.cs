@@ -37,7 +37,7 @@ public class WCDatabaseService : IDatabaseService
         _dbContext.SaveChanges();
     }
 
-    public ObservableCollection<FlagSet> GetFlagSet()
+    public ObservableCollection<FlagSet> GetFlagSets()
     {
         _dbContext.Flags.Load();
         return _dbContext.Flags.Local.ToObservableCollection();

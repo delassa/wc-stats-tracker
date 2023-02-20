@@ -45,7 +45,7 @@ public class WCMockDatabaseService : IDatabaseService
         Console.WriteLine($"Deleting Run with ID: {run.Id}");
     }
 
-    public ObservableCollection<FlagSet> GetFlagSet()
+    public ObservableCollection<FlagSet> GetFlagSets()
     {
         return FakeFlagSet;
     }
