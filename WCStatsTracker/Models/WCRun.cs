@@ -90,7 +90,7 @@ public class WCRun : ObservableValidator
     /// <summary>
     /// The flagset for this particular run
     /// </summary>
-    public virtual FlagSet FlagSet { get; set; }
+    public virtual FlagSet? FlagSet { get; set; }
 
     /// <summary>
     /// The seed for this run
