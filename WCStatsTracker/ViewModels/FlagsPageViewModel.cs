@@ -16,48 +16,57 @@ public partial class FlagsPageViewModel : ViewModelBase
     private IDatabaseService _databaseService;
 
     [ObservableProperty]
-    private string? _flagNameText;
+    private string _flagNameText = string.Empty;
 
     [ObservableProperty]
-    private string? _flagStringText;
+    private string _flagStringText = string.Empty;
 
     [ObservableProperty]
     private int _selectedIndex;
 
     [ObservableProperty]
-    private ObservableCollection<FlagSet> _flagSetList;
+    private ObservableCollection<FlagSet>? _flagSetList;
 
     [RelayCommand]
     private void SelectionChanged()
     {
-        FlagNameText = FlagSetList[SelectedIndex].Name;
-        FlagStringText = FlagSetList[SelectedIndex].FlagString;
+        if (FlagSetList != null)
+        {
+            FlagNameText = FlagSetList[SelectedIndex].Name;
+            FlagStringText = FlagSetList[SelectedIndex].FlagString;
+        }
+        else throw new NullReferenceException(nameof(FlagSetList));
     }
 
     [RelayCommand]
     private void SaveClick()
     {
-        FlagSet flag = FlagSetList.SingleOrDefault(x => x.Name == FlagNameText);
-        if (flag == null)
+        if (FlagSetList != null)
         {
-            FlagSetList.Add(new FlagSet()
+            FlagSet flag = FlagSetList.SingleOrDefault(x => x.Name == FlagNameText);
+            if (flag == null)
             {
-                Name = FlagNameText,
-                FlagString = FlagStringText,
-            });
+                FlagSetList.Add(new FlagSet()
+                {
+                    Name = FlagNameText,
+                    FlagString = FlagStringText,
+                });
+            }
+            else
+            {
+                flag.FlagString = FlagStringText;
+            }
+            _databaseService.Save();
+            FlagSetList = _databaseService.GetFlagSet();
         }
-        else
-        {
-            flag.FlagString = FlagStringText;
-        }
-        _databaseService.Save();
-        FlagSetList = _databaseService.GetFlagSet();
+        else throw new NullReferenceException(nameof(FlagSetList));
     }
 
 
     public FlagsPageViewModel(IDatabaseService databaseService)
     {
         ViewName = "Flags";
+        IconName = "flag-variant";
         _databaseService = databaseService;
         FlagSetList = _databaseService.GetFlagSet();
     }

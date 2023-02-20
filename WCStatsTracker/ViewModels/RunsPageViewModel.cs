@@ -51,20 +51,26 @@ public partial class RunsPageViewModel : ViewModelBase
 
     #region Commands
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanSaveClick))]
     private void SaveClick()
     {
-        if (WorkingRun.HasErrors) return;
+        if (WorkingRun is not null)
+        {
+            if (WorkingRun.HasErrors) return;
 
-        RunList.Add(WorkingRun);
-
-        _databaseService.Save();
-        RunList = _databaseService.GetWCRuns();
+            if (RunList is not null)
+            {
+                RunList.Add(WorkingRun);
+                _databaseService.Save();
+            }
+        }
     }
 
     private bool CanSaveClick()
     {
-        return WorkingRun.HasErrors;
+        if (WorkingRun is not null)
+            return !WorkingRun.HasErrors;
+        return false;
     }
 
     #endregion
@@ -79,6 +85,7 @@ public partial class RunsPageViewModel : ViewModelBase
     {
         _databaseService = databaseService;
         ViewName = "Runs";
+        IconName = "run-fast";
         RunList = databaseService.GetWCRuns();
         FlagSetList = databaseService.GetFlagSet();
 
@@ -112,7 +119,7 @@ public partial class RunsPageViewModel : ViewModelBase
 
         if (isValid)
         {
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
 
         return new($"{runLength} is not a valid time, use HH:MM:SS format");
