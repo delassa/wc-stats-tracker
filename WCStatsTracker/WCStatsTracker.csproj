@@ -1,51 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-	<LangVersion>default</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<LangVersion>default</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-    <None Remove=".gitignore" />
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+		<None Remove=".gitignore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <TrimmerRootDescriptor Include="Roots.xml" />
-  </ItemGroup>
+	<ItemGroup>
+		<TrimmerRootDescriptor Include="Roots.xml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Svg" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview5" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview5" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.0-preview5" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Svg" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview5" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview5" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.0-preview5" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="Material.Avalonia" Version="3.0.0-avalonia11-preview3.145-nightly" />
+		<PackageReference Include="Material.Icons.Avalonia" Version="2.0.0-preview2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+		<PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+	<ItemGroup>
+		<EditorConfigFiles Remove="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="G:\src\repos\WCStatsTracker\WCStatsTracker\.editorconfig" />
+	</ItemGroup>
 </Project>
