@@ -85,7 +85,7 @@ public partial class RunsPageViewModel : ViewModelBase
     {
         _databaseService = databaseService;
         ViewName = "Runs";
-        IconName = "run-fast";
+        IconName = "RunFast";
         RunList = databaseService.GetWCRuns();
         FlagSetList = databaseService.GetFlagSet();
 

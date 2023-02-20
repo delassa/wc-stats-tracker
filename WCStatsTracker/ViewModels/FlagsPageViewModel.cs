@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services;
 
@@ -66,7 +63,7 @@ public partial class FlagsPageViewModel : ViewModelBase
     public FlagsPageViewModel(IDatabaseService databaseService)
     {
         ViewName = "Flags";
-        IconName = "flag-variant";
+        IconName = "FlagVariant";
         _databaseService = databaseService;
         FlagSetList = _databaseService.GetFlagSet();
     }
