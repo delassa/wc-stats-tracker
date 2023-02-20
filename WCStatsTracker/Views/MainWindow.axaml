@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+		xmlns:localControl="using:WCStatsTracker.Controls"
 		xmlns:local="using:WCStatsTracker"
         xmlns:vm="using:WCStatsTracker.ViewModels"
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -48,12 +49,27 @@
 								 Margin="0,0,10,0">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-									<Button CommandParameter="{Binding ViewName}"
+									<Button	CommandParameter="{Binding ViewName}"
 											Command="{Binding $parent[ItemsControl].DataContext.ChangeViewCommand}"
 											Margin="5"
 											Width="150"
 											Height="50"
 											Padding="4">
+										<Grid ColumnDefinitions="*,auto,*">
+											<StackPanel Grid.Column="1" 
+														Orientation="Horizontal" 
+														VerticalAlignment="Center"
+														Spacing="5">
+												<icons:MaterialIcon Kind="{Binding IconName}"
+																	Height="30"
+																	Width="30"
+																	VerticalAlignment="Center"
+																	HorizontalAlignment="Right" />
+												<TextBlock Text="{Binding ViewName}" 
+														   VerticalAlignment="Center"
+														   HorizontalAlignment="Left"/>
+											</StackPanel>
+										</Grid>
 									</Button>
 								</DataTemplate>
 							</ItemsControl.ItemTemplate>
