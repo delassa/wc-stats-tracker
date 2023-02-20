@@ -1,0 +1,20 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:WCStatsTracker.Controls"
+		xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+  <Design.PreviewWith>
+    <controls:ImageButton />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|ImageButton">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <DockPanel>
+			  <icon:MaterialIcon Kind="{TemplateBinding}" DockPanel.Dock="Left"/>
+			  <TextBlock Text="{TemplateBinding}" DockPanel.Dock="Right"/>
+		  </DockPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>
