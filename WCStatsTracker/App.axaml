@@ -13,5 +13,6 @@
 		<themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime"/>
 		<StyleInclude Source="avares://Material.DataGrid/DataGrid.xaml"/>
 		<StyleInclude Source="/Styles/DataValidationErrors.axaml"/>
+		<StyleInclude Source="/Controls/ImageButton.axaml"/>
 	</Application.Styles>
 </Application>
