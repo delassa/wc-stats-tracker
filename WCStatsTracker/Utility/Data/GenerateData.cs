@@ -5,14 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WCStatsTracker.Models;
+using WCStatsTracker.Views;
 
 namespace WCStatsTracker.Utility.Data;
 
 internal class GenerateData
 {
     private ObservableCollection<FlagSet> _flags;
+    private ObservableCollection<WCRun> _runs;
 
-    GenerateData(int FlagSetCount) 
+    public ObservableCollection<FlagSet> GetFlags() => _flags;
+    public ObservableCollection<WCRun> GetRuns() => _runs;
+
+    public GenerateData(int FlagSetCount) 
     { 
         _flags = new ObservableCollection<FlagSet>();
         var rand = new Random();
@@ -30,10 +35,10 @@ internal class GenerateData
     /// </summary>
     /// <param name="Count">Number of Runs to generate</param>
     /// <returns>An ObservableCollection of the runs</returns>
-    public ObservableCollection<WCRun> GenerateRuns(int Count)
+    public void GenerateRuns(int Count)
     {
+        _runs = new ObservableCollection<WCRun>();
         var rand = new Random();
-        ObservableCollection<WCRun> runs = new();
         for (var i = 0; i < Count; i++)
         {
             WCRun run = new WCRun();
@@ -51,9 +56,9 @@ internal class GenerateData
             { 
                 run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower(); 
             }
-            runs.Add(run);
+            _runs.Add(run);
         }
-        return runs;
+        
     }
 
 }
