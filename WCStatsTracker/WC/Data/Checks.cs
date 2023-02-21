@@ -1,6 +1,7 @@
 ﻿namespace WCStatsTracker.WC.Data;
 
-internal class Checks
+public class Checks
 {
-    public const int NumChecks = 100;
+    public const int ConstantCount = 27;
+    public int Count { get { return ConstantCount; } }
 }

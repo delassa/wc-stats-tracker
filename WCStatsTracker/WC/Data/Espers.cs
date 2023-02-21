@@ -2,5 +2,6 @@
 
 public class Espers
 {
-    public const int NumEspers = 27;
+    public const int ConstantCount = 27;
+    public int Count { get { return ConstantCount; } }
 }

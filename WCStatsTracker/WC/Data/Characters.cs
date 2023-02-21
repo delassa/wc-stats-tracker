@@ -8,5 +8,6 @@ namespace WCStatsTracker.WC.Data;
 
 public class Characters
 {
-    public const int NumCharacters = 14;
+    public const int ConstantCount = 14;
+    public int Count { get { return ConstantCount; } }
 }
