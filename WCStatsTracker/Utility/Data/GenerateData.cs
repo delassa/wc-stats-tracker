@@ -1,64 +1,66 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WCStatsTracker.Models;
-using WCStatsTracker.Views;
 
 namespace WCStatsTracker.Utility.Data;
 
-internal class GenerateData
+
+/// <summary>
+/// Static class to generate some random data
+/// </summary>
+public static class GenerateData
 {
-    private ObservableCollection<FlagSet> _flags;
-    private ObservableCollection<WCRun> _runs;
 
-    public ObservableCollection<FlagSet> GetFlags() => _flags;
-    public ObservableCollection<WCRun> GetRuns() => _runs;
-
-    public GenerateData(int FlagSetCount) 
+    /// <summary>
+    /// Generates a fake set of flags
+    /// </summary>
+    /// <param name="FlagSetCount">The number of flags to generate</param>
+    /// <returns>A set of random flags filled out</returns>
+    public static IEnumerable<FlagSet> GenerateFlags(int FlagSetCount) 
     { 
-        _flags = new ObservableCollection<FlagSet>();
+        var flags  = new List<FlagSet>();
         var rand = new Random();
         for (int i = 0; i < FlagSetCount; i++) 
         {
             FlagSet flag = new FlagSet();
             flag.Name += "Flag Set # " + i.ToString();
             flag.FlagString = "Flag String #" + i.ToString();
-            _flags.Add(flag);
+            flags.Add(flag);
         }
+        return flags;
     }
     
     /// <summary>
-    /// Generates a collection of runs with random values uses some preset flagsets to maintain foreign keys
+    /// Returns a set of random runs
     /// </summary>
-    /// <param name="Count">Number of Runs to generate</param>
-    /// <returns>An ObservableCollection of the runs</returns>
-    public void GenerateRuns(int Count)
+    /// <param name="Count">The number of runs to generate</param>
+    /// <returns>A collection of the runs</returns>
+    public static IEnumerable<WCRun> GenerateRuns(int Count)
     {
-        _runs = new ObservableCollection<WCRun>();
+        var runs = new List<WCRun>();
         var rand = new Random();
         for (var i = 0; i < Count; i++)
         {
             WCRun run = new WCRun();
             run.RunLength = new TimeSpan(rand.Next(0, 3), rand.Next(0, 60), rand.Next(0, 60));
-            run.CharactersFound = rand.Next(0, WC.Data.Characters.NumCharacters);
-            run.EspersFound = rand.Next(0, WC.Data.Espers.NumEspers);
-            run.BossesKilled = rand.Next(0, WC.Data.Bosses.NumBosses);
-            run.DragonsKilled = rand.Next(0, WC.Data.Dragons.NumDragons);
-            run.ChecksDone = rand.Next(0, WC.Data.Checks.NumChecks);
-            run.ChestsOpened = rand.Next(0, WC.Data.Chests.NumChests);
+            run.CharactersFound = rand.Next(0, WC.Data.Characters.ConstantCount);
+            run.EspersFound = rand.Next(0, WC.Data.Espers.ConstantCount);
+            run.BossesKilled = rand.Next(0, WC.Data.Bosses.ConstantCount);
+            run.DragonsKilled = rand.Next(0, WC.Data.Dragons.ConstantCount);
+            run.ChecksDone = rand.Next(0, WC.Data.Checks.ConstantCount);
+            run.ChestsOpened = rand.Next(0, WC.Data.Chests.ConstantCount);
             run.DidKTSkip = rand.Next(0, 1) != 0;
-            run.FlagSet = _flags[rand.Next(0, _flags.Count())];
             int len = 10;
             for (var j = 0; j<len; j++) 
             { 
                 run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower(); 
             }
-            _runs.Add(run);
+            runs.Add(run);
         }
-        
+        return runs;        
     }
 
 }
