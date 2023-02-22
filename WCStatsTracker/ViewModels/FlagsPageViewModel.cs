@@ -54,7 +54,7 @@ public partial class FlagsPageViewModel : ViewModelBase
                 flag.FlagString = FlagStringText;
             }
             _databaseService.Save();
-            FlagSetList = _databaseService.GetFlagSet();
+            FlagSetList = _databaseService.GetFlagSets();
         }
         else throw new NullReferenceException(nameof(FlagSetList));
     }
@@ -63,9 +63,9 @@ public partial class FlagsPageViewModel : ViewModelBase
     public FlagsPageViewModel(IDatabaseService databaseService)
     {
         ViewName = "Flags";
-        IconName = "FlagVariant";
+        IconName = "Flag";
         _databaseService = databaseService;
-        FlagSetList = _databaseService.GetFlagSet();
+        FlagSetList = _databaseService.GetFlagSets();
     }
 
     public FlagsPageViewModel() : this(new WCMockDatabaseService()) { }

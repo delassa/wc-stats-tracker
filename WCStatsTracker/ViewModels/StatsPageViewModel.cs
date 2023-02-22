@@ -16,6 +16,6 @@ public partial class StatsPageViewModel : ViewModelBase
     {
         BestTime = new TimeSpan(1, 20, 05);
         ViewName = "Stats";
-        IconName = "ChartBar";
+        IconName = "TwoBars";
     }
 }

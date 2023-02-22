@@ -1,4 +1,6 @@
 ﻿using Avalonia;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.MaterialDesign;
 using System;
 
 namespace WCStatsTracker
@@ -18,7 +20,9 @@ namespace WCStatsTracker
         {
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToTrace();
+                .LogToTrace()
+                .WithIcons(container => container
+                .Register<MaterialDesignIconProvider>());
         }
     }
 }

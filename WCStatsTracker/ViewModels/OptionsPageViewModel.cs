@@ -11,6 +11,6 @@ public partial class OptionsPageViewModel : ViewModelBase
     public OptionsPageViewModel() 
     {
         ViewName = "Options";
-        IconName = "Cogs";
+        IconName = "Settings";
     }
 }

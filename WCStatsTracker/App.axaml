@@ -1,18 +1,19 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:WCStatsTracker"
-			 xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-			 xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:themes="using:FluentAvalonia.Styling"
              x:Class="WCStatsTracker.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+	<Application.Resources>
+		<Thickness x:Key="AppMargin">5</Thickness>
+	</Application.Resources>
     <Application.Styles>
-		<icons:MaterialIconStyles />
-		<themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime"/>
-		<StyleInclude Source="avares://Material.DataGrid/DataGrid.xaml"/>
+		<themes:FluentAvaloniaTheme />
+		<!--<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>-->
 		<StyleInclude Source="/Styles/DataValidationErrors.axaml"/>
-		<StyleInclude Source="/Controls/ImageButton.axaml"/>
+		<!--<StyleInclude Source="/Controls/ImageButton.axaml"/>-->
 	</Application.Styles>
 </Application>
