@@ -3,90 +3,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:WCStatsTracker.ViewModels"
+			 xmlns:model="using:WCStatsTracker.Models"
 			 xmlns:converter="using:WCStatsTracker.Converters"
-			 xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:localControl="using:WCStatsTracker.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
              x:Class="WCStatsTracker.Views.RunsPageView"
-			 x:DataType="vm:RunsPageViewModel"
-			 x:CompileBindings="True">
+			 x:DataType="vm:RunsPageViewModel">
+	
 	<Design.DataContext>
 		<vm:RunsPageViewModel />
 	</Design.DataContext>
-	<StackPanel>
-		<Grid ColumnDefinitions="*,Auto">
-			<DataGrid Grid.Row="0" Grid.Column="0"
-					  Name="RunListDataGrid"
-					  Items="{Binding RunList}"
-					  AutoGenerateColumns="False"
-				  >
+	
+	<Grid ColumnDefinitions="*,auto" Margin="{DynamicResource AppMargin}">
+		<Grid RowDefinitions="*,auto" Margin="{DynamicResource AppMargin}">
+			<DataGrid Grid.Row="0" 
+					  Items="{Binding RunList}" 
+					  IsReadOnly="True" 
+					  SelectionMode="Single" 
+					  SelectedItem="{Binding SelectedItem}">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}"/>
+					<DataGridTextColumn Header="Characters" Binding="{Binding CharactersFound}"/>
+					<DataGridTextColumn Header="Espers" Binding="{Binding EspersFound}"/>
+					<DataGridTextColumn Header="Dragons" Binding="{Binding DragonsKilled}"/>
+					<DataGridTextColumn Header="Bosses" Binding="{Binding BossesKilled}"/>
 					<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}"/>
-					<DataGridTextColumn Header="Char" Binding="{Binding CharactersFound}"/>
-					<DataGridTextColumn Header="Esper" Binding="{Binding EspersFound}"/>
-					<DataGridTextColumn Header="Dragon" Binding="{Binding DragonsKilled}"/>
-					<DataGridTextColumn Header="Boss" Binding="{Binding BossesKilled}"/>
-					<DataGridTextColumn Header="Chest" Binding="{Binding ChestsOpened}"/>
-					<DataGridCheckBoxColumn Header="KT Skip" Binding="{Binding DidKTSkip}"/>
+					<DataGridTextColumn Header="Chests" Binding="{Binding ChestsOpened}"/>
+					<DataGridCheckBoxColumn Header="Skip" Binding="{Binding DidKTSkip}"/>
+					<DataGridTemplateColumn Header="Flags"  >
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="model:FlagSet">
+								<TextBlock Text="{Binding FlagName}"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn Header="Seed" Binding="{Binding Seed}"/>
 				</DataGrid.Columns>
 			</DataGrid>
-			<Grid Grid.Column="1" RowDefinitions="auto">
-				<Grid.Styles>
-					<Style Selector="TextBlock">
-						<Setter Property="VerticalAlignment" Value="Center"/>
-					</Style>
-					<Style Selector="TextBox">
-						<Setter Property="VerticalContentAlignment" Value="Center"/>
-					</Style>
-				</Grid.Styles>
-				<DockPanel Grid.Row="0">
-					<TextBlock DockPanel.Dock="Left" Text="{Binding LabelNames[1]}" Classes="Body1"/>
-					<TextBox DockPanel.Dock="Right" Grid.Column="1" Text="{Binding WorkingRunLength }"></TextBox>
-				</DockPanel>
-			</Grid>
-							<!--<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[2]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[3]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[4]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[5]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[6]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[7]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[8]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[9]}"  />
-							<TextBlock Classes="Subheadline2" Text="{Binding LabelNames[10]}" />
-						</StackPanel>
-						<StackPanel Grid.Column="1">
-							<StackPanel.Styles>
-								<Style Selector="TextBox">
-									<Setter Property="Width" Value="200"/>
-								</Style>
-							</StackPanel.Styles>
-
-							<TextBox Text="{Binding WorkingRun.CharactersFound }"></TextBox>
-							<TextBox Text="{Binding WorkingRun.EspersFound}"></TextBox>
-							<TextBox Text="{Binding WorkingRun.DragonsKilled}"></TextBox>
-							<TextBox Text="{Binding WorkingRun.BossesKilled}"></TextBox>
-							<TextBox Text="{Binding WorkingRun.ChecksDone}"></TextBox>
-							<TextBox Text="{Binding WorkingRun.ChestsOpened}"></TextBox>
-							<CheckBox IsChecked="{Binding WorkingRun.DidKTSkip}"></CheckBox>
-							<ComboBox Items="{Binding FlagSetList}" SelectedItem="{Binding WorkingRun.FlagSet}">
-								<ComboBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock Text="{Binding Name}"/>
-									</DataTemplate>
-								</ComboBox.ItemTemplate>
-							</ComboBox>
-							<TextBox Text="{Binding WorkingRun.Seed}"></TextBox>
-						</StackPanel>-->
-			<Grid Grid.Row="2" ColumnDefinitions="50,50,*">
-				<Button Grid.Column="0"
-					Margin="5"
-					Padding="2"
-					CornerRadius="2"
-					Width="24"
-					Height="24" Command="{Binding SaveClickCommand}">
-					<icons:MaterialIcon Kind="ContentSave"/>
-				</Button>
-			</Grid>
+			<Button Grid.Row="1" Content="Delete Selected Run" Command="DeleteSelectedRunCommand"/>
 		</Grid>
-	</StackPanel>
+	</Grid>
 </UserControl>
