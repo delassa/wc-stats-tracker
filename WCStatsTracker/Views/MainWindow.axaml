@@ -1,71 +1,35 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:WCStatsTracker.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+		xmlns:ui="using:FluentAvalonia.UI.Controls"
+		xmlns:localControl="using:WCStatsTracker.Controls"
 		xmlns:local="using:WCStatsTracker"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="using:WCStatsTracker.ViewModels"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WCStatsTracker.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Worlds Collide Stats Tracker">
-
-
 	
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-	<Grid RowDefinitions="50,*,50">
-		<!-- Header -->
-		<Grid Grid.Row="0" ColumnDefinitions="24,*,24">
-			<Button Padding="2"
-					CornerRadius="3">
-				<Svg Path="/Assets/Icons/round-menu.svg"/>
-			</Button>
-			<Label Grid.Column="1"
-				   HorizontalAlignment="Center"
-				   VerticalAlignment="Center"
-				   FontWeight="Heavy"
-				   FontSize="24"
-				   Background="">FF6 WC Stats Tracker</Label>
-		</Grid>
-		<!-- Main content pane and menu-->
-		<SplitView Grid.Row="1"
-				   OpenPaneLength="100"
-				   DisplayMode="Inline"
-				   IsPaneOpen="True"
-				   CornerRadius="5">
-			<!-- Side Menu -->
-			<SplitView.Pane>
-				<StackPanel>
-					<StackPanel.Styles>
-						<Style Selector="Button">
-							<Setter Property="Width" Value="100"/>
-							<Setter Property="CornerRadius" Value="4"/>
-						</Style>
-					</StackPanel.Styles>
-					<ListBox Name="MenuList" 
-							 Items="{Binding ContentViews}"
-							 SelectionMode="Single"
-							 SelectedItem="{Binding CurrentView}">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<TextBlock Text="{Binding ViewName}"/>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-				</StackPanel>
-			</SplitView.Pane>
-			<Grid>
-				<TransitioningContentControl 
-					Content="{Binding CurrentView}"/>
-			</Grid>
-		</SplitView>
-		
-		<!-- Status Bar-->
-		
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<Grid>
+		<ui:NavigationView PaneDisplayMode="Left"
+						   MenuItems="{Binding Views}" 
+						   IsSettingsVisible="False" 
+						   SelectedItem="{Binding CurrentView}"
+						   >
+			<ui:NavigationView.MenuItemTemplate>
+				<DataTemplate>
+					<ui:NavigationViewItem Content="{Binding ViewName}"
+										   IconSource="{Binding IconName}"/>
+				</DataTemplate>
+			</ui:NavigationView.MenuItemTemplate>
+			<ui:NavigationView.Content>
+				<TransitioningContentControl Content="{Binding CurrentView}"/>
+			</ui:NavigationView.Content>
+		</ui:NavigationView>
 	</Grid>
-
 </Window>

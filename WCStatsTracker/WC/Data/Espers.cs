@@ -1,6 +1,7 @@
 ﻿namespace WCStatsTracker.WC.Data;
 
-public class Espers
+public class Espers : BaseDataItem
 {
-    public const int NumEspers = 27;
+    public const int ConstantCount = 27;
+    public static new int Count { get { return ConstantCount; } }
 }

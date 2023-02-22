@@ -1,6 +1,7 @@
 ﻿namespace WCStatsTracker.WC.Data;
 
-internal class Chests
+public class Chests : BaseDataItem
 {
-    public const int NumChests = 120;
+    public const int ConstantCount = 27;
+    public static new int Count { get { return ConstantCount; } }
 }

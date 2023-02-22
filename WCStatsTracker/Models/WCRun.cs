@@ -7,7 +7,7 @@ namespace WCStatsTracker.Models;
 /// <summary>
 /// Data for a WC Run
 /// </summary>
-public class WCRun : ObservableValidator
+public partial class WCRun : BaseModelObject
 {
     #region Private Backing Fields
 
@@ -48,37 +48,37 @@ public class WCRun : ObservableValidator
     /// <summary>
     /// Number of characters found during the run
     /// </summary>
-    [Range(0, WC.Data.Characters.NumCharacters, ErrorMessage = "Characters must be between 0 and 14")]
+    [Range(0, WC.Data.Characters.ConstantCount, ErrorMessage = "Characters must be between 0 and 14")]
     public int CharactersFound { get => charactersFound; set => SetProperty(ref charactersFound, value, true); }
 
     /// <summary>
     /// Number of espers found during the run
     /// </summary>
-    [Range(0, WC.Data.Espers.NumEspers, ErrorMessage = "Espers must be between 0 and 27")]
+    [Range(0, WC.Data.Espers.ConstantCount, ErrorMessage = "Espers must be between 0 and 27")]
     public int EspersFound { get => espersFound; set => SetProperty(ref espersFound, value, true); }
 
     /// <summary>
     /// Number of dragons killed during the run
     /// </summary>
-    [Range(0, WC.Data.Dragons.NumDragons, ErrorMessage = "Dragons must be between 0 and 8")]
+    [Range(0, WC.Data.Dragons.ConstantCount, ErrorMessage = "Dragons must be between 0 and 8")]
     public int DragonsKilled { get => dragonsKilled; set => SetProperty(ref dragonsKilled, value, true); }
 
     /// <summary>
     /// Number of bosses killed during the run
     /// </summary>
-    [Range(0, WC.Data.Bosses.NumBosses, ErrorMessage = "Bosses must be between 0 and 38")]
+    [Range(0, WC.Data.Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
     public int BossesKilled { get => bossesKilled; set => SetProperty(ref bossesKilled, value, true); }
 
     /// <summary>
     /// Number of checks done during the run
     /// </summary>
-    [Range(0, WC.Data.Checks.NumChecks, ErrorMessage = "Checks must be between 0 and 100")]
+    [Range(0, WC.Data.Checks.ConstantCount, ErrorMessage = "Checks must be between 0 and 100")]
     public int ChecksDone { get => checksDone; set => SetProperty(ref checksDone, value, true); }
 
     /// <summary>
     /// Number of chests opened during the run
     /// </summary>
-    [Range(0, WC.Data.Chests.NumChests, ErrorMessage = "Chests must be between 0 and 120")]
+    [Range(0, WC.Data.Chests.ConstantCount, ErrorMessage = "Chests must be between 0 and 120")]
     public int ChestsOpened { get => chestsOpened; set => SetProperty(ref chestsOpened, value, true); }
 
     /// <summary>
@@ -90,7 +90,7 @@ public class WCRun : ObservableValidator
     /// <summary>
     /// The flagset for this particular run
     /// </summary>
-    public virtual FlagSet FlagSet { get; set; }
+    public virtual FlagSet? FlagSet { get; set; }
 
     /// <summary>
     /// The seed for this run

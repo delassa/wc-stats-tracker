@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WCStatsTracker.WC.Data;
 
-public class Characters
+public class Characters : BaseDataItem
 {
-    public const int NumCharacters = 14;
+    public const int ConstantCount = 14;
+    public static new int Count { get { return ConstantCount; } }
+
 }
