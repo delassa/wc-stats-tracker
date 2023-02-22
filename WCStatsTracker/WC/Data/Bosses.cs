@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WCStatsTracker.WC.Data;
 
-public class Bosses
+public class Bosses : BaseDataItem
 {
     public const int ConstantCount = 27;
-    public int Count { get { return ConstantCount; } }
+    public static new int Count { get { return ConstantCount; } }
 }
