@@ -1,72 +1,120 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
+﻿using Avalonia.Controls.Documents;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WCStatsTracker.Models;
+using WCStatsTracker.Utility.Data;
 
 namespace WCStatsTracker.Services;
 
-public class WCMockDatabaseService : IDatabaseService
+public class WCMockDatabaseService<T> : IDatabaseService<T> where T : BaseModelObject
 {
     private ObservableCollection<FlagSet> FakeFlagSet;
     private ObservableCollection<WCRun> FakeRuns;
 
-    public WCMockDatabaseService()
+    public WCMockDatabaseService(WCDBContextFactory context)
     {
-        var flagSet = new ObservableCollection<FlagSet>();
-        var run1 = new WCRun { Seed = "Seed1", CharactersFound = 2, BossesKilled = 3, ChecksDone = 20, ChestsOpened = 50, DidKTSkip = false, DragonsKilled = 5, EspersFound = 4, Id = 0, RunLength = TimeSpan.Parse("01:20:15") };
-        var run2 = new WCRun { Seed = "Seed2", CharactersFound = 2, BossesKilled = 3, ChecksDone = 15, ChestsOpened = 20, DidKTSkip = false, DragonsKilled = 5, EspersFound = 4, Id = 1, RunLength = TimeSpan.Parse("01:34:15") };
-        var run3 = new WCRun { Seed = "Seed3", CharactersFound = 2, BossesKilled = 3, ChecksDone = 5, ChestsOpened = 45, DidKTSkip = false, DragonsKilled = 5, EspersFound = 4, Id = 2, RunLength = TimeSpan.Parse("01:30:15") };
-        var flag1 = new FlagSet { FlagString = "FlagString1", Id = 0, Name = "FlagName1" };
-        flag1.Runs.Add(run1);
-        run1.FlagSet = flag1;
-        var flag2 = new FlagSet { FlagString = "FlagString2", Id = 1, Name = "FlagName2" };
-        flag2.Runs.Add(run2);
-        run2.FlagSet = flag2;
-        var flag3 = new FlagSet { FlagString = "FlagString2", Id = 2, Name = "FlagName2" };
-        flag3.Runs.Add(run3);
-        run3.FlagSet = flag3;
-        FakeFlagSet = new ObservableCollection<FlagSet>(flagSet);
+        FakeFlagSet = new ObservableCollection<FlagSet>();
         FakeRuns = new ObservableCollection<WCRun>();
-        FakeRuns.Add(run1);
-        FakeRuns.Add(run2);
-        FakeRuns.Add(run3);
-    }
-    public void DeleteFlag(FlagSet flag)
-    {
-        Console.WriteLine($"Deleting FlagSet {flag.Name}");
     }
 
-    public void DeleteRun(WCRun run)
+    public void GenerateFakeData(int FlagCount, int RunCount)
     {
-        Console.WriteLine($"Deleting Run with ID: {run.Id}");
+        FakeFlagSet = (ObservableCollection<FlagSet>)GenerateData.GenerateFlags(FlagCount);
+        FakeRuns = (ObservableCollection<WCRun>)GenerateData.GenerateRuns(RunCount);
     }
 
-    public ObservableCollection<FlagSet> GetFlagSets()
+    public async Task<T> Create(T entity)
     {
-        return FakeFlagSet;
+        throw new System.NotImplementedException();
     }
 
-    public ObservableCollection<WCRun> GetWCRuns()
+    public async Task<bool> Delete(int id)
     {
-        return FakeRuns;
+        throw new System.NotImplementedException();
     }
 
-    public void Save()
+    public Task<bool> Delete(T entity)
     {
-        Console.WriteLine("Writing to database...");
+        WCRun run = entity as WCRun;
+        if (run != null)
+        {
+            return Task.FromResult(FakeRuns.Remove(run));
+        }
+        FlagSet flag = entity as FlagSet;
+        if (flag != null)
+        {
+            return Task.FromResult(FakeFlagSet.Remove(flag));
+        }
+        throw new ArgumentException($"Cannot delete a type of {typeof(T)}.");
     }
 
-    public void SaveFlag(FlagSet flagSet)
+    public Task<T> Get(int id)
     {
-        Console.WriteLine($"Saving flagset: {flagSet.Name}");
+        T checkType = default(T);
+        if (checkType is WCRun)
+        {
+            dynamic run = FakeRuns.FirstOrDefault((e) => e.Id == id);
+            if (run is null) { throw new ArgumentException($"{id} is not a valid id in FakeRuns"); }
+            return Task.FromResult(run);
+        }
+        if (checkType is FlagSet)
+        {
+            dynamic flag = FakeFlagSet.FirstOrDefault((e) => e.Id == id);
+            if (flag is null) { throw new ArgumentException($"{id} is not a valid id in FakeRuns"); }
+            return Task.FromResult(flag);
+        }
+        throw new ArgumentException($"Cannot get a type of {typeof(T)}.");
     }
 
-    public void SaveRun(WCRun run)
+
+    public Task<IEnumerable<T>> GetAll()
     {
-        Console.WriteLine($"Saving Run with ID: {run.Id}");
+        T checkType = default(T);
+        if (checkType is IEnumerable<WCRun>)
+        {
+            dynamic runs = FakeRuns;
+            return Task.FromResult(runs);
+        }
+        if (checkType is IEnumerable<FlagSet>)
+        {
+            dynamic flags = FakeFlagSet;
+            return Task.FromResult(flags);
+        }
+        throw new ArgumentException($"Cannot Get All with type of {typeof(T)}.");
+    }
+
+    public Task<T> Update(T entity, int id)
+    {
+        entity.Id = id;
+        dynamic d = entity;
+        T checkType = default(T);
+        if (checkType is WCRun)
+        {
+            var item = FakeRuns.FirstOrDefault((e) => e.Id == id);
+            var index = FakeRuns.IndexOf(item);
+            if (index != -1) 
+            {
+                FakeRuns[index] = entity as WCRun;
+                return Task.FromResult(d);
+            }
+            throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
+        }
+        if (checkType is FlagSet)
+        {
+            var item = FakeFlagSet.FirstOrDefault((e) => e.Id == id);
+            var index = FakeFlagSet.IndexOf(item);
+            if (index != -1) 
+            {
+                FakeFlagSet[index] = entity as FlagSet; 
+                return Task.FromResult(d);
+            }
+            throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
+        }
+        throw new ArgumentException($"Cannot Update with type of {typeof(T)}.");
     }
 }

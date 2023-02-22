@@ -1,60 +1,86 @@
-﻿using WCStatsTracker.Models;
-using System.Collections.ObjectModel;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WCStatsTracker.Models;
 
 namespace WCStatsTracker.Services;
+
+
 /// <summary>
 /// Class to handle the database insertions deletions and updates
 /// </summary>
-public class WCDatabaseService : IDatabaseService
+public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObject
 {
-    private WCContext _dbContext;
+    private readonly WCDBContextFactory _contextFactory;
 
-    public WCDatabaseService()
+    public WCDatabaseService(WCDBContextFactory contextFactory)
     {
-        _dbContext = new WCContext();
-        _dbContext.Database.EnsureCreated();
-    }
-
-    public void DeleteRun(WCRun run)
-    {
-        _dbContext.WCRuns.Remove(run);
-        _dbContext.SaveChanges();
-    }
-    public void SaveRun(WCRun run)
-    {
-        _dbContext.WCRuns.Add(run);
-        _dbContext.SaveChanges();
-    }
-    public void DeleteFlag(FlagSet flagSet)
-    {
-        _dbContext.Remove(flagSet);
-        _dbContext.SaveChanges();
-    }
-    public void SaveFlag(FlagSet flagSet)
-    {
-        _dbContext.Add(flagSet);
-        _dbContext.SaveChanges();
+        _contextFactory = contextFactory;
     }
 
-    public ObservableCollection<FlagSet> GetFlagSets()
+    public async Task<T> Create(T entity)
     {
-        _dbContext.Flags.Load();
-        return _dbContext.Flags.Local.ToObservableCollection();
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+            var createdEntity = await context.Set<T>().AddAsync(entity);
+            await context.SaveChangesAsync();
+
+            return createdEntity.Entity;
+        }
+    }
+    public async Task<bool> Delete(int id)
+    {
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+            T entity = await context.Set<T>().FirstOrDefaultAsync<T>((e) => e.Id == id);
+            context.Set<T>().Remove(entity!);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
     }
 
-    public ObservableCollection<WCRun> GetWCRuns()
+    public async Task<bool> Delete(T entity)
     {
-        _dbContext.WCRuns.Load();
-        return _dbContext.WCRuns.Local.ToObservableCollection();
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+            context.Set<T>().Remove(entity);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
     }
 
-    public void Save()
+    public async Task<T> Update(T entity, int id)
     {
-        _dbContext.SaveChanges();
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+
+            entity.Id = id;
+            context.Set<T>().Update(entity);
+            await context.SaveChangesAsync();
+
+            return entity;
+        }
     }
-    ~WCDatabaseService()
+
+
+    public async Task<IEnumerable<T>> GetAll()
     {
-        _dbContext.Dispose();
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+            IEnumerable<T> entities = await context.Set<T>().ToListAsync();
+            return entities;
+        }
+    }
+
+    public async Task<T> Get(int id)
+    {
+        using (WCDBContext context = _contextFactory.CreateDbContext())
+        {
+            T entity = await context.Set<T>().FirstOrDefaultAsync<T>((e) => e.Id == id);
+            return entity;
+        }
     }
 }
