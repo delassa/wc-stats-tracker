@@ -6,16 +6,13 @@ namespace WCStatsTracker.Models;
 /// <summary>
 /// Class to represent a flagset for a particular seed
 /// </summary>
-public class FlagSet
+public class FlagSet : BaseModelObject
 {
-    /// <summary>
-    /// Unique Id of Flagset
-    /// </summary>
-    public int Id { get; set; }
     /// <summary>
     /// Name of flagset
     /// </summary>
     public string Name { get; set; } = string.Empty;
+
     /// <summary>
     /// Flagstring of this particular flagset
     /// </summary>
