@@ -7,8 +7,6 @@ namespace WCStatsTracker.Services;
 
 public class WCDBContext : DbContext
 {
-
-    
     public DbSet<WCRun> WCRuns => Set<WCRun>();
     public DbSet<FlagSet> Flags => Set<FlagSet>();
 

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace WCStatsTracker.Services;
 public class WCDBContextFactory : IDesignTimeDbContextFactory<WCDBContext>
 {
-    public static string? DbFile => ConfigurationManager.AppSettings["DBName"];
-    public WCDBContext CreateDbContext(string[] args = null)
+    public WCDBContext CreateDbContext(string[]? args = null)
     {
         var options = new DbContextOptionsBuilder<WCDBContext>();
-        options.UseSqlite($"Data Source={DbFile}");
+        string FixedConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
+        options.UseSqlite(FixedConnectionString);
         return new WCDBContext(options.Options);
     }
 }

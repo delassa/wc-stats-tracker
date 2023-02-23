@@ -13,7 +13,7 @@ public interface IDatabaseService<T> where T : class
     /// Get all of a certain type from the database
     /// </summary>
     /// <returns>An IEnumerable of the type</returns>
-    Task<IEnumerable<T>> GetAll();
+    Task<IList<T>> GetAll();
     
     /// <summary>
     /// Get an entity by id from the database

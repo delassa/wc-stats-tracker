@@ -11,78 +11,99 @@ using WCStatsTracker.Utility.Data;
 
 namespace WCStatsTracker.Services;
 
+
+/// <summary>
+/// A Mocking database service to generate data mostly for design time preview
+/// </summary>
+/// <typeparam name="T">The type of Database Service to mock</typeparam>
 public class WCMockDatabaseService<T> : IDatabaseService<T> where T : BaseModelObject
 {
-    private ObservableCollection<FlagSet> FakeFlagSet;
-    private ObservableCollection<WCRun> FakeRuns;
+    private ObservableCollection<FlagSet> FlagSetCollection;
+    private ObservableCollection<WCRun> RunCollection;
 
-    public WCMockDatabaseService(WCDBContextFactory context)
+    /// <summary>
+    /// Has same signature as the real database service constructor
+    /// </summary>
+    /// <param name="context">Just a null context that is unused</param>
+    public WCMockDatabaseService(WCDBContextFactory? context = null)
     {
-        FakeFlagSet = new ObservableCollection<FlagSet>();
-        FakeRuns = new ObservableCollection<WCRun>();
+        FlagSetCollection = new ObservableCollection<FlagSet>();
+        RunCollection = new ObservableCollection<WCRun>();
+        GenerateFakeData(20, 30);
     }
 
+    /// <summary>
+    /// Loads up the fake data set
+    /// </summary>
+    /// <param name="FlagCount">Number of flags to generate</param>
+    /// <param name="RunCount">Number of runs to generate</param>
     public void GenerateFakeData(int FlagCount, int RunCount)
     {
-        FakeFlagSet = (ObservableCollection<FlagSet>)GenerateData.GenerateFlags(FlagCount);
-        FakeRuns = (ObservableCollection<WCRun>)GenerateData.GenerateRuns(RunCount);
+        FlagSetCollection = (ObservableCollection<FlagSet>)GenerateData.GenerateFlags(FlagCount);
+        RunCollection = (ObservableCollection<WCRun>)GenerateData.GenerateRuns(RunCount);
     }
 
-    public async Task<T> Create(T entity)
+    public Task<T> Create(T entity)
     {
         throw new System.NotImplementedException();
     }
 
-    public async Task<bool> Delete(int id)
+    public Task<bool> Delete(int id)
     {
         throw new System.NotImplementedException();
     }
 
     public Task<bool> Delete(T entity)
     {
-        WCRun run = entity as WCRun;
-        if (run != null)
+        if (entity is WCRun run)
         {
-            return Task.FromResult(FakeRuns.Remove(run));
+            return Task.FromResult(RunCollection.Remove(run));
         }
-        FlagSet flag = entity as FlagSet;
-        if (flag != null)
+        if (entity is FlagSet flag)
         {
-            return Task.FromResult(FakeFlagSet.Remove(flag));
+            return Task.FromResult(FlagSetCollection.Remove(flag));
         }
         throw new ArgumentException($"Cannot delete a type of {typeof(T)}.");
     }
 
     public Task<T> Get(int id)
     {
-        T checkType = default(T);
+        T? checkType = default;
+
         if (checkType is WCRun)
         {
-            dynamic run = FakeRuns.FirstOrDefault((e) => e.Id == id);
-            if (run is null) { throw new ArgumentException($"{id} is not a valid id in FakeRuns"); }
+            dynamic? run = RunCollection.FirstOrDefault((e) => e.Id == id);
+            if (run is null) 
+            { 
+                throw new ArgumentException($"{id} is not a valid id in FakeRuns"); 
+            }
             return Task.FromResult(run);
         }
+
         if (checkType is FlagSet)
         {
-            dynamic flag = FakeFlagSet.FirstOrDefault((e) => e.Id == id);
-            if (flag is null) { throw new ArgumentException($"{id} is not a valid id in FakeRuns"); }
+            dynamic? flag = FlagSetCollection.FirstOrDefault((e) => e.Id == id);
+            if (flag is null) 
+            { 
+                throw new ArgumentException($"{id} is not a valid id in FakeRuns"); 
+            }
             return Task.FromResult(flag);
         }
         throw new ArgumentException($"Cannot get a type of {typeof(T)}.");
     }
 
 
-    public Task<IEnumerable<T>> GetAll()
+    public Task<IList<T>> GetAll()
     {
-        T checkType = default(T);
+        T? checkType = default;
         if (checkType is IEnumerable<WCRun>)
         {
-            dynamic runs = FakeRuns;
+            dynamic runs = RunCollection;
             return Task.FromResult(runs);
         }
         if (checkType is IEnumerable<FlagSet>)
         {
-            dynamic flags = FakeFlagSet;
+            dynamic flags = FlagSetCollection;
             return Task.FromResult(flags);
         }
         throw new ArgumentException($"Cannot Get All with type of {typeof(T)}.");
@@ -92,29 +113,38 @@ public class WCMockDatabaseService<T> : IDatabaseService<T> where T : BaseModelO
     {
         entity.Id = id;
         dynamic d = entity;
-        T checkType = default(T);
-        if (checkType is WCRun)
+        T? checkType = default;
+
+        switch (checkType)
         {
-            var item = FakeRuns.FirstOrDefault((e) => e.Id == id);
-            var index = FakeRuns.IndexOf(item);
-            if (index != -1) 
-            {
-                FakeRuns[index] = entity as WCRun;
-                return Task.FromResult(d);
-            }
-            throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
-        }
-        if (checkType is FlagSet)
-        {
-            var item = FakeFlagSet.FirstOrDefault((e) => e.Id == id);
-            var index = FakeFlagSet.IndexOf(item);
-            if (index != -1) 
-            {
-                FakeFlagSet[index] = entity as FlagSet; 
-                return Task.FromResult(d);
-            }
-            throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
-        }
-        throw new ArgumentException($"Cannot Update with type of {typeof(T)}.");
+            case WCRun:
+                {
+                    var item = RunCollection.First((e) => e.Id == id);
+                    var index = RunCollection.IndexOf(item);
+                    if (index != -1)
+                    {
+
+                        RunCollection[index] = d;
+                        return Task.FromResult(d);
+                    }
+                    throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
+                }
+
+            case FlagSet:
+                {
+                    var item = FlagSetCollection.First((e) => e.Id == id);
+                    var index = FlagSetCollection.IndexOf(item);
+                    if (index != -1)
+                    {
+                        FlagSetCollection[index] = d;
+                        return Task.FromResult(d);
+                    }
+                    throw new ArgumentException($"No item found with id : {id} of {typeof(T)}.");
+                }
+            default:
+                {
+                    throw new ArgumentException($"Cannot Update with type of {typeof(T)}.");
+                }
+        }   
     }
 }
