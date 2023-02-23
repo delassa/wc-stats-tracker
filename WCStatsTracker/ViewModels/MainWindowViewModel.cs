@@ -43,53 +43,22 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Database service injected from constructor
+    /// Creates and adds in all the viewmodels into the view model list and sets up the navigation
+    /// probably not the best way to do this but works for now
     /// </summary>
-    private IDatabaseService _databaseService;
-
-    /// <summary>
-    /// Mocked constructor for design time display
-    /// </summary>
-    public MainWindowViewModel() : this(new WCMockDatabaseService())
+    public MainWindowViewModel(
+        WCDBContextFactory wCDBContextFactory, 
+        RunsPageViewModel runsPageViewModel,
+        FlagsPageViewModel flagsPageViewModel,
+        StatsPageViewModel statsPageViewModel,
+        OptionsPageViewModel optionsPageViewModel)
     {
-    }
-    public MainWindowViewModel(IDatabaseService databaseService)
-    {
-        _databaseService = databaseService;
-        //GenerateData data = new(50);
-        //data.GenerateRuns(100);
-        //var runs = _databaseService.GetWCRuns();
-        //var flags = _databaseService.GetFlagSets();
-        //runs.Clear();
-        //flags.Clear();
-        //foreach( var r in data.GetRuns())
-        //{
-        //    runs.Add(r);
-        //}
-        //foreach( var f in data.GetFlags())
-        //{
-        //    flags.Add(f);
-        //}
-        //_databaseService.Save();
         Views = new List<ViewModelBase>();
-        AddView(new RunsPageViewModel(_databaseService));
-        AddView(new FlagsPageViewModel(_databaseService));
-        AddView(new StatsPageViewModel());
-        AddView(new OptionsPageViewModel());
+        Views.Add(runsPageViewModel);
+        Views.Add(flagsPageViewModel);
+        Views.Add(statsPageViewModel);
+        Views.Add(optionsPageViewModel);
+
         CurrentView = Views[0];
-    }
-
-    public void AddView(ViewModelBase contentView) 
-    {
-        if (Views != null)
-            Views.Add(contentView);
-        else throw new NullReferenceException(nameof(Views));
-    }
-
-    public void RemoveView(ViewModelBase contentView)
-    {
-        if (Views != null)
-            Views.Remove(contentView);
-        else throw new NullReferenceException(nameof(Views));
     }
 }

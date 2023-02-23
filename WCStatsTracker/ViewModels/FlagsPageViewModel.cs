@@ -3,14 +3,18 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services;
 
 namespace WCStatsTracker.ViewModels;
 public partial class FlagsPageViewModel : ViewModelBase
 {
-    
-    private IDatabaseService _databaseService;
+
+    private readonly IDatabaseService<FlagSet> _databaseService;
+
+    [ObservableProperty]
+    private FlagSet? _workingFlagSet;
 
     [ObservableProperty]
     private string _flagNameText = string.Empty;
@@ -24,50 +28,46 @@ public partial class FlagsPageViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<FlagSet>? _flagSetList;
 
-    [RelayCommand]
-    private void SelectionChanged()
+    public FlagsPageViewModel()
     {
-        if (FlagSetList != null)
-        {
-            FlagNameText = FlagSetList[SelectedIndex].Name;
-            FlagStringText = FlagSetList[SelectedIndex].FlagString;
-        }
-        else throw new NullReferenceException(nameof(FlagSetList));
+        _databaseService = new WCMockDatabaseService<FlagSet>();
+        ViewName = "Flags";
+        IconName = "Flag";
+        WorkingFlagSet = new FlagSet();
+
     }
 
-    [RelayCommand]
-    private void SaveClick()
-    {
-        if (FlagSetList != null)
-        {
-            FlagSet flag = FlagSetList.SingleOrDefault(x => x.Name == FlagNameText);
-            if (flag == null)
-            {
-                FlagSetList.Add(new FlagSet()
-                {
-                    Name = FlagNameText,
-                    FlagString = FlagStringText,
-                });
-            }
-            else
-            {
-                flag.FlagString = FlagStringText;
-            }
-            _databaseService.Save();
-            FlagSetList = _databaseService.GetFlagSets();
-        }
-        else throw new NullReferenceException(nameof(FlagSetList));
-    }
-
-
-    public FlagsPageViewModel(IDatabaseService databaseService)
+    public FlagsPageViewModel(WCDBContextFactory wCDBContextFactory)
     {
         ViewName = "Flags";
         IconName = "Flag";
-        _databaseService = databaseService;
-        FlagSetList = _databaseService.GetFlagSets();
+
+        _databaseService = new WCDatabaseService<FlagSet>(wCDBContextFactory);
+        _workingFlagSet = new FlagSet();
+        LoadData();
     }
 
-    public FlagsPageViewModel() : this(new WCMockDatabaseService()) { }
 
+    private async void LoadData()
+    {
+        FlagSetList = new ObservableCollection<FlagSet>(await _databaseService.GetAll());
+    }
+
+    [RelayCommand]
+    private async Task SaveClick()
+    {
+        if (WorkingFlagSet is null) 
+        { 
+            throw new NullReferenceException($"Null reference of {typeof(FlagSet)} WorkingFlagSet"); 
+        }
+
+        FlagSet createdEntity = await _databaseService.Create(WorkingFlagSet);
+        
+        if (FlagSetList is null)
+        {
+            throw new NullReferenceException($"Null reference of {typeof(ObservableCollection<FlagSet>)} FlagSetList");
+        }
+
+        FlagSetList.Add(createdEntity);
+    }
 }

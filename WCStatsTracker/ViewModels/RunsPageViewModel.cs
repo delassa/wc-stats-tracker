@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services;
@@ -16,7 +13,7 @@ namespace WCStatsTracker.ViewModels;
 public partial class RunsPageViewModel : ViewModelBase
 {
 
-    private IDatabaseService<WCRun> _runDBService;
+    private readonly IDatabaseService<WCRun> _runDBService;
     /// <summary>
     /// String to use for conversion back and forth to timespan for runlength
     /// </summary>
@@ -31,21 +28,29 @@ public partial class RunsPageViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<WCRun>? _runList;
 
-    public RunsPageViewModel()
+    public RunsPageViewModel() 
+    { 
+        _runDBService = new WCMockDatabaseService<WCRun>();
+
+        ViewName = "Runs";
+        IconName = "Clock";
+        var Task = LoadData();
+        RunList = Task.Result;
+    }
+
+    public RunsPageViewModel(WCDBContextFactory wCDBContextFactory)
     {
         ViewName = "Runs";
         IconName = "Clock";
 
-        _runDBService = new WCDatabaseService<WCRun>(new WCDBContextFactory());
-
-        //Views = new List<ViewModelBase>();
-        //Views.Add(new RunsListViewModel());
-        //Views.Add(new RunsAddViewModel());
+        _runDBService = new WCDatabaseService<WCRun>(wCDBContextFactory);
+        var Task = LoadData();
+        RunList = Task.Result;
     }
 
-    private async void LoadData()
+    private async Task<ObservableCollection<WCRun>> LoadData()
     {
-        RunList = new ObservableCollection<WCRun>(await _runDBService.GetAll());
+        return new ObservableCollection<WCRun>(await _runDBService.GetAll());
     }
 
     [RelayCommand]
@@ -59,8 +64,7 @@ public partial class RunsPageViewModel : ViewModelBase
 
     public static ValidationResult ValidateRunLength(string runLength, ValidationContext context)
     {
-        TimeSpan result;
-        bool isValid = TimeSpan.TryParseExact(runLength, @"hh\:mm\:ss", null, out result);
+        bool isValid = TimeSpan.TryParseExact(runLength, @"hh\:mm\:ss", null, out _);
 
         if (isValid)
         {

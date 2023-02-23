@@ -15,11 +15,12 @@
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
-	<Grid>
+	<Grid RowDefinitions="50,*">
 		<ui:NavigationView PaneDisplayMode="Left"
 						   MenuItems="{Binding Views}" 
 						   IsSettingsVisible="False" 
 						   SelectedItem="{Binding CurrentView}"
+						   Grid.Row="1"
 						   >
 			<ui:NavigationView.MenuItemTemplate>
 				<DataTemplate>

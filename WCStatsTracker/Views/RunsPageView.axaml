@@ -16,31 +16,26 @@
 	
 	<Grid ColumnDefinitions="*,auto" Margin="{DynamicResource AppMargin}">
 		<Grid RowDefinitions="*,auto" Margin="{DynamicResource AppMargin}">
-			<DataGrid Grid.Row="0" 
+			<DataGrid Grid.Row="0"
+					  AutoGenerateColumns="False"
 					  Items="{Binding RunList}" 
 					  IsReadOnly="True" 
 					  SelectionMode="Single" 
 					  SelectedItem="{Binding SelectedItem}">
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}"/>
-					<DataGridTextColumn Header="Characters" Binding="{Binding CharactersFound}"/>
-					<DataGridTextColumn Header="Espers" Binding="{Binding EspersFound}"/>
-					<DataGridTextColumn Header="Dragons" Binding="{Binding DragonsKilled}"/>
-					<DataGridTextColumn Header="Bosses" Binding="{Binding BossesKilled}"/>
-					<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}"/>
-					<DataGridTextColumn Header="Chests" Binding="{Binding ChestsOpened}"/>
-					<DataGridCheckBoxColumn Header="Skip" Binding="{Binding DidKTSkip}"/>
-					<DataGridTemplateColumn Header="Flags"  >
-						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate DataType="model:FlagSet">
-								<TextBlock Text="{Binding FlagName}"/>
-							</DataTemplate>
-						</DataGridTemplateColumn.CellTemplate>
-					</DataGridTemplateColumn>
-					<DataGridTextColumn Header="Seed" Binding="{Binding Seed}"/>
+					<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}" Width="2*"/>
+					<DataGridTextColumn Header="Characters" Binding="{Binding CharactersFound}" Width="*"/>
+					<DataGridTextColumn Header="Espers" Binding="{Binding EspersFound}" Width="*"/>
+					<DataGridTextColumn Header="Dragons" Binding="{Binding DragonsKilled}" Width="*"/>
+					<DataGridTextColumn Header="Bosses" Binding="{Binding BossesKilled}" Width="*"/>
+					<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}" Width="*"/>
+					<DataGridTextColumn Header="Chests" Binding="{Binding ChestsOpened}" Width="*"/>
+					<DataGridCheckBoxColumn Header="Skip" Binding="{Binding DidKTSkip}" Width="*"/>
+					<DataGridTextColumn Header="Flags" Binding="{Binding Flag.Name}" Width="*"/>
+					<DataGridTextColumn Header="Seed" Binding="{Binding Seed}" Width="2*"/>
 				</DataGrid.Columns>
 			</DataGrid>
-			<Button Grid.Row="1" Content="Delete Selected Run" Command="DeleteSelectedRunCommand"/>
+			<Button Grid.Row="1" Content="Delete Selected Run" Command="{ReflectionBinding DeleteSelectedRunCommand}"/>
 		</Grid>
 	</Grid>
 </UserControl>

@@ -3,6 +3,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using WCStatsTracker.Services;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
@@ -18,8 +20,9 @@ namespace WCStatsTracker
 
         public override void OnFrameworkInitializationCompleted()
         {
-            //setup dependencies
-            var DatabaseService = new WCDatabaseService();
+            /// Hopefully this is a good place to insert DI
+            IServiceProvider serviceProvider = CreateServiceProvider();
+
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -28,11 +31,31 @@ namespace WCStatsTracker
                 BindingPlugins.DataValidators.RemoveAt(0);
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(DatabaseService),
+                    DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>(),
                 };
             }
 
             base.OnFrameworkInitializationCompleted();
         }
+
+
+        /// <summary>
+        /// Creates a DI container for our services
+        /// </summary>
+        /// <returns>The service provider with services registered</returns>
+        public static IServiceProvider CreateServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<WCDBContextFactory>();
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<RunsPageViewModel>();
+            services.AddSingleton<FlagsPageViewModel>();
+            services.AddSingleton<StatsPageViewModel>();
+            services.AddSingleton<OptionsPageViewModel>();
+
+            return services.BuildServiceProvider();
+        }
+
     }
 }

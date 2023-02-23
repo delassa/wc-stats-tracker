@@ -2,7 +2,7 @@
 
 namespace WCStatsTracker.ViewModels
 {
-    public class ViewModelBase : ObservableValidator
+    public class ViewModelBase : ObservableValidator, IViewModelBase
     {
         /// <summary>
         /// Name to display in menus for this view
