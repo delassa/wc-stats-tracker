@@ -25,13 +25,6 @@ public partial class WCRun : BaseModelObject
     #region Public Properties
 
     /// <summary>
-    /// Unique identifier of the run
-    /// </summary>
-    [Required]
-    [Key]
-    public int Id { get; set; }
-
-    /// <summary>
     /// Length of the Run
     /// Dapper doesn't support timespan boxing out of db so we use a string here and a method to convert it to a datetime
     /// </summary>
@@ -90,7 +83,7 @@ public partial class WCRun : BaseModelObject
     /// <summary>
     /// The flagset for this particular run
     /// </summary>
-    public virtual FlagSet? FlagSet { get; set; }
+    public virtual FlagSet? Flag { get; set; }
 
     /// <summary>
     /// The seed for this run
