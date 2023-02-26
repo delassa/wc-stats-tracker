@@ -1,17 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+namespace WCStatsTracker.ViewModels;
 
-namespace WCStatsTracker.ViewModels
+public class ViewModelBase : ObservableValidator, IViewModelBase
 {
-    public class ViewModelBase : ObservableValidator, IViewModelBase
-    {
-        /// <summary>
-        /// Name to display in menus for this view
-        /// </summary>
-        public string? ViewName { get; set; }
+    /// <summary>
+    ///     Name to display in menus for this view
+    /// </summary>
+    public string? ViewName { get; set; }
 
-        /// <summary>
-        /// Name of the icon lookup in Material.Icon.Avalonia package
-        /// </summary>
-        public string? IconName { get; set; }
-    }
+    /// <summary>
+    ///     Name of the icon lookup in Material.Icon.Avalonia package
+    /// </summary>
+    public string? IconName { get; set; }
 }
