@@ -2,6 +2,10 @@
 
 public class Dragons : BaseDataItem
 {
-    public const int ConstantCount = 27;
-    public static new int Count { get { return ConstantCount; } }
+    public const int ConstantCount = 8;
+
+    public new static int Count
+    {
+        get => ConstantCount;
+    }
 }

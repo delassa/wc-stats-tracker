@@ -2,6 +2,10 @@
 
 public class Checks : BaseDataItem
 {
-    public const int ConstantCount = 27;
-    public static new int Count { get { return ConstantCount; } }
+    public const int ConstantCount = 100;
+
+    public new static int Count
+    {
+        get => ConstantCount;
+    }
 }
