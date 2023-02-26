@@ -9,7 +9,8 @@ public class WCDBContextFactory : IDesignTimeDbContextFactory<WCDBContext>
 {
     public WCDBContext CreateDbContext(string[]? args = null)
     {
-        var options = new DbContextOptionsBuilder<WCDBContext>().LogTo(message => Debug.WriteLine(message)).EnableSensitiveDataLogging();
+        var options = new DbContextOptionsBuilder<WCDBContext>();
+            //.LogTo(message => Debug.WriteLine(message)).EnableSensitiveDataLogging();
         var FixedConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString
             .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
         options.UseSqlite(FixedConnectionString);
