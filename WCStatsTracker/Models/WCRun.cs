@@ -1,95 +1,84 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
+using CommunityToolkit.Mvvm.ComponentModel;
+using WCStatsTracker.WC.Data;
 namespace WCStatsTracker.Models;
 
 /// <summary>
-/// Data for a WC Run
+///     Data for a WC Run
 /// </summary>
 public partial class WCRun : BaseModelObject
 {
-    #region Private Backing Fields
-
-    private TimeSpan runLength;
-    private int espersFound;
-    private int charactersFound;
-    private int dragonsKilled;
-    private int bossesKilled;
-    private int checksDone;
-    private int chestsOpened;
-    private bool didKTSkip;
-
-    #endregion
-
-    #region Public Properties
-
-    /// <summary>
-    /// Length of the Run
-    /// Dapper doesn't support timespan boxing out of db so we use a string here and a method to convert it to a datetime
-    /// </summary>
-    [Required(ErrorMessage = "Run Length is required")]
+    [Range(0, Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
+    public int BossesKilled
+    { 
+        get => _bossesKilled;
+        set => SetProperty(ref _bossesKilled, value, true);
+    }
+    [Range(0, Characters.ConstantCount, ErrorMessage = "Characters must be between 0 and 14")]
+    public int CharactersFound
+    { 
+        get => _charactersFound;
+        set => SetProperty(ref _charactersFound, value, true);
+    }
+    [Range(0, Checks.ConstantCount, ErrorMessage = "Checks must be between 0 and 100")]
+    public int ChecksDone
+    {
+        get => _checksDone;
+        set => SetProperty(ref _checksDone, value, true);
+    }
+    [Range(0, Chests.ConstantCount, ErrorMessage = "Chests must be between 0 and 120")]
+    public int ChestsOpened
+    {
+        get => _chestsOpened;
+        set => SetProperty(ref _chestsOpened, value, true);
+    }
+    [Required(ErrorMessage = "Kt Skip is required")]
+    public bool DidKTSkip
+    {
+        get => _didKTSkip;
+        set => SetProperty(ref _didKTSkip, value, true);
+    }
+    [Range(0, Dragons.ConstantCount, ErrorMessage = "Dragons must be between 0 and 8")]
+    public int DragonsKilled
+    {
+        get => _dragonsKilled;
+        set => SetProperty(ref _dragonsKilled, value, true);
+    }
+    [Range(0, Espers.ConstantCount, ErrorMessage = "Espers must be between 0 and 27")]
+    public int EspersFound
+    {
+        get => _espersFound;
+        set => SetProperty(ref _espersFound, value, true);
+    }
+    [Required]
+    public FlagSet Flag
+    {
+        get => _flag;
+        set => SetProperty(ref _flag, value, true);
+    }
+    [Required]    
     public TimeSpan RunLength
     {
-        get => runLength;
-        set
-        {
-            SetProperty(ref runLength, value, true);
-        }
+        get => _runLength;
+        set => SetProperty(ref _runLength, value, true);
+    }
+    [Required]
+    public string Seed
+    {
+        get => _seed;
+        set => SetProperty(ref _seed, value, true);
     }
 
-    /// <summary>
-    /// Number of characters found during the run
-    /// </summary>
-    [Range(0, WC.Data.Characters.ConstantCount, ErrorMessage = "Characters must be between 0 and 14")]
-    public int CharactersFound { get => charactersFound; set => SetProperty(ref charactersFound, value, true); }
-
-    /// <summary>
-    /// Number of espers found during the run
-    /// </summary>
-    [Range(0, WC.Data.Espers.ConstantCount, ErrorMessage = "Espers must be between 0 and 27")]
-    public int EspersFound { get => espersFound; set => SetProperty(ref espersFound, value, true); }
-
-    /// <summary>
-    /// Number of dragons killed during the run
-    /// </summary>
-    [Range(0, WC.Data.Dragons.ConstantCount, ErrorMessage = "Dragons must be between 0 and 8")]
-    public int DragonsKilled { get => dragonsKilled; set => SetProperty(ref dragonsKilled, value, true); }
-
-    /// <summary>
-    /// Number of bosses killed during the run
-    /// </summary>
-    [Range(0, WC.Data.Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
-    public int BossesKilled { get => bossesKilled; set => SetProperty(ref bossesKilled, value, true); }
-
-    /// <summary>
-    /// Number of checks done during the run
-    /// </summary>
-    [Range(0, WC.Data.Checks.ConstantCount, ErrorMessage = "Checks must be between 0 and 100")]
-    public int ChecksDone { get => checksDone; set => SetProperty(ref checksDone, value, true); }
-
-    /// <summary>
-    /// Number of chests opened during the run
-    /// </summary>
-    [Range(0, WC.Data.Chests.ConstantCount, ErrorMessage = "Chests must be between 0 and 120")]
-    public int ChestsOpened { get => chestsOpened; set => SetProperty(ref chestsOpened, value, true); }
-
-    /// <summary>
-    /// Did this run have a kt skip
-    /// </summary>
-    [Required(ErrorMessage = "Kt Skip is required")]
-    public bool DidKTSkip { get => didKTSkip; set => SetProperty(ref didKTSkip, value, true); }
-
-    /// <summary>
-    /// The flagset for this particular run
-    /// </summary>
-    public virtual FlagSet? Flag { get; set; }
-
-    /// <summary>
-    /// The seed for this run
-    /// </summary>
-    public string? Seed { get; set; }
-
-    #endregion
-
+    private int _charactersFound;
+    private int _checksDone;
+    private int _bossesKilled;
+    private int _chestsOpened;
+    private bool _didKTSkip;
+    private int _dragonsKilled;
+    private int _espersFound;
+    private FlagSet _flag;
+    private TimeSpan _runLength;
+    private string? _seed;
 }

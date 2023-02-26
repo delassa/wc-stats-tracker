@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 namespace WCStatsTracker.Models;
 
 /// <summary>
-/// Class to represent a flagset for a particular seed
+///     Class to represent a flagset for a particular seed
 /// </summary>
-public class FlagSet : BaseModelObject
+public partial class FlagSet : BaseModelObject
 {
     /// <summary>
-    /// Name of flagset
+    ///     Flagstring of this particular flagset
     /// </summary>
-    public string Name { get; set; } = string.Empty;
-
+    [Required(ErrorMessage = "Flag string is required")]
+    [ObservableProperty]
+    public string _flagString;
     /// <summary>
-    /// Flagstring of this particular flagset
+    ///     Name of flagset
     /// </summary>
-    public string FlagString { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Flag Set Name is required")]
+    [ObservableProperty]
+    private string _name;
 
-    public virtual ICollection<WCRun> Runs { get; private set; } = new ObservableCollection<WCRun>();
+    public virtual ICollection<WCRun> Runs { get; } = new ObservableCollection<WCRun>();
 }
