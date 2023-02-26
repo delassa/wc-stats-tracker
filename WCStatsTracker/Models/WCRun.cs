@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -70,6 +71,9 @@ public partial class WCRun : BaseModelObject
         get => _seed;
         set => SetProperty(ref _seed, value, true);
     }
+
+    public List<Character>? StartingCharacters { get; set; }
+    public List<Ability>? StartingAbilities { get; set; }
 
     private int _charactersFound;
     private int _checksDone;
