@@ -1,15 +1,10 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using WCStatsTracker.ViewModels;
+namespace WCStatsTracker.Views;
 
-namespace WCStatsTracker.Views
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

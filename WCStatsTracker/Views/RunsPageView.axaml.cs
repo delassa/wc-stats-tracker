@@ -1,12 +1,10 @@
 using Avalonia.Controls;
+namespace WCStatsTracker.Views;
 
-namespace WCStatsTracker.Views
+public partial class RunsPageView : UserControl
 {
-    public partial class RunsPageView : UserControl
+    public RunsPageView()
     {
-        public RunsPageView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
