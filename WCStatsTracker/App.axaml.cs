@@ -24,7 +24,7 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         /// Setup Logger
-        using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug().CreateLogger();
+        using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug().MinimumLevel.Debug().CreateLogger();
         Log.Logger = log;
         Log.Information("Logger Configured");
         /// Hopefully this is a good place to insert DI

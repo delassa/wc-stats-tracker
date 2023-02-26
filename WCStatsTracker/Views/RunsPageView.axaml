@@ -11,7 +11,6 @@
 
     <Design.DataContext>
         <design:DesignRunPageViewModel />
-        <!--<design:DesignRunPageViewModel></design:DesignRunPageViewModel>-->
     </Design.DataContext>
     <UserControl.Resources>
         <DataTemplate x:Key="CharacterOwnTemplate" DataType="{x:Type model:CharacterOwn}">
@@ -55,6 +54,7 @@
                           IsReadOnly="True"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedItem}"
+						  
                           MinHeight="400">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}" Width="auto" />

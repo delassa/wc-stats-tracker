@@ -89,6 +89,8 @@ public partial class RunsPageViewModel : ViewModelBase
 
     }
 
+    #region Message Receivers
+
     /// <summary>
     /// Message recieve from the weak reference messenger, here we use it to add 
     /// newly created flags and deleted flags from our flag set for this view model
@@ -102,6 +104,11 @@ public partial class RunsPageViewModel : ViewModelBase
 
     }
 
+    /// <summary>
+    /// Message reciever that we deleted a flag set
+    /// </summary>
+    /// <param name="recipient">This VM</param>
+    /// <param name="message">The FlagSet that was added</param>
     private static void Receive(RunsPageViewModel recipient, FlagSetDeleteMessage message)
     {
         bool success = false;
@@ -112,6 +119,8 @@ public partial class RunsPageViewModel : ViewModelBase
         else
             Log.Debug("Unable to find flagset {message.Value.Name} to remove from RunsPageViewModel FlagSetList");
     }
+
+    #endregion
 
     #region PropertyChanged methods
 
@@ -124,6 +133,11 @@ public partial class RunsPageViewModel : ViewModelBase
         {
             WorkingRun.RunLength = TimeSpan.ParseExact(value, @"hh\:mm\:ss", null);
         }
+    }
+
+    partial void OnFlagSetListChanged(ObservableCollection<FlagSet> value)
+    {
+        DeleteSelectedRunCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnSelectedItemChanged(WCRun? value)
