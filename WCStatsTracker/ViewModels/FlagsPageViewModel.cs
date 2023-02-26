@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Serilog;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services;
 using WCStatsTracker.Services.Messages;
@@ -17,6 +18,7 @@ public partial class FlagsPageViewModel : ViewModelBase
     private ObservableCollection<FlagSet>? _flagSetList;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SelectedIndex))]
     private FlagSet? _selectedFlagSet;
 
     [ObservableProperty]
@@ -45,8 +47,16 @@ public partial class FlagsPageViewModel : ViewModelBase
 
     partial void OnSelectedIndexChanged(int value)
     {
+        if (FlagSetList != null && FlagSetList.Count > 0 && SelectedFlagSet != null)
+        {
+            SelectedIndex = FlagSetList.IndexOf(SelectedFlagSet);
+        }
+        else
+        {
+            SelectedIndex = -1;
+        }
+        Log.Debug("Selected Index: {selectedIndex}, SelectedFlagSet: {selectedFlagSet}", SelectedIndex, SelectedFlagSet);
         DeleteSelectedFlagCommand.NotifyCanExecuteChanged();
-        
     }
 
     /// <summary>
@@ -95,10 +105,8 @@ public partial class FlagsPageViewModel : ViewModelBase
 
         WeakReferenceMessenger.Default.Send(new FlagSetDeleteMessage(SelectedFlagSet));
 
-        int previousIndex = SelectedIndex;
         FlagSetList.Remove(SelectedFlagSet);
         SelectedFlagSet = null;
-        SelectedFlagSet = new FlagSet();
         DeleteSelectedFlagCommand.NotifyCanExecuteChanged();
     }
 
@@ -111,6 +119,8 @@ public partial class FlagsPageViewModel : ViewModelBase
         if (SelectedFlagSet is null)
             return false;
         if (FlagSetList.Count <= 0)
+            return false;
+        if (SelectedIndex == -1)
             return false;
         return true;
     }

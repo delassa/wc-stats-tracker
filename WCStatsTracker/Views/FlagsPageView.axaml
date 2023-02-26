@@ -33,7 +33,7 @@
         <DataGrid Grid.Column="0" Grid.Row="1"
                   Items="{Binding FlagSetList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedFlagSet}"
-                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                  SelectedIndex="{Binding SelectedIndex}"
                   Margin="{DynamicResource AppMargin}"
                   IsReadOnly="True"
                   CanUserResizeColumns="True">
