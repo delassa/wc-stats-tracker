@@ -63,13 +63,14 @@ namespace WCStatsTracker.Migrations
                     b.Property<int>("EspersFound")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("FlagId")
+                    b.Property<int>("FlagId")
                         .HasColumnType("INTEGER");
 
                     b.Property<TimeSpan>("RunLength")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Seed")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -83,7 +84,9 @@ namespace WCStatsTracker.Migrations
                 {
                     b.HasOne("WCStatsTracker.Models.FlagSet", "Flag")
                         .WithMany("Runs")
-                        .HasForeignKey("FlagId");
+                        .HasForeignKey("FlagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Flag");
                 });

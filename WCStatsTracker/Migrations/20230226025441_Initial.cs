@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WCStatsTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace WCStatsTracker.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    FlagString = table.Column<string>(type: "TEXT", nullable: false)
+                    FlagString = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,16 +31,16 @@ namespace WCStatsTracker.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RunLength = table.Column<TimeSpan>(type: "TEXT", nullable: false),
-                    CharactersFound = table.Column<int>(type: "INTEGER", nullable: false),
-                    EspersFound = table.Column<int>(type: "INTEGER", nullable: false),
-                    DragonsKilled = table.Column<int>(type: "INTEGER", nullable: false),
                     BossesKilled = table.Column<int>(type: "INTEGER", nullable: false),
+                    CharactersFound = table.Column<int>(type: "INTEGER", nullable: false),
                     ChecksDone = table.Column<int>(type: "INTEGER", nullable: false),
                     ChestsOpened = table.Column<int>(type: "INTEGER", nullable: false),
                     DidKTSkip = table.Column<bool>(type: "INTEGER", nullable: false),
-                    FlagId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Seed = table.Column<string>(type: "TEXT", nullable: true)
+                    DragonsKilled = table.Column<int>(type: "INTEGER", nullable: false),
+                    EspersFound = table.Column<int>(type: "INTEGER", nullable: false),
+                    FlagId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RunLength = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    Seed = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,8 @@ namespace WCStatsTracker.Migrations
                         name: "FK_WCRuns_Flags_FlagId",
                         column: x => x.FlagId,
                         principalTable: "Flags",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
