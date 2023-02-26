@@ -1,14 +1,20 @@
-﻿using WCStatsTracker.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore.Design;
-
+﻿using Microsoft.EntityFrameworkCore;
+using WCStatsTracker.Models;
 namespace WCStatsTracker.Services;
 
 public class WCDBContext : DbContext
 {
-    public DbSet<WCRun> WCRuns => Set<WCRun>();
-    public DbSet<FlagSet> Flags => Set<FlagSet>();
+    public WCDBContext(DbContextOptions options) : base(options)
+    {
+    }
 
-    public WCDBContext(DbContextOptions options) : base(options) { }
+    public DbSet<WCRun> WCRuns
+    {
+        get => Set<WCRun>();
+    }
+
+    public DbSet<FlagSet> Flags
+    {
+        get => Set<FlagSet>();
+    }
 }

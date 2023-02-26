@@ -1,15 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WCStatsTracker.Models;
-
 namespace WCStatsTracker.Services;
 
-
 /// <summary>
-/// Class to handle the database insertions deletions and updates
+///     Class to handle the database insertions deletions and updates
 /// </summary>
 public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObject
 {
@@ -20,58 +19,174 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
         _contextFactory = contextFactory;
     }
 
-    public async Task<T> Create(T entity)
+    public void Delete(T entityToDelete)
     {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-        var createdEntity = await context.Set<T>().AddAsync(entity);
-        await context.SaveChangesAsync();
-
-        return createdEntity.Entity;
-    }
-    public async Task<bool> Delete(int id)
-    {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-        T? entity = await context.Set<T>().FirstOrDefaultAsync<T>((e) => e.Id == id);
-        context.Set<T>().Remove(entity!);
-        await context.SaveChangesAsync();
-
-        return true;
-    }
-
-    public async Task<bool> Delete(T entity)
-    {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-        context.Set<T>().Remove(entity);
-        await context.SaveChangesAsync();
-
-        return true;
-    }
-
-    public async Task<T> Update(T entity, int id)
-    {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-
-        entity.Id = id;
-        entity = context.Set<T>().Update(entity).Entity;
-        await context.SaveChangesAsync();
-        return entity;
-    }
-
-
-    public async Task<IList<T>> GetAll()
-    {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-        return await context.Set<T>().ToListAsync();
-    }
-
-    public async Task<T> Get(int id)
-    {
-        using WCDBContext context = _contextFactory.CreateDbContext();
-        T? entity = await context.Set<T>().FirstOrDefaultAsync<T>((e) => e.Id == id);
-        if (entity is null)
+        try
         {
-            throw new NullReferenceException($"Null reference from database of type {typeof(T)} entity");
+            using var context = _contextFactory.CreateDbContext();
+            if (context.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                context.Set<T>().Attach(entityToDelete);
+                context.Remove(entityToDelete);
+            }
+            context.SaveChanges();
         }
-        return entity;
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed Deleting from DB exception message: {ex.Message}");
+            Log.Fatal(ex.InnerException, "Failed Deleting from DB exception message: {ex.InnerException.Message}");
+        }
     }
+
+    public void Create(T entityToCreate)
+    {
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            if (!context.Set<T>().Contains(entityToCreate))
+            {
+                context.Set<T>().Attach(entityToCreate);
+                context.SaveChanges();
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed Creating in DB exception message: {ex.Message}");
+            Log.Fatal(ex.InnerException, "Failed Creating from DB exception message: {ex.InnerException.Message}");
+        }
+    }
+
+    public T Get(int id)
+    {
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var entity = context.Set<T>().Find(id);
+            if (entity == null) 
+                Log.Information("Failed to get entity with id : {id} from database.", id);
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed retrieving from db id:{id} message: {ex.message}");
+            throw ex;
+        }
+    }
+
+    public IList<T> GetAll()
+    {
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return context.Set<T>().ToList();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed retrieving all from db, message: {ex.message}");
+            throw ex;
+        }
+    }
+
+    public void Update(T entityToUpdate)
+    {
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            context.Set<T>().Attach(entityToUpdate);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed to update entity in DB, message: {ex.message}");
+            throw ex;
+        }
+    }
+
+    public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+    {
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return context.Set<T>().Where(predicate);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Failed to find in db, message: {ex.message}");
+            throw ex;
+        }
+    }
+
+    // public async Task<bool> Create(T entity)
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     
+    //         var item = context.Set<T>().Find(entity.Id);
+    //         if (item is not null)
+    //         {
+    //             context.Entry(item).CurrentValues.SetValues(entity);
+    //             await context.SaveChangesAsync();
+    //         }
+    //         else
+    //         {
+    //             context.Update(entity);
+    //             await context.SaveChangesAsync();
+    //         }
+    //
+    //         return true;
+    // }
+
+    // public async Task<bool> Delete(int id)
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     var entity = await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+    //     if (entity is not null)
+    //     {
+    //         context.Set<T>().Remove(entity!);
+    //         await context.SaveChangesAsync();
+    //         return Task.FromResult(true).Result;
+    //     }
+    //     else
+    //     {
+    //         return Task.FromResult(false).Result;
+    //     }
+    // }
+
+    // public async Task<bool> Delete(T entity)
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     context.Set<T>().Remove(entity);
+    //     await context.SaveChangesAsync();
+    //     return true;
+    // }
+
+    // public async Task<bool> Update(T entity, int id)
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     
+    //     var newEntity  = await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+    //     if (newEntity is not null)
+    //     {
+    //             context.Entry(entity).CurrentValues.SetValues(newEntity);
+    //             
+    //             context.Set<T>().Update(entity);
+    //             await context.SaveChangesAsync();
+    //             return true;
+    //     }
+    //     return false;
+    //
+    // }
+    //
+    // public async Task<IList<T>> GetAll()
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     return await context.Set<T>().ToListAsync();
+    // }
+    //
+    // public async Task<T> Get(int id)
+    // {
+    //     using var context = _contextFactory.CreateDbContext();
+    //     var entity = await context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+    //     if (entity is null)
+    //         throw new NullReferenceException($"Null reference from database of type {typeof(T)} entity");
+    //     return entity;
+    // }
 }
