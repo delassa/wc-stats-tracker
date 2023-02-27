@@ -72,8 +72,8 @@ public partial class WCRun : BaseModelObject
         set => SetProperty(ref _seed, value, true);
     }
 
-    public List<Character>? StartingCharacters { get; set; }
-    public List<Ability>? StartingAbilities { get; set; }
+    public ICollection<Character>? StartingCharacters { get; set; }
+    public ICollection<Ability>? StartingAbilities { get; set; }
 
     private int _charactersFound;
     private int _checksDone;

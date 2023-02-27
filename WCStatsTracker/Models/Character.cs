@@ -11,5 +11,7 @@ namespace WCStatsTracker.Models;
 public class Character : BaseModelObject
 {
     [Required]
-    public string Name { get; protected set; }
+    public string Name { get; set; }
+
+    public ICollection<WCRun> Runs { get; set; }
 }
