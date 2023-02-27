@@ -1,6 +1,6 @@
 ﻿namespace WCStatsTracker.WC.Data;
 
-public class Character
+public class CharacterData : BaseDataItem
 {
     public string Name { get; set; }
     public int Id { get; set; }

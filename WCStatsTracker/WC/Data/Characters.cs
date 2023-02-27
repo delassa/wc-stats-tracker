@@ -10,37 +10,37 @@ public class Characters : BaseDataItem
         get => ConstantCount;
     }
 
-    public static List<Character> CharactersAvailable
+    public static List<CharacterData> CharactersAvailable
     {
         get => new()
         {
-            new Character
+            new CharacterData
                 { Name = "Terra", Id = 0 },
-            new Character
+            new CharacterData
                 { Name = "Locke", Id = 1 },
-            new Character
+            new CharacterData
                 { Name = "Cyan", Id = 2 },
-            new Character
+            new CharacterData
                 { Name = "Shadow", Id = 3 },
-            new Character
+            new CharacterData
                 { Name = "Edgar", Id = 4 },
-            new Character
+            new CharacterData
                 { Name = "Sabin", Id = 5 },
-            new Character
+            new CharacterData
                 { Name = "Celes", Id = 6 },
-            new Character
+            new CharacterData
                 { Name = "Strago", Id = 7 },
-            new Character
+            new CharacterData
                 { Name = "Relm", Id = 8 },
-            new Character
+            new CharacterData
                 { Name = "Setzer", Id = 9 },
-            new Character
+            new CharacterData
                 { Name = "Mog", Id = 10 },
-            new Character
+            new CharacterData
                 { Name = "Gau", Id = 11 },
-            new Character
+            new CharacterData
                 { Name = "Gogo", Id = 12 },
-            new Character
+            new CharacterData
                 { Name = "Umaro", Id = 13 }
         };
     }

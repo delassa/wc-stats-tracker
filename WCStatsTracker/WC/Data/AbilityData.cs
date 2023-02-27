@@ -1,10 +1,8 @@
 namespace WCStatsTracker.WC.Data;
 
-public class Ability : BaseDataItem
+public class AbilityData : BaseDataItem
 {
     public const int ConstantCount = 38;
-
-    public int Id;
 
     public string Name;
 
