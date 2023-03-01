@@ -8,47 +8,47 @@ public class Abilities
         get => new()
         {
             new AbilityData
-                { Name = "Blitz", Id = 0 },
+                { Name = "Blitz"},
             new AbilityData
-                { Name = "Capture", Id = 1 },
+                { Name = "Capture"},
             new AbilityData
-                { Name = "Control", Id = 2 },
+                { Name = "Control"},
             new AbilityData
-                { Name = "GP Rain", Id = 3 },
+                { Name = "GP Rain"},
             new AbilityData
-                { Name = "Dance", Id = 4 },
+                { Name = "Dance"},
             new AbilityData
-                { Name = "Health", Id = 5 },
+                { Name = "Health"},
             new AbilityData
-                { Name = "Jump", Id = 6 },
+                { Name = "Jump"},
             new AbilityData
-                { Name = "Lore", Id = 7 },
+                { Name = "Lore"},
             new AbilityData
-                { Name = "Morph", Id = 8 },
+                { Name = "Morph"},
             new AbilityData
-                { Name = "Rage", Id = 9 },
+                { Name = "Rage"},
             new AbilityData
-                { Name = "Runic", Id = 10 },
+                { Name = "Runic" },
             new AbilityData
-                { Name = "Sketch", Id = 11 },
+                { Name = "Sketch" },
             new AbilityData
-                { Name = "Slot", Id = 12 },
+                { Name = "Slot" },
             new AbilityData
-                { Name = "Steal", Id = 13 },
+                { Name = "Steal" },
             new AbilityData
-                { Name = "SwdTech", Id = 14 },
+                { Name = "SwdTech" },
             new AbilityData
-                { Name = "Throw", Id = 15 },
+                { Name = "Throw" },
             new AbilityData
-                { Name = "Tools", Id = 16 },
+                { Name = "Tools" },
             new AbilityData
-                { Name = "X Magic", Id = 17 },
+                { Name = "X Magic" },
             new AbilityData
-                { Name = "Shock", Id = 18 },
+                { Name = "Shock" },
             new AbilityData
-                { Name = "MagiTek", Id = 19 },
+                { Name = "MagiTek" },
             new AbilityData
-                { Name = "Possess", Id = 20 }
+                { Name = "Possess" }
         };
     }
 }
