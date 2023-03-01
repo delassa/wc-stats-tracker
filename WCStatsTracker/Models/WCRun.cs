@@ -71,6 +71,12 @@ public partial class WCRun : BaseModelObject
         get => _seed;
         set => SetProperty(ref _seed, value, true);
     }
+    [Required]
+    public DateTime DateRan
+    {
+        get => _dateRan;
+        set => SetProperty(ref _dateRan, value, true);
+    }
 
     public ICollection<Character>? StartingCharacters { get; set; }
     public ICollection<Ability>? StartingAbilities { get; set; }
@@ -85,4 +91,5 @@ public partial class WCRun : BaseModelObject
     private FlagSet _flag;
     private TimeSpan _runLength;
     private string? _seed;
+    private DateTime _dateRan;
 }
