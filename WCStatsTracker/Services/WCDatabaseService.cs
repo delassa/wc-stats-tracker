@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using WCStatsTracker.Models;
@@ -19,7 +20,7 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
         _contextFactory = contextFactory;
     }
 
-    public void Delete(T entityToDelete)
+    public bool Delete(T entityToDelete)
     {
         try
         {
@@ -30,15 +31,17 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
                 context.Remove(entityToDelete);
             }
             context.SaveChanges();
+            return true;
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Failed Deleting from DB exception message: {ex.Message}");
-            Log.Fatal(ex.InnerException, "Failed Deleting from DB exception message: {ex.InnerException.Message}");
+            Log.Fatal(ex, "Failed Deleting from DB exception message: {message}", ex.Message);
+            Log.Fatal(ex.InnerException, "Failed Deleting from DB exception message: {message}", ex.InnerException.Message);
+            throw;
         }
     }
 
-    public void Create(T entityToCreate)
+    public bool Create(T entityToCreate)
     {
         try
         {
@@ -48,11 +51,13 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
                 context.Set<T>().Attach(entityToCreate);
                 context.SaveChanges();
             }
+            return true;
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Failed Creating in DB exception message: {ex.Message}");
-            Log.Fatal(ex.InnerException, "Failed Creating from DB exception message: {ex.InnerException.Message}");
+            Log.Fatal(ex, "Failed Deleting from DB exception message: {message}", ex.Message);
+            Log.Fatal(ex.InnerException, "Failed Deleting from DB exception message: {message}", ex.InnerException.Message);
+            throw;
         }
     }
 
@@ -62,18 +67,16 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
         {
             using var context = _contextFactory.CreateDbContext();
             var entity = context.Set<T>().Find(id);
-            if (entity == null) 
-                Log.Information("Failed to get entity with id : {id} from database.", id);
             return entity;
         }
         catch (Exception ex)
         {
             Log.Fatal(ex, "Failed retrieving from db id:{id} message: {ex.message}");
-            throw ex;
+            throw;
         }
     }
 
-    public IList<T> GetAll()
+    public IEnumerable<T> GetAll()
     {
         try
         {
@@ -83,21 +86,22 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
         catch (Exception ex)
         {
             Log.Fatal(ex, "Failed retrieving all from db, message: {ex.message}");
-            throw ex;
+            throw;
         }
     }
 
-    public void Update(T entityToUpdate)
+    public bool Update(T entityToUpdate)
     {
         try
         {
             using var context = _contextFactory.CreateDbContext();
             context.Set<T>().Attach(entityToUpdate);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Fatal(ex, "Failed to update entity in DB, message: {ex.message}");
-            throw ex;
+            throw;
         }
     }
 
@@ -111,7 +115,7 @@ public class WCDatabaseService<T> : IDatabaseService<T> where T : BaseModelObjec
         catch (Exception ex)
         {
             Log.Fatal(ex, "Failed to find in db, message: {ex.message}");
-            throw ex;
+            throw;
         }
     }
 

@@ -24,48 +24,49 @@ public class WCDBContext : DbContext
     /// Protected set to allow abilities to be accessed as no tracking
     /// since it is a read only table
     /// </summary>
-    protected DbSet<otected { get => Set<blic IQueryable<> Abilities.AsNoTracking();
+    protected DbSet<Ability> AbilitiesProtected { get => Set<Ability>(); }
+    public IQueryable<Ability> Abilities => AbilitiesProtected.AsNoTracking();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Character>().HasData(
-            new { Name = "Terra" },
-            new { Name = "Locke" },
-            new { Name = "Cyan" },
-            new { Name = "Shadow" },
-            new { Name = "Edgar" },
-            new { Name = "Sabin" },
-            new { Name = "Celes" },
-            new { Name = "Strage" },
-            new { Name = "Relm" },
-            new { Name = "Setzer" },
-            new { Name = "Mog" },
-            new { Name = "Gau" },
-            new { Name = "Gogo" },
-            new { Name = "Umaro" }
+            new { Name = "Terra", Id = 1},
+            new { Name = "Locke", Id = 2 },
+            new { Name = "Cyan", Id = 3 },
+            new { Name = "Shadow", Id = 4 },
+            new { Name = "Edgar", Id = 5 },
+            new { Name = "Sabin", Id = 6 },
+            new { Name = "Celes", Id = 7 },
+            new { Name = "Strage", Id = 8 },
+            new { Name = "Relm", Id = 9 },
+            new { Name = "Setzer", Id = 10 },
+            new { Name = "Mog", Id = 11 },
+            new { Name = "Gau", Id = 12 },
+            new { Name = "Gogo", Id = 13 },
+            new { Name = "Umaro" , Id = 14 }
         );
         modelBuilder.Entity<Ability>().HasData(
-            new { Name = "Blitz" },
-            new { Name = "Capture" },
-            new { Name = "Control" },
-            new { Name = "GP Rain" },
-            new { Name = "Dance" },
-            new { Name = "Health" },
-            new { Name = "Jump" },
-            new { Name = "Lore" },
-            new { Name = "Morph" },
-            new { Name = "Rage" },
-            new { Name = "Runic" },
-            new { Name = "Sketch" },
-            new { Name = "Slot" },
-            new { Name = "Steal" },
-            new { Name = "SwdTech" },
-            new { Name = "Throw" },
-            new { Name = "Tools" },
-            new { Name = "X Magic" },
-            new { Name = "Shock" },
-            new { Name = "MagiTek" },
-            new { Name = "Possess" }
+            new { Name = "Blitz", Id = 21 },
+            new { Name = "Capture", Id = 1 },
+            new { Name = "Control", Id = 2 },
+            new { Name = "GP Rain", Id = 3 },
+            new { Name = "Dance", Id = 4 },
+            new { Name = "Health", Id = 5 },
+            new { Name = "Jump", Id = 6 },
+            new { Name = "Lore", Id = 7 },
+            new { Name = "Morph", Id = 8 },
+            new { Name = "Rage", Id = 9 },
+            new { Name = "Runic", Id = 10 },
+            new { Name = "Sketch", Id = 11 },
+            new { Name = "Slot", Id = 12 },
+            new { Name = "Steal", Id = 13 },
+            new { Name = "SwdTech", Id = 14 },
+            new { Name = "Throw", Id = 15 },
+            new { Name = "Tools", Id = 16 },
+            new { Name = "X Magic", Id = 17 },
+            new { Name = "Shock", Id = 18 },
+            new { Name = "MagiTek", Id = 19 },
+            new { Name = "Possess", Id = 20 }
         );
     }
 }

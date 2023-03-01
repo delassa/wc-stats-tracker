@@ -19,20 +19,20 @@ public interface IDatabaseService<EntityType> where EntityType : class
     /// </summary>
     /// <param name="entity">The entity to create</param>
     /// <returns>The entity created</returns>
-    void Create(EntityType entity);
+    bool Create(EntityType entity);
 
     /// <summary>
     ///     Update an entity in the database
     /// </summary>
     /// <param name="entity"></param>
-    void Update(EntityType entity);
+    bool Update(EntityType entity);
 
     /// <summary>
     ///     Deletes an entity in the database
     /// </summary>
     /// <param EntityTypeame="entity">The entity to delete</param>
     /// <returns>True on success false otherwise</returns>
-    void Delete(EntityType entity);
+    bool Delete(EntityType entity);
 
-    public IList<EntityType> GetAll();
+    public IEnumerable<EntityType> GetAll();
 }

@@ -146,20 +146,23 @@ public class WCMockDatabaseService<T> : IDatabaseService<T> where T : BaseModelO
         throw new ArgumentException($"Cannot get a type of {typeof(T)}.");
     }
 
-    public void Create(T entityToCreate)
+    public bool Create(T entityToCreate)
     {
+        throw new NotImplementedException();
 
     }
 
-    public void Delete(T entityToDelete)
+    public bool Delete(T entityToDelete)
     {
+        throw new NotImplementedException();
     }
 
-    public void Update(T entityToUpdate)
+    public bool Update(T entityToUpdate)
     {
+        throw new NotImplementedException();
     }
 
-    public virtual IList<T> GetAll()
+    public virtual IEnumerable<T> GetAll()
     {
         return new List<T>();
     }
