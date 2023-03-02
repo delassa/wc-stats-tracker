@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WCStatsTracker.Models;
+using WCStatsTracker.ViewModels.DesignTime;
 using WCStatsTracker.WC.Data;
 namespace WCStatsTracker.Utility.Data;
 
@@ -35,6 +36,7 @@ public static class GenerateData
     /// <returns>A collection of the runs</returns>
     public static IEnumerable<WCRun> GenerateRuns(int Count)
     {
+        List<FlagSet> flag = new List<FlagSet>(GenerateFlags(10));
         var runs = new List<WCRun>();
         var rand = new Random();
         for (var i = 0; i < Count; i++)
@@ -48,9 +50,27 @@ public static class GenerateData
                 DragonsKilled = rand.Next(0, Dragons.ConstantCount),
                 ChecksDone = rand.Next(0, Checks.ConstantCount),
                 ChestsOpened = rand.Next(0, Chests.ConstantCount),
-                DidKTSkip = rand.Next(0, 1) != 0
+                DidKTSkip = rand.Next(0, 1) != 0,
+                StartingAbilities = new List<Ability>()
+                {
+                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name }
+                },
+                StartingCharacters = new List<Character>()
+                {
+                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name }
+                },
+                DateRan = DateTime.Now,
+                Flag = new FlagSet()
+                {
+                    Name = flag[rand.Next(0, 9)].Name,
+                    FlagString = flag[rand.Next(0,9)].FlagString
+                }
             };
-            var len = 10;
+            const int len = 10;
             for (var j = 0; j < len; j++) run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower();
             runs.Add(run);
         }
