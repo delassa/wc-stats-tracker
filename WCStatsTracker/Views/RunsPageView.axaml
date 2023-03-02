@@ -36,64 +36,13 @@
 
     <Grid Name="TopLevelGrid" Margin="{DynamicResource AppMargin}"
           RowDefinitions="*,*">
-        <Border BorderBrush="{DynamicResource ThemeBorderHighBrush}"
-                Margin="5"
-                BoxShadow="5 5 10 2 Gray"
-                CornerRadius="4">
-            <Grid Name="TopGrid" RowDefinitions="*,*,auto"
-                  Margin="{DynamicResource AppMargin}">
-                <!-- Header -->
-
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="Run Listing" FontWeight="Black"
-                           HorizontalAlignment="Center"
-                           FontSize="24" />
-                <DataGrid Grid.Row="1"
-                          Margin="{DynamicResource AppMargin}"
-                          AutoGenerateColumns="False"
-                          Items="{Binding RunList}"
-                          IsReadOnly="True"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding SelectedItem}"
-						  
-                          MinHeight="400">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}" Width="auto" />
-                        <DataGridTextColumn Header="Characters" Binding="{Binding CharactersFound}" Width="auto" />
-                        <DataGridTextColumn Header="Espers" Binding="{Binding EspersFound}" Width="*" />
-                        <DataGridTextColumn Header="Dragons" Binding="{Binding DragonsKilled}" Width="*" />
-                        <DataGridTextColumn Header="Bosses" Binding="{Binding BossesKilled}" Width="*" />
-                        <DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}" Width="*" />
-                        <DataGridTextColumn Header="Chests" Binding="{Binding ChestsOpened}" Width="*" />
-                        <DataGridTemplateColumn Header="Skip" Width="auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="model:WCRun">
-                                    <CheckBox IsChecked="{Binding DidKTSkip}" HorizontalAlignment="Center" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Flag Set">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="model:FlagSet">
-                                    <TextBlock Text="{Binding RelativeSource, Path=Name}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Seed" Binding="{Binding Seed }" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Button Grid.Row="2"
-                        HorizontalAlignment="Left"
-                        Content="Delete Selected Run"
-                        Command="{ReflectionBinding DeleteSelectedRunCommand}" />
-            </Grid>
-        </Border>
         <!-- Bottom Side Controls for adding a run -->
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                 BorderBrush="{DynamicResource ThemeBorderHighBrush}"
                 Margin="5"
                 BoxShadow="5 5 10 2 Gray"
                 CornerRadius="4">
-            <Grid Name="BottomGrid"
+            <Grid Name="BottomGrid" 
                   Margin="{DynamicResource AppMargin}"
                   ColumnDefinitions="*,*,*"
                   RowDefinitions="auto, *,50">
@@ -167,23 +116,34 @@
                               IsThreeState="False"
                               HorizontalAlignment="Left"
                               IsChecked="{Binding WorkingRun.DidKTSkip}" />
-
-                    <TextBlock Text="Flag Set" Grid.Row="9" Grid.Column="0" />
-                    <ComboBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
-                              x:Name="FlagSetComboBox"
-                              Items="{Binding FlagSetList}"
-                              SelectedItem="{Binding WorkingRun.Flag} "
-                              SelectedIndex="0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RelativeSource, Path=Name}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+					
+					<Grid Grid.Row="9" 
+						  Grid.Column="1" 
+						  Grid.ColumnSpan="2"
+						  Margin="{DynamicResource AppMargin}"
+						  ColumnDefinitions="auto,auto,auto,*">
+                        <TextBlock Text="Flag Set" Grid.Row="0" Grid.Column="0" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10"
+                                  x:Name="FlagSetComboBox"
+                                  Items="{Binding FlagSetList}"
+                                  SelectedItem="{Binding WorkingRun.Flag} "
+                                  SelectedIndex="0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource, Path=Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+						<TextBlock Text="Seed" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10"/>
+						<TextBox Grid.Column="3" HorizontalAlignment="Stretch" Text="{Binding WorkingRun.Seed}" />
+					</Grid>
+					
+					<TextBlock Grid.Row="10" Grid.Column="0" Text="Date Ran"/>
+					<DatePicker Grid.Row="10" Grid.Column="1" SelectedDate="{Binding WorkingRun.DateRan}"/>
                 </Grid>
-
+				
+				
                 <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" Margin="5">
-
                     <TextBlock HorizontalAlignment="Center" Text="Starting Characters" Margin="5"
                                FontSize="18" FontWeight="Black" Grid.Row="0"
                                Grid.Column="0" />

@@ -15,14 +15,16 @@ public partial class MainWindowViewModel : ViewModelBase
     /// </summary>
     public MainWindowViewModel(
         WCDBContextFactory wCDBContextFactory,
-        RunsPageViewModel runsPageViewModel,
+        RunsListViewModel runsListViewModel,
+        RunsAddViewModel runsAddViewModel,
         FlagsPageViewModel flagsPageViewModel,
         StatsPageViewModel statsPageViewModel,
         OptionsPageViewModel optionsPageViewModel)
     {
         Views = new List<ViewModelBase>
         {
-            runsPageViewModel,
+            runsListViewModel,
+            runsAddViewModel,
             flagsPageViewModel,
             statsPageViewModel,
             optionsPageViewModel
@@ -34,9 +36,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void ChangeView(string viewName)
     {
-        if (Views != null)
-            CurrentView = Views.Find(x => x.ViewName == viewName) ?? throw new NullReferenceException(nameof(Views));
-        else throw new NullReferenceException(nameof(Views));
+        CurrentView = Views?.Find(x => x.ViewName == viewName) ?? throw new NullReferenceException(nameof(Views));
     }
 
     #region Observable Properties

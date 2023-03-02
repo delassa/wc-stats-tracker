@@ -56,10 +56,12 @@ public class App : Application
 
         services.AddSingleton<WCDBContextFactory>();
         services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<RunsPageViewModel>();
+        services.AddSingleton<RunsListViewModel>();
+        services.AddSingleton<RunsAddViewModel>();
         services.AddSingleton<FlagsPageViewModel>();
         services.AddSingleton<StatsPageViewModel>();
         services.AddSingleton<OptionsPageViewModel>();
+
 
         serviceProvider = services.BuildServiceProvider();
     }

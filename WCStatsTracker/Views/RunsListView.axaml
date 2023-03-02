@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:model="using:WCStatsTracker.Models"
+			 xmlns:vmdesign="using:WCStatsTracker.ViewModels.DesignTime"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WCStatsTracker.Views.RunsListView">
+
+	<Design.DataContext>
+		<vmdesign:DesignRunListViewModel />
+	</Design.DataContext>
+	
+	<ScrollViewer>
+	<Border BorderBrush="{DynamicResource DividerStrokeColorDefault}"
+			Margin="5"
+			BorderThickness="2"
+			CornerRadius="4">
+		<Grid Name="TopGrid" RowDefinitions="auto,*,auto"
+			  Margin="{DynamicResource AppMargin}">
+			<!-- Header -->
+
+			<TextBlock Grid.Column="0" Grid.Row="0" Text="Run Listing" FontWeight="Black"
+					   HorizontalAlignment="Center"
+					   FontSize="24" />
+			<DataGrid Grid.Row="1"
+					  Margin="{DynamicResource AppMargin}"
+					  AutoGenerateColumns="False"
+					  Items="{Binding RunList}"
+					  IsReadOnly="True"
+					  SelectionMode="Single"
+					  SelectedItem="{Binding SelectedItem}"
+					  CanUserResizeColumns="True">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Date Ran" Binding="{Binding DateRan}" Width="auto"/>
+					<DataGridTextColumn Header="Run Length" Binding="{Binding RunLength}" Width="auto" />
+					<DataGridTextColumn Header="Characters" Binding="{Binding CharactersFound}" Width="auto" />
+					<DataGridTextColumn Header="Espers" Binding="{Binding EspersFound}" Width="auto" />
+					<DataGridTextColumn Header="Dragons" Binding="{Binding DragonsKilled}" Width="auto" />
+					<DataGridTextColumn Header="Bosses" Binding="{Binding BossesKilled}" Width="auto" />
+					<DataGridTextColumn Header="Checks" Binding="{Binding ChecksDone}" Width="auto" />
+					<DataGridTextColumn Header="Chests" Binding="{Binding ChestsOpened}" Width="auto" />
+					<DataGridTemplateColumn Header="Skip" Width="auto">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="model:WCRun">
+								<CheckBox IsChecked="{Binding DidKTSkip}" HorizontalAlignment="Center" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="Flag Set" Width="auto">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Flag.Name}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn Header="Seed" Binding="{Binding Seed}" Width="auto"/>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Grid.Row="2"
+					HorizontalAlignment="Left"
+					Content="Delete Selected Run"
+					Command="{ReflectionBinding DeleteSelectedRunCommand}" />
+		</Grid>
+	</Border>
+	</ScrollViewer>
+</UserControl>
