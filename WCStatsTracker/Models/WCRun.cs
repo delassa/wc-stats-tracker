@@ -91,5 +91,10 @@ public partial class WCRun : BaseModelObject
     private FlagSet _flag;
     private TimeSpan _runLength;
     private string? _seed;
-    private DateTime _dateRan;
+    private DateTime _dateRan = new DateTime(2023,3,1);
+
+    public WCRun()
+    {
+        ValidateAllProperties();
+    }
 }

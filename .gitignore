@@ -365,3 +365,6 @@ FodyWeavers.xsd
 /WCStatsTracker/.editorconfig
 /WCStatsTracker/.editorconfig
 /.idea/.idea.WCStatsTracker/.idea
+/WCStatsTracker/Migrations/WCDBContextModelSnapshot.cs
+/WCStatsTracker/Migrations/20230301215231_InitialCreate.cs
+/WCStatsTracker/Migrations/20230301215231_InitialCreate.Designer.cs

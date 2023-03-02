@@ -14,7 +14,7 @@ public partial class FlagSet : BaseModelObject
     /// </summary>
     [Required(ErrorMessage = "Flag string is required")]
     [ObservableProperty]
-    public string _flagString;
+    private string _flagString;
     /// <summary>
     ///     Name of flagset
     /// </summary>
