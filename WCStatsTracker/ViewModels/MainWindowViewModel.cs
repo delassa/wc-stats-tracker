@@ -14,7 +14,6 @@ public partial class MainWindowViewModel : ViewModelBase
     ///     probably not the best way to do this but works for now
     /// </summary>
     public MainWindowViewModel(
-        WCDBContextFactory wCDBContextFactory,
         RunsListViewModel runsListViewModel,
         RunsAddViewModel runsAddViewModel,
         FlagsPageViewModel flagsPageViewModel,

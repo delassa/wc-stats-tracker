@@ -9,27 +9,34 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services;
+using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Services.Messages;
-using WCStatsTracker.WC.Data;
+using WCStatsTracker.Wc.Data;
 
 namespace WCStatsTracker.ViewModels;
 public partial class RunsAddViewModel : ViewModelBase
 {
-    private readonly IDatabaseService<FlagSet> _flagDBService;
-    private readonly IDatabaseService<WCRun> _runDBService;
+    #region private member fields
+
+    private IUnitOfWork _unitOfWork;
+    private string _workingRunLength = null!;
+
+    #endregion
+
+    #region Observable Properties
 
     [ObservableProperty]
-    private List<AbilityOwn> _startingAbilities;
+    private List<AbilityOwn> _startingAbilities = null!;
 
     [ObservableProperty]
-    private List<CharacterOwn> _startingCharacters;
+    private List<CharacterOwn> _startingCharacters = null!;
 
     [ObservableProperty]
-    private ObservableCollection<FlagSet> _flagSetList;
+    private ObservableCollection<Flag> _flagSetList = null!;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveRunCommand))]
-    private WCRun? _workingRun;
+    private WcRun? _workingRun;
 
     [CustomValidation(typeof(RunsAddViewModel), nameof(ValidateRunLength))]
     public string WorkingRunLength
@@ -42,15 +49,13 @@ public partial class RunsAddViewModel : ViewModelBase
         }
     }
 
-    private string _workingRunLength;
+    #endregion
 
-    public RunsAddViewModel(WCDBContextFactory wCDBContextFactory)
+    public RunsAddViewModel(IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
         ViewName = "Add Run";
         IconName = "Add";
-
-        _flagDBService = new WCDatabaseService<FlagSet>(wCDBContextFactory);
-        _runDBService = new WCDatabaseService<WCRun>(wCDBContextFactory);
 
         // Register for messages, Receive can be overloaded for any message type
         WeakReferenceMessenger.Default.Register<RunsAddViewModel, FlagSetAddMessage>(this, Receive);
@@ -68,23 +73,32 @@ public partial class RunsAddViewModel : ViewModelBase
             StartingAbilities.Add(new AbilityOwn(ability.Name, false));
         }
 
-        FlagSetList = new ObservableCollection<FlagSet>(_flagDBService.GetAll());
-        WorkingRun = new WCRun();
+        FlagSetList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
+        WorkingRun = new WcRun();
         WorkingRunLength = "00:00:00";
 
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
     }
 
+    /// <summary>
+    /// Destructor, unsubscribes from the errors changed event on our workign run
+    /// </summary>
     ~RunsAddViewModel()
     {
-        WorkingRun.ErrorsChanged -= WorkingRun_ErrorsChanged;
+        WorkingRun!.ErrorsChanged -= WorkingRun_ErrorsChanged;
     }
 
+    /// <summary>
+    /// Event callback for when the errors on the working run have changed to update our save command
+    /// </summary>
+    /// <param name="sender">The sending object of the event</param>
+    /// <param name="e">The event args</param>
     private void WorkingRun_ErrorsChanged(object? sender, System.ComponentModel.DataErrorsChangedEventArgs e)
     {
         SaveRunCommand.NotifyCanExecuteChanged();
     }
 
+    //This could be removed maybe
     private void OnWorkingRunLengthChanged(string value)
     {
         if (WorkingRun is null) return;
@@ -96,22 +110,13 @@ public partial class RunsAddViewModel : ViewModelBase
         }
     }
 
-    partial void OnWorkingRunChanged(WCRun value)
-    {
-        Log.Debug("Working Run Changed");
-        Log.Debug("Date : {0}", WorkingRun.DateRan);
-
-    }
-
-
-
     [RelayCommand(CanExecute = nameof(CanSaveRun))]
     public void SaveRun()
     {
 
         // Copy over the starting characters and abilities to the run we're saving
         // Or clear them out if they are already present
-        if (WorkingRun.StartingCharacters is null) WorkingRun.StartingCharacters = new List<Character>();
+        if (WorkingRun!.StartingCharacters is null) WorkingRun.StartingCharacters = new List<Character>();
         else WorkingRun.StartingCharacters.Clear();
         if (WorkingRun.StartingAbilities is null) WorkingRun.StartingAbilities = new List<Ability>();
         else WorkingRun.StartingAbilities.Clear();
@@ -132,18 +137,11 @@ public partial class RunsAddViewModel : ViewModelBase
         }
 
         //Create the new db entry
-        if (!_runDBService.Create(WorkingRun))
-        {
-            Log.Debug("Unable to create new run in database.");
-            return;
-        }
-        else
-        {
-            //Send a message we're adding a new run and cleanup local data
-            WeakReferenceMessenger.Default.Send<>
-            WorkingRun = new WCRun();
-            WorkingRunLength = "00:00:00";
-        }
+        _unitOfWork.WcRun.Add(WorkingRun);
+        _unitOfWork.Save();
+        //Send a message we're adding a new run and cleanup local data
+        WeakReferenceMessenger.Default.Send(new RunSavedMessage(WorkingRun));
+        WorkingRunLength = "00:00:00";
     }
 
     public bool CanSaveRun()
@@ -160,7 +158,7 @@ public partial class RunsAddViewModel : ViewModelBase
     #region Message Recievers
 
     /// <summary>
-    /// Message recieve from the weak reference messenger, here we use it to add 
+    /// Message recieve from the weak reference messenger, here we use it to add
     /// newly created flags and deleted flags from our flag set for this view model
     /// </summary>
     /// <param name="recipient">The reciever of the message (ie this viewmodel)</param>
@@ -169,7 +167,6 @@ public partial class RunsAddViewModel : ViewModelBase
     {
         recipient.FlagSetList.Add(message.Value);
         Log.Debug("Adding flagset {0} to RunsAddViewModel> FlagSetList", message.Value.Name);
-
     }
 
     /// <summary>
@@ -180,7 +177,7 @@ public partial class RunsAddViewModel : ViewModelBase
     private static void Receive(RunsAddViewModel recipient, FlagSetDeleteMessage message)
     {
         bool success = false;
-        FlagSet temp = recipient.FlagSetList.First(a => a.Id == message.Value.Id);
+        Flag temp = recipient.FlagSetList.First(a => a.Id == message.Value.Id);
         success = recipient.FlagSetList.Remove(temp);
         if (success)
             Log.Debug("Removed flagset {0} from RunsAddViewModel> FlagSetList", message.Value.Name);
