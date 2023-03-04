@@ -1,4 +1,4 @@
-﻿namespace WCStatsTracker.WC.Data;
+﻿namespace WCStatsTracker.Wc.Data;
 
 /// <summary>
 ///     Base class for an item within the game

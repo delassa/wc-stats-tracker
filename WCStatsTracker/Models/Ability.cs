@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WCStatsTracker.Models;
 public class Ability : BaseModelObject
 {
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-    public ICollection<WCRun> Runs { get; set; }
+    public List<WcRun>? Runs { get; set; }
 }

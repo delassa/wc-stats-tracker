@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WCStatsTracker.Models;
-using WCStatsTracker.WC.Data;
+using WCStatsTracker.Wc.Data;
 
 namespace WCStatsTracker.ViewModels.DesignTime;
 public partial class DesignRunAddViewModel : ViewModelBase
 {
-    public List<CharacterOwn> StartingCharacters;
-    public List<AbilityOwn> StartingAbilities;
 
-    public WCRun WorkingRun { get; set; }
+    public List<CharacterOwn> StartingCharacters { get; set; }
+
+    public List<AbilityOwn> StartingAbilities { get; set; }
+
+    public WcRun WorkingRun { get; set; }
 
     public DesignRunAddViewModel()
     {
@@ -28,6 +31,6 @@ public partial class DesignRunAddViewModel : ViewModelBase
             StartingAbilities.Add(new AbilityOwn(ability.Name, false));
         }
 
-        WorkingRun = new WCRun();
+        WorkingRun = new WcRun();
     }
 }

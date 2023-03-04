@@ -7,7 +7,7 @@ namespace WCStatsTracker.Models;
 /// <summary>
 ///     Class to represent a flagset for a particular seed
 /// </summary>
-public partial class FlagSet : BaseModelObject
+public partial class Flag : BaseModelObject
 {
     /// <summary>
     ///     Flagstring of this particular flagset
@@ -15,6 +15,7 @@ public partial class FlagSet : BaseModelObject
     [Required(ErrorMessage = "Flag string is required")]
     [ObservableProperty]
     private string _flagString;
+
     /// <summary>
     ///     Name of flagset
     /// </summary>
@@ -22,5 +23,8 @@ public partial class FlagSet : BaseModelObject
     [ObservableProperty]
     private string _name;
 
-    public virtual ICollection<WCRun> Runs { get; } = new ObservableCollection<WCRun>();
+    /// <summary>
+    /// Runs associated with this flagset
+    /// </summary>
+    public virtual ICollection<WcRun>? Runs { get; set; }
 }

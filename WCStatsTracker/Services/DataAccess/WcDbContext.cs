@@ -2,31 +2,43 @@
 using System.Linq;
 using System.Xml.Linq;
 using WCStatsTracker.Models;
-namespace WCStatsTracker.Services;
+namespace WCStatsTracker.Services.DataAccess;
 
-public class WCDBContext : DbContext
+public class WcDbContext : DbContext
 {
-    public WCDBContext(DbContextOptions options) : base(options)
+    public WcDbContext(DbContextOptions options) : base(options)
     {
     }
 
-    public DbSet<WCRun> WCRuns { get => Set<WCRun>(); }
+    /// <summary>
+    /// Set for the Runs in the database
+    /// </summary>
+    public DbSet<WcRun> WCRuns { get => Set<WcRun>(); }
 
-    public DbSet<FlagSet> Flags { get => Set<FlagSet>(); }
+    /// <summary>
+    /// Set for the flags in the database
+    /// </summary>
+    public DbSet<Flag> Flags { get => Set<Flag>(); }
 
     /// <summary>
     /// Protected set to allow characters to be accessed as no tracking
     /// since it is a read only table
     /// </summary>
     protected DbSet<Character> CharactersProtected { get => Set<Character>(); }
-    public IQueryable<Character> Characters => CharactersProtected.AsNoTracking();
+    public IQueryable<Character> Characters { get => CharactersProtected.AsNoTracking(); }
+
     /// <summary>
     /// Protected set to allow abilities to be accessed as no tracking
     /// since it is a read only table
     /// </summary>
     protected DbSet<Ability> AbilitiesProtected { get => Set<Ability>(); }
-    public IQueryable<Ability> Abilities => AbilitiesProtected.AsNoTracking();
+    public IQueryable<Ability> Abilities { get => AbilitiesProtected.AsNoTracking(); }
 
+    /// <summary>
+    /// Override the creation of the models and insert some seed data for
+    /// characters and abilities
+    /// </summary>
+    /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Character>().HasData(

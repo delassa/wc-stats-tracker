@@ -52,10 +52,10 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Flag String" HorizontalAlignment="Right"
                        VerticalAlignment="Center" Margin="5" />
             <TextBox Width="200" Grid.Row="0" Grid.Column="1" TextChanging="TextBoxTextChanging"
-                     Text="{Binding WorkingFlagSet.Name}"
+                     Text="{Binding WorkingFlag.Name}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" />
             <TextBox Width="200" Grid.Row="1" Grid.Column="1" TextChanging="TextBoxTextChanging"
-                     Text="{Binding WorkingFlagSet.FlagString}"
+                     Text="{Binding WorkingFlag.FlagString}"
                      HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Button Grid.Column="0" Grid.Row="2" Command="{ReflectionBinding SaveClickCommand}" Content="Save" />
         </Grid>

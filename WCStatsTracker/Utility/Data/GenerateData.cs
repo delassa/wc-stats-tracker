@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WCStatsTracker.Models;
 using WCStatsTracker.ViewModels.DesignTime;
-using WCStatsTracker.WC.Data;
+using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.Utility.Data;
 
 /// <summary>
@@ -15,12 +15,12 @@ public static class GenerateData
     /// </summary>
     /// <param name="FlagSetCount">The number of flags to generate</param>
     /// <returns>A set of random flags filled out</returns>
-    public static IEnumerable<FlagSet> GenerateFlags(int FlagSetCount)
+    public static IEnumerable<Flag> GenerateFlags(int FlagSetCount)
     {
-        var flags = new List<FlagSet>();
+        var flags = new List<Flag>();
         for (var i = 0; i < FlagSetCount; i++)
         {
-            FlagSet flag = new();
+            Flag flag = new();
             flag.Name += "Flag Set # " + i;
             flag.FlagString = "Flag String #" + i;
             flags.Add(flag);
@@ -34,14 +34,14 @@ public static class GenerateData
     /// </summary>
     /// <param name="Count">The number of runs to generate</param>
     /// <returns>A collection of the runs</returns>
-    public static IEnumerable<WCRun> GenerateRuns(int Count)
+    public static IEnumerable<WcRun> GenerateRuns(int Count)
     {
-        List<FlagSet> flag = new List<FlagSet>(GenerateFlags(10));
-        var runs = new List<WCRun>();
+        List<Flag> flag = new List<Flag>(GenerateFlags(10));
+        var runs = new List<WcRun>();
         var rand = new Random();
         for (var i = 0; i < Count; i++)
         {
-            WCRun run = new()
+            WcRun run = new()
             {
                 RunLength = new TimeSpan(rand.Next(0, 3), rand.Next(0, 60), rand.Next(0, 60)),
                 CharactersFound = rand.Next(0, Characters.ConstantCount),
@@ -64,7 +64,7 @@ public static class GenerateData
                     new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name }
                 },
                 DateRan = DateTime.Now,
-                Flag = new FlagSet()
+                Flag = new Flag()
                 {
                     Name = flag[rand.Next(0, 9)].Name,
                     FlagString = flag[rand.Next(0,9)].FlagString

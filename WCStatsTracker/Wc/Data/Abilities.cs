@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-namespace WCStatsTracker.WC.Data;
+namespace WCStatsTracker.Wc.Data;
 
 public class Abilities
 {

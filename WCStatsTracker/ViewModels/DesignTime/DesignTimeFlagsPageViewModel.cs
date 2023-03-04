@@ -6,12 +6,12 @@ namespace WCStatsTracker.ViewModels.DesignTime;
 
 public partial class DesignTimeFlagsPageViewModel : ViewModelBase
 {
-    [ObservableProperty] private ObservableCollection<FlagSet>? _flagSetList;
+    [ObservableProperty] private ObservableCollection<Flag>? _flagSetList;
 
     [ObservableProperty] private int _selectedIndex;
 
     [ObservableProperty]
-    private FlagSet _workingFlagSet = new()
+    private Flag _workingFlag = new()
     {
         FlagString = "Flag String 1",
         Name = "Flag Set Name 1"
@@ -20,6 +20,6 @@ public partial class DesignTimeFlagsPageViewModel : ViewModelBase
 
     public DesignTimeFlagsPageViewModel()
     {
-        FlagSetList = new ObservableCollection<FlagSet>(GenerateData.GenerateFlags(20));
+        FlagSetList = new ObservableCollection<Flag>(GenerateData.GenerateFlags(20));
     }
 }

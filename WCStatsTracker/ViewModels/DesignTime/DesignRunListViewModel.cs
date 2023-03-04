@@ -7,10 +7,10 @@ namespace WCStatsTracker.ViewModels.DesignTime;
 public partial class DesignRunListViewModel : ViewModelBase
 {
     [ObservableProperty]
-    public ObservableCollection<WCRun> _runList;
+    public ObservableCollection<WcRun> _runList;
 
     public DesignRunListViewModel()
     {
-        RunList = new ObservableCollection<WCRun>(GenerateData.GenerateRuns(10));
+        RunList = new ObservableCollection<WcRun>(GenerateData.GenerateRuns(10));
     }
 }

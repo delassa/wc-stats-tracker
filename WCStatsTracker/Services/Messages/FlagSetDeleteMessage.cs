@@ -3,8 +3,8 @@ using WCStatsTracker.Models;
 
 namespace WCStatsTracker.Services.Messages;
 
-public sealed class FlagSetDeleteMessage : ValueChangedMessage<FlagSet>
+public sealed class FlagSetDeleteMessage : ValueChangedMessage<Flag>
 {
-    public FlagSetDeleteMessage(FlagSet flagSet) : base(flagSet)
+    public FlagSetDeleteMessage(Flag flag) : base(flag)
     { }
 }
