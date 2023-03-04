@@ -1,5 +1,4 @@
-﻿using System;
-namespace WCStatsTracker.Wc.Data;
+﻿namespace WCStatsTracker.Wc.Data;
 
 public class CharacterData : BaseDataItem
 {

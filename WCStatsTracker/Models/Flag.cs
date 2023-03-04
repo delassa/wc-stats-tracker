@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 namespace WCStatsTracker.Models;
@@ -24,7 +23,7 @@ public partial class Flag : BaseModelObject
     private string _name;
 
     /// <summary>
-    /// Runs associated with this flagset
+    ///     Runs associated with this flagset
     /// </summary>
     public virtual ICollection<WcRun>? Runs { get; set; }
 }

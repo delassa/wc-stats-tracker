@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Xml.Linq;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WCStatsTracker.Models;
 namespace WCStatsTracker.Services.DataAccess;
 
@@ -11,38 +10,58 @@ public class WcDbContext : DbContext
     }
 
     /// <summary>
-    /// Set for the Runs in the database
+    ///     Set for the Runs in the database
     /// </summary>
-    public DbSet<WcRun> WCRuns { get => Set<WcRun>(); }
+    public DbSet<WcRun> WCRuns
+    {
+        get => Set<WcRun>();
+    }
 
     /// <summary>
-    /// Set for the flags in the database
+    ///     Set for the flags in the database
     /// </summary>
-    public DbSet<Flag> Flags { get => Set<Flag>(); }
+    public DbSet<Flag> Flags
+    {
+        get => Set<Flag>();
+    }
 
     /// <summary>
-    /// Protected set to allow characters to be accessed as no tracking
-    /// since it is a read only table
+    ///     Protected set to allow characters to be accessed as no tracking
+    ///     since it is a read only table
     /// </summary>
-    protected DbSet<Character> CharactersProtected { get => Set<Character>(); }
-    public IQueryable<Character> Characters { get => CharactersProtected.AsNoTracking(); }
+    protected DbSet<Character> CharactersProtected
+    {
+        get => Set<Character>();
+    }
+
+    public IQueryable<Character> Characters
+    {
+        get => CharactersProtected.AsNoTracking();
+    }
 
     /// <summary>
-    /// Protected set to allow abilities to be accessed as no tracking
-    /// since it is a read only table
+    ///     Protected set to allow abilities to be accessed as no tracking
+    ///     since it is a read only table
     /// </summary>
-    protected DbSet<Ability> AbilitiesProtected { get => Set<Ability>(); }
-    public IQueryable<Ability> Abilities { get => AbilitiesProtected.AsNoTracking(); }
+    protected DbSet<Ability> AbilitiesProtected
+    {
+        get => Set<Ability>();
+    }
+
+    public IQueryable<Ability> Abilities
+    {
+        get => AbilitiesProtected.AsNoTracking();
+    }
 
     /// <summary>
-    /// Override the creation of the models and insert some seed data for
-    /// characters and abilities
+    ///     Override the creation of the models and insert some seed data for
+    ///     characters and abilities
     /// </summary>
     /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Character>().HasData(
-            new { Name = "Terra", Id = 1},
+            new { Name = "Terra", Id = 1 },
             new { Name = "Locke", Id = 2 },
             new { Name = "Cyan", Id = 3 },
             new { Name = "Shadow", Id = 4 },
@@ -55,7 +74,7 @@ public class WcDbContext : DbContext
             new { Name = "Mog", Id = 11 },
             new { Name = "Gau", Id = 12 },
             new { Name = "Gogo", Id = 13 },
-            new { Name = "Umaro" , Id = 14 }
+            new { Name = "Umaro", Id = 14 }
         );
         modelBuilder.Entity<Ability>().HasData(
             new { Name = "Blitz", Id = 21 },

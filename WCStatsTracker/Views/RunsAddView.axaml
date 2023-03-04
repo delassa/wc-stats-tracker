@@ -9,257 +9,243 @@
              d:DesignWidth="1000"
              mc:Ignorable="d">
 
+    <!-- Need To fix scaling vertically -->
+
     <Design.DataContext>
         <design:DesignRunAddViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
         <DataTemplate x:Key="CharacterOwnTemplate" DataType="{x:Type model:CharacterOwn}">
-
             <CheckBox Content="{Binding RelativeSource, Path=Name}" IsChecked="{Binding RelativeSource, Path=HaveOne}" />
-
         </DataTemplate>
         <DataTemplate x:Key="AbilityOwnTemplate" DataType="{x:Type model:AbilityOwn}">
             <CheckBox Content="{Binding RelativeSource, Path=Name}" IsChecked="{Binding RelativeSource, Path=HaveOne}" />
         </DataTemplate>
     </UserControl.Resources>
 
-    <UserControl.Styles>
-        <Style Selector="Border.small">
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderHighBrush}" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="CornerRadius" Value="4" />
-            <Setter Property="BoxShadow" Value="2 2 4 5 Gray" />
-        </Style>
-    </UserControl.Styles>
+
+    <Grid Margin="{DynamicResource AppMargin}"
+          ColumnDefinitions="*,*"
+          RowDefinitions="auto,auto,50">
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   HorizontalAlignment="Center"
+                   FontSize="24"
+                   FontWeight="Black"
+                   Text="Add A New Run" />
 
 
-    <!--  Bottom Side Controls for adding a run  -->
-    <Border Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Margin="5"
-            BorderBrush="{DynamicResource DividerStrokeColorDefault}"
-            BorderThickness="2"
-            CornerRadius="4">
-        <Grid Name="BottomGrid"
+        <Grid Grid.Row="1"
               Margin="{DynamicResource AppMargin}"
-              ColumnDefinitions="*,*,*"
-              RowDefinitions="auto, *,50">
+              RowDefinitions="Auto,*">
+            <TextBlock Grid.ColumnSpan="3"
+                       HorizontalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="Black"
+                       Text="Timing and Checks" />
+
+            <Border Grid.Row="1" Classes="ThinBorder">
+                <Grid Name="SliderGrid"
+                      Margin="{DynamicResource AppMargin}"
+                      ColumnDefinitions="auto,*,auto"
+                      RowDefinitions="auto auto auto auto auto auto auto auto auto auto auto auto auto *">
+
+                    <Grid.Styles>
+                        <Style Selector="Slider">
+                            <Setter Property="MinWidth" Value="100" />
+                            <Setter Property="TickFrequency" Value="1" />
+                            <Setter Property="IsSnapToTickEnabled" Value="True" />
+                            <Setter Property="Grid.Column" Value="1" />
+                        </Style>
+                        <Style Selector="TextBox">
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Grid.Column" Value="2" />
+                        </Style>
+                        <Style Selector="TextBlock">
+                            <Setter Property="MinWidth" Value="50" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                        </Style>
+                    </Grid.Styles>
+
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Run Length" />
+
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Text="{Binding WorkingRunLength}" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="Characters Found" />
+                    <Slider Grid.Row="2"
+                            Maximum="14"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.CharactersFound}" />
+                    <TextBox Grid.Row="2" Text="{Binding WorkingRun.CharactersFound}" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="Espers Found" />
+                    <Slider Grid.Row="3"
+                            Maximum="27"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.EspersFound}" />
+                    <TextBox Grid.Row="3" Text="{Binding WorkingRun.EspersFound}" />
+
+                    <Slider Grid.Row="4"
+                            Maximum="8"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.DragonsKilled}" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="0"
+                               Text="Dragons Killed" />
+                    <TextBox Grid.Row="4" Text="{Binding WorkingRun.DragonsKilled}" />
+
+                    <Slider Grid.Row="5"
+                            Maximum="120"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.ChestsOpened}" />
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="0"
+                               Text="Chests Opened" />
+                    <TextBox Grid.Row="5" Text="{Binding WorkingRun.ChestsOpened}" />
+
+                    <Slider Grid.Row="6"
+                            Maximum="100"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.ChecksDone}" />
+                    <TextBlock Grid.Row="6"
+                               Grid.Column="0"
+                               Text="Checks Done" />
+                    <TextBox Grid.Row="6" Text="{Binding WorkingRun.ChecksDone}" />
+
+                    <Slider Grid.Row="7"
+                            Maximum="38"
+                            Minimum="0"
+                            Value="{Binding WorkingRun.BossesKilled}" />
+                    <TextBlock Grid.Row="7"
+                               Grid.Column="0"
+                               Text="Bosses Killed" />
+                    <TextBox Grid.Row="7" Text="{Binding WorkingRun.BossesKilled}" />
+
+                    <TextBlock Grid.Row="8" Text="KT Skip" />
+                    <CheckBox Grid.Row="8"
+                              Grid.Column="1"
+                              HorizontalAlignment="Left"
+                              IsChecked="{Binding WorkingRun.DidKTSkip}"
+                              IsThreeState="False" />
+
+                    <Grid Grid.Row="9"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="{DynamicResource AppMargin}"
+                          ColumnDefinitions="auto,auto,auto,*">
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Flag Set" />
+                        <ComboBox x:Name="FlagSetComboBox"
+                                  Grid.Row="0"
+                                  Grid.Column="1"
+                                  Margin="10"
+                                  HorizontalAlignment="Stretch"
+                                  Items="{Binding FlagList}"
+                                  SelectedIndex="0"
+                                  SelectedItem="{Binding WorkingRun.Flag}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RelativeSource, Path=Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Grid.Column="2"
+                                   Margin="10"
+                                   HorizontalAlignment="Stretch"
+                                   Text="Seed" />
+                        <TextBox Grid.Column="3"
+                                 HorizontalAlignment="Stretch"
+                                 Text="{Binding WorkingRun.Seed}" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="10"
+                               Grid.Column="0"
+                               Text="Date Ran" />
+                    <CalendarDatePicker Grid.Row="10"
+                                        Grid.Column="1"
+                                        SelectedDate="{Binding WorkingRun.DateRan, Mode=TwoWay}" />
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Margin="{DynamicResource AppMargin}"
+              ColumnDefinitions="*,*"
+              RowDefinitions="Auto,*">
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Grid.ColumnSpan="3"
                        HorizontalAlignment="Center"
-                       FontSize="24"
+                       FontSize="18"
                        FontWeight="Black"
-                       Text="Add A New Run" />
+                       Text="Starting Characters" />
 
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="Black"
+                       Text="Starting Abilities" />
 
-            <Grid Name="SliderGrid"
-                  Grid.Row="1"
-                  Grid.Column="0"
-                  Margin="{DynamicResource AppMargin}"
-                  ColumnDefinitions="auto,*,auto"
-                  RowDefinitions="auto auto auto auto auto auto auto auto auto auto auto auto auto *">
-
-                <Grid.Styles>
-                    <Style Selector="Slider">
-                        <Setter Property="MinWidth" Value="100" />
-                        <Setter Property="TickFrequency" Value="1" />
-                        <Setter Property="IsSnapToTickEnabled" Value="True" />
-                        <Setter Property="Grid.Column" Value="1" />
-                    </Style>
-                    <Style Selector="TextBox">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Grid.Column" Value="2" />
-                    </Style>
-                    <Style Selector="TextBlock">
-                        <Setter Property="MinWidth" Value="50" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                    </Style>
-                </Grid.Styles>
-
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Text="Run Length" />
-
-                <TextBox Grid.Row="1"
-                         Grid.Column="1"
-                         Text="{Binding WorkingRunLength}" />
-
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Text="Characters Found" />
-                <Slider Grid.Row="2"
-                        Maximum="14"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.CharactersFound}" />
-                <TextBox Grid.Row="2" Text="{Binding WorkingRun.CharactersFound}" />
-
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Text="Espers Found" />
-                <Slider Grid.Row="3"
-                        Maximum="27"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.EspersFound}" />
-                <TextBox Grid.Row="3" Text="{Binding WorkingRun.EspersFound}" />
-
-                <Slider Grid.Row="4"
-                        Maximum="8"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.DragonsKilled}" />
-                <TextBlock Grid.Row="4"
-                           Grid.Column="0"
-                           Text="Dragons Killed" />
-                <TextBox Grid.Row="4" Text="{Binding WorkingRun.DragonsKilled}" />
-
-                <Slider Grid.Row="5"
-                        Maximum="120"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.ChestsOpened}" />
-                <TextBlock Grid.Row="5"
-                           Grid.Column="0"
-                           Text="Chests Opened" />
-                <TextBox Grid.Row="5" Text="{Binding WorkingRun.ChestsOpened}" />
-
-                <Slider Grid.Row="6"
-                        Maximum="100"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.ChecksDone}" />
-                <TextBlock Grid.Row="6"
-                           Grid.Column="0"
-                           Text="Checks Done" />
-                <TextBox Grid.Row="6" Text="{Binding WorkingRun.ChecksDone}" />
-
-                <Slider Grid.Row="7"
-                        Maximum="38"
-                        Minimum="0"
-                        Value="{Binding WorkingRun.BossesKilled}" />
-                <TextBlock Grid.Row="7"
-                           Grid.Column="0"
-                           Text="Bosses Killed" />
-                <TextBox Grid.Row="7" Text="{Binding WorkingRun.BossesKilled}" />
-
-                <TextBlock Grid.Row="8" Text="KT Skip" />
-                <CheckBox Grid.Row="8"
-                          Grid.Column="1"
-                          HorizontalAlignment="Left"
-                          IsChecked="{Binding WorkingRun.DidKTSkip}"
-                          IsThreeState="False" />
-
-                <Grid Grid.Row="9"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      Margin="{DynamicResource AppMargin}"
-                      ColumnDefinitions="auto,auto,auto,*">
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0"
-                               Text="Flag Set" />
-                    <ComboBox x:Name="FlagSetComboBox"
-                              Grid.Row="0"
-                              Grid.Column="1"
-                              Margin="10"
-                              HorizontalAlignment="Stretch"
-                              Items="{Binding FlagSetList}"
-                              SelectedIndex="0"
-                              SelectedItem="{Binding WorkingRun.Flag}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RelativeSource, Path=Name}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBlock Grid.Column="2"
-                               Margin="10"
-                               HorizontalAlignment="Stretch"
-                               Text="Seed" />
-                    <TextBox Grid.Column="3"
-                             HorizontalAlignment="Stretch"
-                             Text="{Binding WorkingRun.Seed}" />
-                </Grid>
-
-                <TextBlock Grid.Row="10"
-                           Grid.Column="0"
-                           Text="Date Ran" />
-                <CalendarDatePicker Grid.Row="10"
-                                    Grid.Column="1"
-                                    SelectedDate="{Binding WorkingRun.DateRan, Mode=TwoWay}" />
-            </Grid>
-
-
-            <Grid Grid.Row="1"
-                  Grid.Column="1"
-                  Margin="5"
-                  ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto">
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Margin="5"
-                           HorizontalAlignment="Center"
-                           FontSize="18"
-                           FontWeight="Black"
-                           Text="Starting Characters" />
-
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Margin="5"
-                           HorizontalAlignment="Center"
-                           FontSize="18"
-                           FontWeight="Black"
-                           Text="Starting Abilities" />
-
-                <Border Grid.Row="1"
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        BorderBrush="{DynamicResource DividerStrokeColorDefault}"
-                        BorderThickness="2"
-                        CornerRadius="4">
-
-
-                    <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingCharacters}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="2" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="model:CharacterOwn">
-                                <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Border>
-
-                <Border Grid.Row="1"
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        BorderBrush="{DynamicResource DividerStrokeColorDefault}"
-                        BorderThickness="2"
-                        CornerRadius="4">
-                    <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingAbilities}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="2" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="model:AbilityOwn">
-                                <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Border>
-            </Grid>
-            <Button Grid.Row="2"
+            <Border Classes="ThinBorder"
+                    Grid.Row="1"
                     Grid.Column="0"
-                    Command="{ReflectionBinding SaveRunCommand}"
-                    Content="Save This Run" />
-        </Grid>
-    </Border>
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
 
+
+                <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingCharacters}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="model:CharacterOwn">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <Border Classes="ThinBorder"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+                <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingAbilities}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="model:AbilityOwn">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </Grid>
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                Command="{ReflectionBinding SaveRunCommand}"
+                Content="Save This Run" />
+    </Grid>
 </UserControl>

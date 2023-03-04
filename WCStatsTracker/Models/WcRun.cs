@@ -7,8 +7,26 @@ namespace WCStatsTracker.Models;
 /// <summary>
 ///     Data for a WC Run
 /// </summary>
-public partial class WcRun : BaseModelObject
+public class WcRun : BaseModelObject
 {
+    private int _bossesKilled;
+
+    private int _charactersFound;
+    private int _checksDone;
+    private int _chestsOpened;
+    private DateTime _dateRan = new(2023, 3, 1);
+    private bool _didKTSkip;
+    private int _dragonsKilled;
+    private int _espersFound;
+    private Flag? _flag;
+    private TimeSpan _runLength;
+    private string _seed = string.Empty;
+
+    public WcRun()
+    {
+        ValidateAllProperties();
+    }
+
     [Range(0, Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
     public int BossesKilled
     {
@@ -87,30 +105,12 @@ public partial class WcRun : BaseModelObject
     }
 
     /// <summary>
-    /// Starting characters used in this run
+    ///     Starting characters used in this run
     /// </summary>
     public ICollection<Character>? StartingCharacters { get; set; }
 
     /// <summary>
-    /// Starting abilities used in this run
+    ///     Starting abilities used in this run
     /// </summary>
     public ICollection<Ability>? StartingAbilities { get; set; }
-
-    private int _charactersFound;
-    private int _checksDone;
-    private int _bossesKilled;
-    private int _chestsOpened;
-    private bool _didKTSkip;
-    private int _dragonsKilled;
-    private int _espersFound;
-    private Flag? _flag;
-    private TimeSpan _runLength;
-    private string _seed = string.Empty;
-    private DateTime _dateRan = new DateTime(2023,3,1);
-
-    public WcRun()
-    {
-        ValidateAllProperties();
-    }
-
 }

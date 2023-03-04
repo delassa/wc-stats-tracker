@@ -1,13 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WCStatsTracker.Models;
 using WCStatsTracker.Utility.Data;
-
 namespace WCStatsTracker.ViewModels.DesignTime;
+
 public partial class DesignRunListViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    public ObservableCollection<WcRun> _runList;
+    public ObservableCollection<WcRun> RunList { get; set; }
 
     public DesignRunListViewModel()
     {

@@ -7,12 +7,11 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WCStatsTracker.ViewModels;
-using WCStatsTracker.Views;
-using WCStatsTracker.Services.DataAccess;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-
+using WCStatsTracker.Services.DataAccess;
+using WCStatsTracker.ViewModels;
+using WCStatsTracker.Views;
 namespace WCStatsTracker;
 
 public class App : Application
@@ -27,15 +26,16 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         // Setup Logger
-        using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug().MinimumLevel.Debug().CreateLogger();
+        using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug()
+            .MinimumLevel.Debug().CreateLogger();
         Log.Logger = log;
         Log.Information("Logger Configured");
 
-        // Hopefully this is a good place to insert DI
-        CreateServiceProvider();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            // Put this here to not interfere with design view
+            CreateServiceProvider();
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);

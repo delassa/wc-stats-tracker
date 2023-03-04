@@ -1,56 +1,22 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
-using WCStatsTracker.Services;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Services.Messages;
 using WCStatsTracker.Wc.Data;
-
 namespace WCStatsTracker.ViewModels;
+
 public partial class RunsAddViewModel : ViewModelBase
 {
-    #region private member fields
-
-    private IUnitOfWork _unitOfWork;
-    private string _workingRunLength = null!;
-
-    #endregion
-
-    #region Observable Properties
-
-    [ObservableProperty]
-    private List<AbilityOwn> _startingAbilities = null!;
-
-    [ObservableProperty]
-    private List<CharacterOwn> _startingCharacters = null!;
-
-    [ObservableProperty]
-    private ObservableCollection<Flag> _flagSetList = null!;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SaveRunCommand))]
-    private WcRun? _workingRun;
-
-    [CustomValidation(typeof(RunsAddViewModel), nameof(ValidateRunLength))]
-    public string WorkingRunLength
-    {
-        get => _workingRunLength;
-        set
-        {
-            SetProperty(ref _workingRunLength, value, true);
-            OnWorkingRunLengthChanged(value);
-        }
-    }
-
-    #endregion
-
     public RunsAddViewModel(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
@@ -81,7 +47,7 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Destructor, unsubscribes from the errors changed event on our workign run
+    ///     Destructor, unsubscribes from the errors changed event on our workign run
     /// </summary>
     ~RunsAddViewModel()
     {
@@ -89,11 +55,11 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Event callback for when the errors on the working run have changed to update our save command
+    ///     Event callback for when the errors on the working run have changed to update our save command
     /// </summary>
     /// <param name="sender">The sending object of the event</param>
     /// <param name="e">The event args</param>
-    private void WorkingRun_ErrorsChanged(object? sender, System.ComponentModel.DataErrorsChangedEventArgs e)
+    private void WorkingRun_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
         SaveRunCommand.NotifyCanExecuteChanged();
     }
@@ -155,11 +121,47 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
 
+    #region private member fields
+
+    private readonly IUnitOfWork _unitOfWork;
+    private string _workingRunLength = null!;
+
+    #endregion
+
+    #region Observable Properties
+
+    [ObservableProperty]
+    private List<AbilityOwn> _startingAbilities = null!;
+
+    [ObservableProperty]
+    private List<CharacterOwn> _startingCharacters = null!;
+
+    [ObservableProperty]
+    private ObservableCollection<Flag> _flagSetList = null!;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveRunCommand))]
+    private WcRun? _workingRun;
+
+    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
+    public string WorkingRunLength
+    {
+        get => _workingRunLength;
+        set
+        {
+            SetProperty(ref _workingRunLength, value, true);
+            OnWorkingRunLengthChanged(value);
+        }
+    }
+
+    #endregion
+
+
     #region Message Recievers
 
     /// <summary>
-    /// Message recieve from the weak reference messenger, here we use it to add
-    /// newly created flags and deleted flags from our flag set for this view model
+    ///     Message recieve from the weak reference messenger, here we use it to add
+    ///     newly created flags and deleted flags from our flag set for this view model
     /// </summary>
     /// <param name="recipient">The reciever of the message (ie this viewmodel)</param>
     /// <param name="message">The message sent</param>
@@ -170,14 +172,14 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Message reciever that we deleted a flag set
+    ///     Message reciever that we deleted a flag set
     /// </summary>
     /// <param name="recipient">This VM</param>
     /// <param name="message">The FlagSet that was added</param>
     private static void Receive(RunsAddViewModel recipient, FlagSetDeleteMessage message)
     {
-        bool success = false;
-        Flag temp = recipient.FlagSetList.First(a => a.Id == message.Value.Id);
+        var success = false;
+        var temp = recipient.FlagSetList.First(a => a.Id == message.Value.Id);
         success = recipient.FlagSetList.Remove(temp);
         if (success)
             Log.Debug("Removed flagset {0} from RunsAddViewModel> FlagSetList", message.Value.Name);
@@ -186,22 +188,4 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
     #endregion
-
-    /// <summary>
-    /// Validator for a string to be correctly formated to convert to a datetime
-    /// </summary>
-    /// <param name="runLength">String of new runLength</param>
-    /// <param name="context">the validation context</param>
-    /// <returns>ValidationResult.Success if string is valid, otherwise a ValidationResult set with an error message</returns>
-    public static ValidationResult ValidateRunLength(string runLength, ValidationContext context)
-    {
-        var isValid = TimeSpan.TryParseExact(runLength, @"hh\:mm\:ss", null, out _);
-
-        if (isValid)
-        {
-            return ValidationResult.Success!;
-        }
-
-        return new ValidationResult($"{runLength} is not a valid time, use HH:MM:SS format");
-    }
 }

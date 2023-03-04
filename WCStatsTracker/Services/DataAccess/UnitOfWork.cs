@@ -19,7 +19,7 @@ public class UnitOfWork : IUnitOfWork
     public IWcRunRepository WcRun { get; }
 
     /// <summary>
-    /// Save all changes done by this unit of work
+    ///     Save all changes done by this unit of work
     /// </summary>
     /// <returns>The number of state entries written to the Database</returns>
     public int Save()
@@ -28,7 +28,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
-    /// Make sure the context is disposed after we are done with this unit of work
+    ///     Make sure the context is disposed after we are done with this unit of work
     /// </summary>
     public void Dispose()
     {

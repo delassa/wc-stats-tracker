@@ -8,25 +8,25 @@ public class Abilities
         get => new()
         {
             new AbilityData
-                { Name = "Blitz"},
+                { Name = "Blitz" },
             new AbilityData
-                { Name = "Capture"},
+                { Name = "Capture" },
             new AbilityData
-                { Name = "Control"},
+                { Name = "Control" },
             new AbilityData
-                { Name = "GP Rain"},
+                { Name = "GP Rain" },
             new AbilityData
-                { Name = "Dance"},
+                { Name = "Dance" },
             new AbilityData
-                { Name = "Health"},
+                { Name = "Health" },
             new AbilityData
-                { Name = "Jump"},
+                { Name = "Jump" },
             new AbilityData
-                { Name = "Lore"},
+                { Name = "Lore" },
             new AbilityData
-                { Name = "Morph"},
+                { Name = "Morph" },
             new AbilityData
-                { Name = "Rage"},
+                { Name = "Rage" },
             new AbilityData
                 { Name = "Runic" },
             new AbilityData

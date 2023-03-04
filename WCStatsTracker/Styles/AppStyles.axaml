@@ -1,0 +1,18 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <Border Classes="ThinBorder">
+                <Button Content="test" />
+            </Border><!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Global styles for the application -->
+    <Style Selector="Border.ThinBorder">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefault}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BoxShadow" Value="2 2 3 3 Black" />
+    </Style>
+</Styles>

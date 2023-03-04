@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WCStatsTracker.Models;
-using WCStatsTracker.ViewModels.DesignTime;
 using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.Utility.Data;
 
@@ -36,7 +35,7 @@ public static class GenerateData
     /// <returns>A collection of the runs</returns>
     public static IEnumerable<WcRun> GenerateRuns(int Count)
     {
-        List<Flag> flag = new List<Flag>(GenerateFlags(10));
+        var flag = new List<Flag>(GenerateFlags(10));
         var runs = new List<WcRun>();
         var rand = new Random();
         for (var i = 0; i < Count; i++)
@@ -51,23 +50,29 @@ public static class GenerateData
                 ChecksDone = rand.Next(0, Checks.ConstantCount),
                 ChestsOpened = rand.Next(0, Chests.ConstantCount),
                 DidKTSkip = rand.Next(0, 1) != 0,
-                StartingAbilities = new List<Ability>()
+                StartingAbilities = new List<Ability>
                 {
-                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
-                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
-                    new Ability() { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name }
+                    new()
+                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                    new()
+                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                    new()
+                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name }
                 },
-                StartingCharacters = new List<Character>()
+                StartingCharacters = new List<Character>
                 {
-                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
-                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
-                    new Character() { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name }
+                    new()
+                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                    new()
+                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                    new()
+                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name }
                 },
                 DateRan = DateTime.Now,
-                Flag = new Flag()
+                Flag = new Flag
                 {
                     Name = flag[rand.Next(0, 9)].Name,
-                    FlagString = flag[rand.Next(0,9)].FlagString
+                    FlagString = flag[rand.Next(0, 9)].FlagString
                 }
             };
             const int len = 10;

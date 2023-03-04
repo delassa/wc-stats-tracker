@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.Generic;
 using WCStatsTracker.Models;
 using WCStatsTracker.Wc.Data;
-
 namespace WCStatsTracker.ViewModels.DesignTime;
-public partial class DesignRunAddViewModel : ViewModelBase
+
+public class DesignRunAddViewModel : ViewModelBase
 {
-
-    public List<CharacterOwn> StartingCharacters { get; set; }
-
-    public List<AbilityOwn> StartingAbilities { get; set; }
-
-    public WcRun WorkingRun { get; set; }
-
     public DesignRunAddViewModel()
     {
         StartingCharacters = new List<CharacterOwn>();
@@ -33,4 +21,10 @@ public partial class DesignRunAddViewModel : ViewModelBase
 
         WorkingRun = new WcRun();
     }
+
+    public List<CharacterOwn> StartingCharacters { get; set; }
+
+    public List<AbilityOwn> StartingAbilities { get; set; }
+
+    public WcRun WorkingRun { get; set; }
 }

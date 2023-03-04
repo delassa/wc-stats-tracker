@@ -6,7 +6,7 @@ namespace WCStatsTracker.Services.DataAccess;
 
 public class WcDbContextDesignTimeFactory : IDesignTimeDbContextFactory<WcDbContext>
 {
-    public WcDbContext CreateDbContext(string [] args = null)
+    public WcDbContext CreateDbContext(string[] args = null)
     {
         var optionsBuilder = new DbContextOptionsBuilder<WcDbContext>();
         var fixedConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString

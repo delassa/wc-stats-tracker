@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WCStatsTracker.Services;
 namespace WCStatsTracker.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
