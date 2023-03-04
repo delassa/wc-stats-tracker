@@ -1,12 +1,15 @@
 using System;
+using System.Configuration;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WCStatsTracker.Services;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
+using WCStatsTracker.Services.DataAccess;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -23,12 +26,12 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        /// Setup Logger
+        // Setup Logger
         using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug().MinimumLevel.Debug().CreateLogger();
         Log.Logger = log;
         Log.Information("Logger Configured");
-        /// Hopefully this is a good place to insert DI
 
+        // Hopefully this is a good place to insert DI
         CreateServiceProvider();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -54,13 +57,23 @@ public class App : Application
     {
         IServiceCollection services = new ServiceCollection();
 
-        services.AddSingleton<WCDBContextFactory>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<RunsListViewModel>();
         services.AddSingleton<RunsAddViewModel>();
         services.AddSingleton<FlagsPageViewModel>();
         services.AddSingleton<StatsPageViewModel>();
         services.AddSingleton<OptionsPageViewModel>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+        // Database resides in current working dir
+        var fixedConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString
+            .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
+
+        // Add in the Db Context
+        // enable logging on our db and sensitive data logging for development
+        services.AddDbContext<WcDbContext>(options => options
+            .LogTo(message => Debug.WriteLine(message)).EnableSensitiveDataLogging()
+            .UseSqlite(fixedConnectionString));
 
 
         serviceProvider = services.BuildServiceProvider();
