@@ -72,7 +72,6 @@ public partial class FlagsPageViewModel : ViewModelBase
             SelectedIndex = -1;
             Log.Debug("Selected Index: {0}, No selected flag", SelectedIndex);
         }
-        DeleteSelectedFlagCommand.NotifyCanExecuteChanged();
     }
 
     /// <summary>
