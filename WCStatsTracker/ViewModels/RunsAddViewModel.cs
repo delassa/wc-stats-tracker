@@ -17,6 +17,22 @@ namespace WCStatsTracker.ViewModels;
 
 public partial class RunsAddViewModel : ViewModelBase
 {
+    private readonly IUnitOfWork _unitOfWork;
+
+    [ObservableProperty]
+    private ObservableCollection<Flag> _flagList = null!;
+
+    [ObservableProperty]
+    private List<AbilityOwn> _startingAbilities = null!;
+
+    [ObservableProperty]
+    private List<CharacterOwn> _startingCharacters = null!;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveRunCommand))]
+    private WcRun? _workingRun;
+    private string _workingRunLength = null!;
+
     public RunsAddViewModel(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
@@ -39,11 +55,22 @@ public partial class RunsAddViewModel : ViewModelBase
             StartingAbilities.Add(new AbilityOwn(ability.Name, false));
         }
 
-        FlagSetList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
+        FlagList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
         WorkingRun = new WcRun();
         WorkingRunLength = "00:00:00";
 
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
+    }
+
+    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
+    public string WorkingRunLength
+    {
+        get => _workingRunLength;
+        set
+        {
+            SetProperty(ref _workingRunLength, value, true);
+            OnWorkingRunLengthChanged(value);
+        }
     }
 
     /// <summary>
@@ -120,43 +147,6 @@ public partial class RunsAddViewModel : ViewModelBase
         return false;
     }
 
-
-    #region private member fields
-
-    private readonly IUnitOfWork _unitOfWork;
-    private string _workingRunLength = null!;
-
-    #endregion
-
-    #region Observable Properties
-
-    [ObservableProperty]
-    private List<AbilityOwn> _startingAbilities = null!;
-
-    [ObservableProperty]
-    private List<CharacterOwn> _startingCharacters = null!;
-
-    [ObservableProperty]
-    private ObservableCollection<Flag> _flagSetList = null!;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SaveRunCommand))]
-    private WcRun? _workingRun;
-
-    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
-    public string WorkingRunLength
-    {
-        get => _workingRunLength;
-        set
-        {
-            SetProperty(ref _workingRunLength, value, true);
-            OnWorkingRunLengthChanged(value);
-        }
-    }
-
-    #endregion
-
-
     #region Message Recievers
 
     /// <summary>
@@ -167,7 +157,7 @@ public partial class RunsAddViewModel : ViewModelBase
     /// <param name="message">The message sent</param>
     private static void Receive(RunsAddViewModel recipient, FlagSetAddMessage message)
     {
-        recipient.FlagSetList.Add(message.Value);
+        recipient.FlagList.Add(message.Value);
         Log.Debug("Adding flagset {0} to RunsAddViewModel> FlagSetList", message.Value.Name);
     }
 
@@ -179,8 +169,8 @@ public partial class RunsAddViewModel : ViewModelBase
     private static void Receive(RunsAddViewModel recipient, FlagSetDeleteMessage message)
     {
         var success = false;
-        var temp = recipient.FlagSetList.First(a => a.Id == message.Value.Id);
-        success = recipient.FlagSetList.Remove(temp);
+        var temp = recipient.FlagList.First(a => a.Id == message.Value.Id);
+        success = recipient.FlagList.Remove(temp);
         if (success)
             Log.Debug("Removed flagset {0} from RunsAddViewModel> FlagSetList", message.Value.Name);
         else
