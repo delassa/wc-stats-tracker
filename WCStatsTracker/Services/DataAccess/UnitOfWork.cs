@@ -27,6 +27,11 @@ public class UnitOfWork : IUnitOfWork
         return _context.SaveChanges();
     }
 
+    public void Clear()
+    {
+        _context.ChangeTracker.Clear();
+    }
+
     /// <summary>
     ///     Make sure the context is disposed after we are done with this unit of work
     /// </summary>

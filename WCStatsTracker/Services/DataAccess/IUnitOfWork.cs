@@ -9,4 +9,6 @@ public interface IUnitOfWork : IDisposable
     IWcRunRepository WcRun { get; }
 
     int Save();
+
+    void Clear();
 }
