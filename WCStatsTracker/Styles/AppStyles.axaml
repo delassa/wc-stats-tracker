@@ -15,4 +15,14 @@
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="BoxShadow" Value="2 2 3 3 Black" />
     </Style>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Button On CalendarDatePicker doesn't seem to work in FluentAvalonia, reverting to default
+                Calendar date picker -->
+                <ResourceInclude Source="avares://Avalonia.Themes.Fluent/Controls/CalendarDatePicker.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
 </Styles>
