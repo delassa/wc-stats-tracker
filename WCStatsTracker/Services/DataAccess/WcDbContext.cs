@@ -60,6 +60,9 @@ public class WcDbContext : DbContext
     /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Using properties instead of backing fields when loading entities so their correct
+        // validation logic is called on loading
+        modelBuilder.UsePropertyAccessMode(PropertyAccessMode.Property);
         modelBuilder.Entity<Character>().HasData(
             new { Name = "Terra", Id = 1 },
             new { Name = "Locke", Id = 2 },
