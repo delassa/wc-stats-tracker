@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using WCStatsTracker.Models;
 namespace WCStatsTracker.Services.DataAccess;
 
@@ -16,5 +18,14 @@ public class WcRunRepository : GenericRepository<WcRun>, IWcRunRepository
     public WcRunRepository(WcDbContext context) : base(context)
     {
         _context = context;
+    }
+
+    public IEnumerable<WcRun> GetRunsWithIncludes()
+    {
+        var runsWithIncludes = _context.WCRuns
+            .Include(u => u.Flag)
+            .Include(u => u.StartingAbilities)
+            .Include(u => u.StartingCharacters);
+        return runsWithIncludes;
     }
 }
