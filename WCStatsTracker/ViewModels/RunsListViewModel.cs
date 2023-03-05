@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -16,16 +17,18 @@ public partial class RunsListViewModel : ViewModelBase
     private readonly IUnitOfWork _unitOfWork;
 
     [ObservableProperty]
-    private ObservableCollection<WcRun>? _runList;
-
-    [ObservableProperty]
-    private WcRun? _selectedItem;
+    private bool _changesMade;
 
     [ObservableProperty]
     private ObservableCollection<Flag> _flagList;
 
     [ObservableProperty]
-    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
+    private ObservableCollection<WcRun>? _runList;
+
+    [ObservableProperty]
+    private WcRun? _selectedItem;
+
+
     private string _workingRunLength;
 
     public RunsListViewModel(IUnitOfWork unitOfWork)
@@ -42,6 +45,54 @@ public partial class RunsListViewModel : ViewModelBase
         WeakReferenceMessenger.Default.Register<RunsListViewModel, RunSavedMessage>(this, Receive);
         WeakReferenceMessenger.Default.Register<RunsListViewModel, FlagSetAddMessage>(this, Receive);
         WeakReferenceMessenger.Default.Register<RunsListViewModel, FlagSetDeleteMessage>(this, Receive);
+    }
+
+    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
+    public string WorkingRunLength
+    {
+        get => _workingRunLength;
+        set
+        {
+            SetProperty(ref _workingRunLength, value, true);
+            OnWorkingRunLengthChanged(value);
+        }
+    }
+
+    /// <summary>
+    ///     Notify our save command to check whether it is able to be used or not
+    ///     after any errors have changed on the selected item
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnSelectedItemErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+    {
+        SaveChangesCommand.NotifyCanExecuteChanged();
+    }
+
+
+    /// <summary>
+    ///     Set the string representation of our working run to the actual datetime in the object if
+    ///     it parses correctly (it should due to validation)
+    /// </summary>
+    /// <param name="value">The new value of the working run length string</param>
+    private void OnWorkingRunLengthChanged(string value)
+    {
+        if (SelectedItem is null) return;
+        var isValidTime = TimeSpan.TryParseExact(value, @"hh\:mm\:ss", null, out _);
+        if (isValidTime && SelectedItem is not null)
+        {
+            SelectedItem.RunLength = TimeSpan.ParseExact(value, @"hh\:mm\:ss", null);
+        }
+    }
+
+    /// <summary>
+    ///     Notifies the delete command to update the button status when the selected item has changed in our list
+    /// </summary>
+    /// <param name="value">The run that was selected</param>
+    partial void OnSelectedItemChanged(WcRun? value)
+    {
+        DeleteSelectedRunCommand.NotifyCanExecuteChanged();
+        SaveChangesCommand.NotifyCanExecuteChanged();
     }
 
     #region Message Recievers
@@ -70,29 +121,12 @@ public partial class RunsListViewModel : ViewModelBase
 
     #endregion
 
+    #region Relay Commands
 
-    /// <summary>
-    /// Set the string representation of our working run to the actual datetime in the object if
-    /// it parses correctly (it should due to validation)
-    /// </summary>
-    /// <param name="value">The new value of the working run length string</param>
-    partial void OnWorkingRunLengthChanged(string value)
+    [RelayCommand]
+    public void CellEditFinished()
     {
-            if (SelectedItem is null) return;
-            var isValidTime = TimeSpan.TryParseExact(value, @"hh\:mm\:ss", null, out _);
-            if (isValidTime && SelectedItem is not null)
-            {
-                SelectedItem.RunLength = TimeSpan.ParseExact(value, @"hh\:mm\:ss", null);
-            }
-    }
-
-    /// <summary>
-    ///     Notifies the delete command to update the button status when the selected item has changed in our list
-    /// </summary>
-    /// <param name="value">The run that was selected</param>
-    partial void OnSelectedItemChanged(WcRun? value)
-    {
-        DeleteSelectedRunCommand.NotifyCanExecuteChanged();
+        SaveChangesCommand.NotifyCanExecuteChanged();
     }
 
     /// <summary>
@@ -115,4 +149,41 @@ public partial class RunsListViewModel : ViewModelBase
     {
         return SelectedItem is not null && RunList is not null && RunList.Contains(SelectedItem);
     }
+
+    /// <summary>
+    ///     Save any edits the user has made to the datagrid
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanSaveChanges))]
+    public void SaveChanges()
+    {
+        _unitOfWork.Save();
+    }
+
+    public bool CanSaveChanges()
+    {
+        if (RunList.Count > 0)
+            foreach (var run in RunList)
+            {
+                if (run.HasErrors)
+                {
+                    foreach (var err in run.GetErrors())
+                        Log.Debug(err.ErrorMessage);
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    /// <summary>
+    ///     Reverts the tracking state of the unit of work and reloads the list for the datagrid
+    /// </summary>
+    [RelayCommand]
+    public void RevertChanges()
+    {
+        _unitOfWork.Clear();
+        RunList = null;
+        RunList = new ObservableCollection<WcRun>(_unitOfWork.WcRun.GetAll());
+    }
+
+    #endregion
 }

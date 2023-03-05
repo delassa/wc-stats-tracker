@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:model="using:WCStatsTracker.Models"
              xmlns:vm="using:WCStatsTracker.ViewModels"
              xmlns:design="using:WCStatsTracker.ViewModels.DesignTime"
+             xmlns:icon="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
              x:DataType="vm:RunsListViewModel"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -26,38 +29,44 @@
                    FontSize="24"
                    FontWeight="Black"
                    Text="Run Listing" />
-        <DataGrid Grid.Row="1"
+        <DataGrid Name="RunListGrid"
+                  Grid.Row="1"
                   Margin="{DynamicResource AppMargin}"
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="True"
                   IsReadOnly="False"
                   Items="{Binding RunList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedItem}"
-
                   SelectionMode="Single">
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="CellEditEnded" SourceObject="RunListGrid">
+                    <ia:InvokeCommandAction Command="{Binding CellEditFinishedCommand}" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Date Ran">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DateRan, StringFormat=\{0:MM/dd/yy\}}"
-                                       VerticalAlignment="Center" Margin="12,0"/>
+                                       VerticalAlignment="Center" Margin="12,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <CalendarDatePicker SelectedDate="{Binding DateRan}"/>
+                            <CalendarDatePicker SelectedDate="{Binding DateRan}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header = "Run Length">
+                <DataGridTemplateColumn Header="Run Length">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding RunLength}" Margin="12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RunLength}" Margin="12,0" VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox VerticalAlignment="Center" Margin="12,0" Text="{Binding $parent[UserControl].DataContext.WorkingRunLength}"/>
+                            <TextBox VerticalAlignment="Center" Margin="12,0"
+                                     Text="{Binding $parent[UserControl].DataContext.WorkingRunLength}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -80,19 +89,20 @@
                                     Binding="{Binding ChestsOpened}"
                                     Header="Chests" />
                 <!-- This checkbox is still wierd in that you have to click outside of the cell for it to recheck -->
-                <DataGridCheckBoxColumn Binding="{Binding DidKTSkip}" Header="KT Skip"/>
+                <DataGridCheckBoxColumn Binding="{Binding DidKTSkip}" Header="KT Skip" />
                 <DataGridTemplateColumn Width="auto" Header="Flag Set">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Flag.Name}" VerticalAlignment="Center" Margin="12,0"/>
+                            <TextBlock Text="{Binding Flag.Name}" VerticalAlignment="Center" Margin="12,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ComboBox Items="{Binding $parent[UserControl].DataContext.FlagList }" SelectedItem="{Binding Flag}">
+                            <ComboBox Items="{Binding $parent[UserControl].DataContext.FlagList }"
+                                      SelectedItem="{Binding Flag}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="model:Flag">
-                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -104,14 +114,19 @@
                                     Header="Seed" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="2"
-                HorizontalAlignment="Left"
-                Command="{ReflectionBinding DeleteSelectedRunCommand}"
-                Content="Delete Selected Run" />
-        <Button Grid.Row="2"
-                HorizontalAlignment="Left"
-                Command="{ReflectionBinding SaveChangesCommand}"
-                Content="Save Changes" />
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
+            <Button Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Command="{ReflectionBinding DeleteSelectedRunCommand}"
+                    Content="Delete Selected Run" />
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="{DynamicResource AppMargin}"
+                        Command="{ReflectionBinding SaveChangesCommand}"
+                        Content="Save" icon:Attached.Icon="mdi-check-bold" />
+                <Button Command="{ReflectionBinding RevertChangesCommand}"
+                        Content="Revert" icon:Attached.Icon="mdi-undo" />
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </UserControl>
