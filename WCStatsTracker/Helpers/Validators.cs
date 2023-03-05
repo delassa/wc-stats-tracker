@@ -12,13 +12,13 @@ public static class Validators
     /// <returns>ValidationResult.Success if string is valid, otherwise a ValidationResult set with an error message</returns>
     public static ValidationResult ValidateRunLength(string runLength, ValidationContext context)
     {
-        var isValid = TimeSpan.TryParseExact(runLength, @"hh\:mm\:ss", null, out _);
+        var isValid = TimeSpan.TryParseExact(runLength, @"h\:mm\:ss", null, out _);
 
         if (isValid)
         {
             return ValidationResult.Success!;
         }
 
-        return new ValidationResult($"{runLength} is not a valid time, use HH:MM:SS format");
+        return new ValidationResult($"{runLength} is not a valid time, use H:MM:SS format");
     }
 }
