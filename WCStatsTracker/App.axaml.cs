@@ -1,14 +1,14 @@
 using System;
-using System.Configuration;
-using System.Diagnostics;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
@@ -17,6 +17,7 @@ namespace WCStatsTracker;
 public class App : Application
 {
     public static ServiceProvider serviceProvider;
+    public static IConfigurationRoot _configuration;
 
     public override void Initialize()
     {
@@ -26,11 +27,17 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         // Setup Logger
-        using var log = new LoggerConfiguration().WriteTo.Console(theme: SystemConsoleTheme.Literate).WriteTo.Debug()
-            .MinimumLevel.Debug().CreateLogger();
+        _configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var log = new LoggerConfiguration()
+            .ReadFrom.Configuration(_configuration)
+            .CreateLogger();
+
         Log.Logger = log;
         Log.Information("Logger Configured");
-
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -65,14 +72,17 @@ public class App : Application
         services.AddSingleton<OptionsPageViewModel>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+        // Get a configuration
+
         // Database resides in current working dir
-        var fixedConnectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString
+
+        var fixedConnectionString = _configuration.GetConnectionString("Default")
             .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
 
         // Add in the Db Context
         // enable logging on our db and sensitive data logging for development
         services.AddDbContext<WcDbContext>(options => options
-            .LogTo(message => Debug.WriteLine(message)).EnableSensitiveDataLogging()
+            .LogTo(Log.Logger.Information, LogLevel.Information).EnableSensitiveDataLogging()
             .UseSqlite(fixedConnectionString));
 
 
