@@ -1,3 +1,4 @@
+using System;
 namespace WCStatsTracker.Services.DataAccess;
 
 public class UnitOfWork : IUnitOfWork
@@ -12,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
         Flag = new FlagRepository(_context);
         WcRun = new WcRunRepository(_context);
     }
+    public bool IsDisposed { get; private set; }
 
     public IAbilityRepository Ability { get; }
     public ICharacterRepository Character { get; }
@@ -27,16 +29,29 @@ public class UnitOfWork : IUnitOfWork
         return _context.SaveChanges();
     }
 
+    /// <summary>
+    ///     Clear all changes done by this unit of work?
+    /// </summary>
     public void Clear()
     {
         _context.ChangeTracker.Clear();
     }
 
-    /// <summary>
-    ///     Make sure the context is disposed after we are done with this unit of work
-    /// </summary>
     public void Dispose()
     {
-        _context.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!IsDisposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            IsDisposed = true;
+        }
     }
 }
