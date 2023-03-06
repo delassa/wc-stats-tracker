@@ -1,0 +1,48 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:WCStatsTracker.Controls"
+        xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+    <Design.PreviewWith>
+        <StackPanel Orientation="Horizontal">
+            <controls:StatCard SmallText="Total Runs"
+                               LargeText="40"
+                               IconKind="Alpha"
+                               TimeDifference="00:02:20" />
+            <controls:StatCard SmallText="Average Time"
+                               LargeText="1:20:05"
+                               IconKind="TimerCheck"
+                               TimeDifference="00:02:30" />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StatCard">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Classes="ThinBorder"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Margin="{TemplateBinding Margin}">
+                    <DockPanel Margin="10">
+                        <icon:MaterialIcon Kind="{TemplateBinding IconKind}"
+                                           DockPanel.Dock="Right"
+                                           Height="48"
+                                           Width="48"
+                                           Margin="10,0,0,0"
+                                           Foreground="{TemplateBinding Foreground}" />
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Classes="h4"
+                                       Text="{TemplateBinding SmallText}" />
+                            <TextBlock Classes="h2"
+                                       Text="{TemplateBinding LargeText}" />
+                            <TextBlock Classes="h5"
+                                       Text="{TemplateBinding TimeDifference}" />
+                        </StackPanel>
+
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
