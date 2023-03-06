@@ -1,7 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Projektanker.Icons.Avalonia;
-using Projektanker.Icons.Avalonia.MaterialDesign;
 namespace WCStatsTracker;
 
 internal class Program
@@ -22,8 +20,6 @@ internal class Program
     {
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace()
-            .WithIcons(container => container
-                .Register<MaterialDesignIconProvider>());
+            .LogToTrace();
     }
 }
