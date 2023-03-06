@@ -3,10 +3,81 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:WCStatsTracker.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:controls="using:WCStatsTracker.Controls"
+             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="800"
              x:Class="WCStatsTracker.Views.StatsPageView"
              x:DataType="vm:StatsPageViewModel">
     <Design.DataContext>
         <vm:StatsPageViewModel />
     </Design.DataContext>
+
+    <Grid Grid.RowDefinitions="Auto,*,Auto,*">
+        <!-- Time Header -->
+        <TextBlock Grid.Row="0"
+                   Classes="h1"
+                   Text="Timing Overview"
+                   HorizontalAlignment="Center" />
+
+        <!-- Timing Grid -->
+        <Grid Grid.Row="1"
+              RowDefinitions="auto,*,auto">
+            <Grid ColumnDefinitions="*,*,*,*">
+                <controls:StatCard LargeText="{Binding TotalRuns}"
+                                   SmallText="Total Runs"
+                                   IconKind="ListBox"
+                                   Margin="{DynamicResource AppMargin}" />
+                <controls:StatCard Grid.Column="1"
+                                   LargeText="{Binding BestTime}"
+                                   SmallText="Best Time"
+                                   IconKind="Medal"
+                                   Margin="{DynamicResource AppMargin}" />
+                <controls:StatCard Grid.Column="2"
+                                   LargeText="{Binding LastTime}"
+                                   SmallText="Last Time"
+                                   IconKind="Stopwatch"
+                                   Margin="{DynamicResource AppMargin}" />
+                <controls:StatCard Grid.Column="3"
+                                   LargeText="{Binding StandardDeviation}"
+                                   SmallText="Std Deviation"
+                                   IconKind="Calculator"
+                                   Margin="{DynamicResource AppMargin}" />
+            </Grid>
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="2*,*"
+                  RowDefinitions="*,*">
+                <Border Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Classes="ThinBorder">
+                    <lvc:CartesianChart Series="{Binding ChartSeries}"
+                                        XAxes="{Binding XAxes}"
+                                        YAxes="{Binding YAxes}"/>
+                </Border>
+                <controls:StatCard Grid.Row="0"
+                                   Grid.Column="1"
+                                   SmallText="Average Time"
+                                   LargeText="{Binding AverageTime}"
+                                   IconKind="ChartBellCurve"
+                                   Margin="{DynamicResource AppMargin}" />
+                <controls:StatCard Grid.Row="1"
+                                   Grid.Column="1"
+                                   SmallText="Average Last 5"
+                                   LargeText="{Binding AverageLast5}"
+                                   TimeDifference="-00:02:05"
+                                   IconKind="ChartBellCurveCumulative"
+                                   Margin="{DynamicResource AppMargin}" />
+            </Grid>
+        </Grid>
+        <!-- Party Header -->
+        <Border Grid.Row="2"
+                Classes="ThinBorder">
+            <TextBlock Classes="h1"
+                       Text="Party and Abilities"
+                       HorizontalAlignment="Center" />
+        </Border>
+        <!-- Party Grid -->
+    </Grid>
 </UserControl>
