@@ -12,6 +12,10 @@ using Serilog;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using WCStatsTracker.Models;
+
 namespace WCStatsTracker;
 
 public class App : Application
@@ -39,6 +43,17 @@ public class App : Application
         Log.Logger = log;
         Log.Information("Logger Configured");
 
+        // Configure Livecharts
+        LiveCharts.Configure(config => config
+            .AddSkiaSharp()
+            .AddDefaultMappers()
+            .AddDarkTheme()
+            .HasMap<WcRun>((run, point) =>
+            {
+                point.PrimaryValue = run.RunLength.Ticks;
+                point.SecondaryValue = point.Context.Entity.EntityIndex;
+            })
+        );
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Put this here to not interfere with design view
