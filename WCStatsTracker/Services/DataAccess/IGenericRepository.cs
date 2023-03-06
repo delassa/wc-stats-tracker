@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 namespace WCStatsTracker.Services.DataAccess;
 
@@ -53,4 +56,15 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="entities"></param>
     void RemoveRange(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Grabs the local from the dbcontext as an observable collection
+    /// </summary>
+    /// <returns>An Observable collection of the local from the dbcontext</returns>
+    ObservableCollection<TEntity> GetAllObservable();
+
+    /// <summary>
+    /// Loads the data from the DB to populate the local value of the dbcontext
+    /// </summary>
+    void Load();
 }

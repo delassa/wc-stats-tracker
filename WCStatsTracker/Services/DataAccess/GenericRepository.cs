@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 namespace WCStatsTracker.Services.DataAccess;
 
 /// <summary>
@@ -76,6 +78,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     /// <param name="entity">The entity to remove</param>
     public void Remove(T entity)
     {
+        if (_context.Entry(entity).State == EntityState.Detached)
+        {
+            _context.Set<T>().Attach(entity);
+        }
         _context.Set<T>().Remove(entity);
     }
 
@@ -86,5 +92,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void RemoveRange(IEnumerable<T> entities)
     {
         _context.Set<T>().RemoveRange(entities);
+    }
+
+    public ObservableCollection<T> GetAllObservable()
+    {
+        return _context.Set<T>().Local.ToObservableCollection();
+    }
+
+    public void Load()
+    {
+        _context.Set<T>().Load();
     }
 }
