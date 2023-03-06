@@ -31,19 +31,16 @@
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
+                   Classes="h1"
                    HorizontalAlignment="Center"
-                   FontSize="24"
-                   FontWeight="Black"
                    Text="Add A New Run" />
-
 
         <Grid Grid.Row="1"
               Margin="{DynamicResource AppMargin}"
               RowDefinitions="Auto,*">
             <TextBlock Grid.ColumnSpan="3"
                        HorizontalAlignment="Center"
-                       FontSize="18"
-                       FontWeight="Black"
+                       Classes="h3"
                        Text="Timing and Checks" />
 
             <Border Grid.Row="1" Classes="ThinBorder">
@@ -203,15 +200,13 @@
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
                        HorizontalAlignment="Center"
-                       FontSize="18"
-                       FontWeight="Black"
+                       Classes="h3"
                        Text="Starting Characters" />
 
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
+                       Classes="h3"
                        HorizontalAlignment="Center"
-                       FontSize="18"
-                       FontWeight="Black"
                        Text="Starting Abilities" />
 
             <Border Classes="ThinBorder"

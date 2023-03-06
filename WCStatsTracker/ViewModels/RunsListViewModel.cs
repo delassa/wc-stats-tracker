@@ -1,51 +1,27 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.Services.Messages;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsListViewModel : ViewModelBase
 {
     private readonly IUnitOfWork _unitOfWork;
+    private string _workingRunLength = string.Empty;
 
     [ObservableProperty]
-    private bool _changesMade;
-
-    [ObservableProperty]
-    private ObservableCollection<Flag> _flagList;
+    private ObservableCollection<Flag>? _flagList;
 
     [ObservableProperty]
     private ObservableCollection<WcRun>? _runList;
 
     [ObservableProperty]
     private WcRun? _selectedItem;
-
-
-    private string _workingRunLength;
-
-    public RunsListViewModel(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-        ViewName = "List Runs";
-        IconName = "AllApps";
-
-        //Fix this with loading flagsets too
-        RunList = new ObservableCollection<WcRun>(_unitOfWork.WcRun.GetAll());
-        FlagList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
-
-        //Register for messages this class recieves
-        WeakReferenceMessenger.Default.Register<RunsListViewModel, RunSavedMessage>(this, Receive);
-        WeakReferenceMessenger.Default.Register<RunsListViewModel, FlagSetAddMessage>(this, Receive);
-        WeakReferenceMessenger.Default.Register<RunsListViewModel, FlagSetDeleteMessage>(this, Receive);
-    }
 
     [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
     public string WorkingRunLength
@@ -58,17 +34,17 @@ public partial class RunsListViewModel : ViewModelBase
         }
     }
 
-    /// <summary>
-    ///     Notify our save command to check whether it is able to be used or not
-    ///     after any errors have changed on the selected item
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void OnSelectedItemErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+    public RunsListViewModel(IUnitOfWork unitOfWork)
     {
-        SaveChangesCommand.NotifyCanExecuteChanged();
+        _unitOfWork = unitOfWork;
+        ViewName = "List Runs";
+        IconName = "AllApps";
+        //Kinda hacky loading the tables so local views are populated, only do this here since this is the first view
+        _unitOfWork.Flag.Load();
+        _unitOfWork.WcRun.Load();
+        RunList = _unitOfWork.WcRun.GetAllObservable();
+        FlagList = _unitOfWork.Flag.GetAllObservable();
     }
-
 
     /// <summary>
     ///     Set the string representation of our working run to the actual datetime in the object if
@@ -95,32 +71,6 @@ public partial class RunsListViewModel : ViewModelBase
         SaveChangesCommand.NotifyCanExecuteChanged();
     }
 
-    #region Message Recievers
-
-    /// <summary>
-    ///     Recieves a message that a run has been added and adds it to this view models list
-    /// </summary>
-    /// <param name="recipient">The model recieving the message</param>
-    /// <param name="message">The RunSavedMessage recieved</param>
-    private static void Receive(RunsListViewModel recipient, RunSavedMessage message)
-    {
-        recipient.RunList!.Add(message.Value);
-        Log.Debug("Saved Run {0} added to run list view model", message.Value.Id);
-    }
-
-    private static void Receive(RunsListViewModel recipient, FlagSetAddMessage message)
-    {
-        recipient.FlagList!.Add(message.Value);
-        Log.Debug("Flag:{0} added to run list view model", message.Value.Name);
-    }
-    private static void Receive(RunsListViewModel recipient, FlagSetDeleteMessage message)
-    {
-        recipient.FlagList!.Remove(message.Value);
-        Log.Debug("Flag:{0} removed from run list view model", message.Value.Name);
-    }
-
-    #endregion
-
     #region Relay Commands
 
     [RelayCommand]
@@ -136,7 +86,6 @@ public partial class RunsListViewModel : ViewModelBase
     public void DeleteSelectedRun()
     {
         // Nullability is already checked in CanDeleteSelectedRun()
-        _unitOfWork.WcRun.Remove(SelectedItem!);
         RunList!.Remove(SelectedItem!);
         _unitOfWork.Save();
     }
@@ -159,18 +108,30 @@ public partial class RunsListViewModel : ViewModelBase
         _unitOfWork.Save();
     }
 
+    /// <summary>
+    ///     Determines if the save changes command and button should be enabled
+    /// </summary>
+    /// <returns>True if should be enabled false otherwise</returns>
     public bool CanSaveChanges()
     {
-        if (RunList.Count > 0)
-            foreach (var run in RunList)
-            {
-                if (run.HasErrors)
+        try
+        {
+            if (RunList.Count > 0)
+                foreach (var run in RunList)
                 {
-                    foreach (var err in run.GetErrors())
-                        Log.Debug(err.ErrorMessage);
-                    return false;
+                    if (run.HasErrors)
+                    {
+                        foreach (var err in run.GetErrors())
+                            Log.Debug(err.ErrorMessage ?? "Null Error");
+                        return false;
+                    }
                 }
-            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "RunList is null in CanSaveChanges");
+            return false;
+        }
         return true;
     }
 
@@ -181,8 +142,7 @@ public partial class RunsListViewModel : ViewModelBase
     public void RevertChanges()
     {
         _unitOfWork.Clear();
-        RunList = null;
-        RunList = new ObservableCollection<WcRun>(_unitOfWork.WcRun.GetAll());
+        _unitOfWork.Save();
     }
 
     #endregion

@@ -4,61 +4,90 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:WCStatsTracker.ViewModels"
              xmlns:design="using:WCStatsTracker.ViewModels.DesignTime"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="WCStatsTracker.Views.FlagsPageView"
-             x:DataType="vm:FlagsPageViewModel"
-             >
+             x:DataType="vm:FlagsPageViewModel">
 
     <Design.DataContext>
         <design:DesignFlagsPageViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="*,auto" RowDefinitions="50,*,50" Margin="{DynamicResource AppMargin}">
+    <Grid ColumnDefinitions="*,auto"
+          RowDefinitions="50,*,50"
+          Margin="{DynamicResource AppMargin}">
         <!-- Header -->
         <TextBlock Grid.Column="0"
                    Grid.Row="0"
+                   Classes="h3"
                    HorizontalAlignment="Center"
                    Text="Flag List"
-                   FontSize="18"
-                   FontWeight="Black"
                    VerticalAlignment="Center" />
-        <TextBlock Grid.Column="1" Grid.Row="0"
+        <TextBlock Grid.Column="1"
+                   Grid.Row="0"
                    HorizontalAlignment="Center"
                    Text="Add Flag"
-                   FontSize="18"
-                   FontWeight="Black"
+                   Classes="h3"
                    VerticalAlignment="Center" />
 
-        <Border Margin="0,0,10,0" Grid.Row="1" Classes="ThinBorder">
+        <Border Margin="0,0,10,0"
+                Grid.Row="1"
+                Classes="ThinBorder">
             <!-- Content -->
-            <DataGrid
-                Items="{Binding FlagList, Mode=TwoWay}"
-                SelectedItem="{Binding SelectedFlag}"
-                SelectedIndex="{Binding SelectedIndex}"
-                Margin="{DynamicResource AppMargin}"
-                IsReadOnly="True"
-                CanUserResizeColumns="True">
+            <DataGrid Items="{Binding FlagList, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedFlag}"
+                      SelectedIndex="{Binding SelectedIndex}"
+                      Margin="{DynamicResource AppMargin}"
+                      IsReadOnly="True"
+                      CanUserResizeColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="auto" Header="Flags Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Width="auto" Header="Flag String" Binding="{Binding FlagString}" />
+                    <DataGridTextColumn Width="auto"
+                                        Header="Flags Name"
+                                        Binding="{Binding Name}" />
+                    <DataGridTextColumn Width="auto"
+                                        Header="Flag String"
+                                        Binding="{Binding FlagString}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Classes="ThinBorder">
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="50,50,50"
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Classes="ThinBorder">
+            <Grid ColumnDefinitions="Auto,*"
+                  RowDefinitions="50,50,50"
                   Margin="{DynamicResource AppMargin}">
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Flag Name" HorizontalAlignment="Right"
-                           VerticalAlignment="Center" Margin="5" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Flag String" HorizontalAlignment="Right"
-                           VerticalAlignment="Center" Margin="5" />
-                <TextBox Width="200" Grid.Row="0" Grid.Column="1" TextChanging="TextBoxTextChanging"
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Text="Flag Name"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="Flag String"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="5" />
+                <TextBox Width="200"
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         TextChanging="TextBoxTextChanging"
                          Text="{Binding WorkingFlag.Name}"
-                         HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <TextBox Width="200" Grid.Row="1" Grid.Column="1" TextChanging="TextBoxTextChanging"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+                <TextBox Width="200"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         TextChanging="TextBoxTextChanging"
                          Text="{Binding WorkingFlag.FlagString}"
-                         HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <Button Grid.Column="0" Grid.Row="2" Command="{ReflectionBinding SaveClickCommand}" Content="Save" />
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+                <Button Grid.Column="0"
+                        Grid.Row="2"
+                        Command="{ReflectionBinding SaveClickCommand}"
+                        Content="Save" />
             </Grid>
         </Border>
         <Button Grid.Row="2"

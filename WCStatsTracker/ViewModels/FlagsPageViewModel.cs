@@ -1,11 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.Services.Messages;
 namespace WCStatsTracker.ViewModels;
 
 public partial class FlagsPageViewModel : ViewModelBase
@@ -51,7 +49,7 @@ public partial class FlagsPageViewModel : ViewModelBase
         _unitOfWork = unitOfWork;
         ViewName = "Flags";
         IconName = "Flag";
-        FlagList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
+        FlagList = _unitOfWork.Flag.GetAllObservable();
         WorkingFlag = new Flag();
     }
 
@@ -81,15 +79,9 @@ public partial class FlagsPageViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanSaveClick))]
     private void SaveClick()
     {
+        FlagList.Add(WorkingFlag);
+        _unitOfWork.Save();
 
-        _unitOfWork.Flag.Add(WorkingFlag!);
-        var numberOfChanges = _unitOfWork.Save();
-
-        Log.Debug("{0} changes written to DB", numberOfChanges);
-        WeakReferenceMessenger.Default.Send(new FlagSetAddMessage(WorkingFlag!));
-
-        if (!FlagList!.Contains(WorkingFlag!))
-            FlagList.Add(WorkingFlag!);
         WorkingFlag = null;
         WorkingFlag = new Flag();
     }
@@ -114,17 +106,12 @@ public partial class FlagsPageViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanDeleteSelectedFlag))]
     private void DeleteSelectedFlag()
     {
+        FlagList.Remove(SelectedFlag);
         //Remove the flag from tracking
-        _unitOfWork.Flag.Remove(SelectedFlag!);
-        var numberOfChanges = _unitOfWork.Save();
-        Log.Debug("{0} changes written to DB", numberOfChanges);
+        _unitOfWork.Save();
 
-        //Send a message notifying that a flag was deleted
-        WeakReferenceMessenger.Default.Send(new FlagSetDeleteMessage(SelectedFlag!));
-
-        //Remove it from our local list and update the delete command
-        FlagList!.Remove(SelectedFlag!);
         SelectedFlag = null;
+        SelectedIndex = -1;
     }
 
     /// <summary>
