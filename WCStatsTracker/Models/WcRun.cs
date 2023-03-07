@@ -22,11 +22,6 @@ public class WcRun : BaseModelObject
     private TimeSpan _runLength;
     private string _seed = string.Empty;
 
-    public WcRun()
-    {
-        ValidateAllProperties();
-    }
-
     [Range(0, Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
     public int BossesKilled
     {
@@ -77,7 +72,7 @@ public class WcRun : BaseModelObject
     }
 
     [Required]
-    public Flag Flag
+    public virtual Flag Flag
     {
         get => _flag;
         set => SetProperty(ref _flag, value, true);
@@ -107,10 +102,10 @@ public class WcRun : BaseModelObject
     /// <summary>
     ///     Starting characters used in this run
     /// </summary>
-    public ICollection<Character>? StartingCharacters { get; set; }
+    public virtual ICollection<Character>? StartingCharacters { get; set; }
 
     /// <summary>
     ///     Starting abilities used in this run
     /// </summary>
-    public ICollection<Ability>? StartingAbilities { get; set; }
+    public virtual ICollection<Ability>? StartingAbilities { get; set; }
 }

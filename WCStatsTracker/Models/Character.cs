@@ -7,5 +7,5 @@ public class Character : BaseModelObject
     [Required]
     public string Name { get; set; } = string.Empty;
 
-    public List<WcRun>? Runs { get; set; }
+    public virtual List<WcRun>? Runs { get; set; }
 }

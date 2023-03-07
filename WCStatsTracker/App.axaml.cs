@@ -98,8 +98,8 @@ public class App : Application
         // enable logging on our db and sensitive data logging for development
         services.AddDbContext<WcDbContext>(options => options
             .LogTo(Log.Logger.Information, LogLevel.Information).EnableSensitiveDataLogging()
+            .UseLazyLoadingProxies()
             .UseSqlite(fixedConnectionString));
-
 
         serviceProvider = services.BuildServiceProvider();
     }
