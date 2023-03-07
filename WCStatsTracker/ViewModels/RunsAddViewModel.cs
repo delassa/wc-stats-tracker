@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Serilog;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.Services.Messages;
 using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.ViewModels;
 
@@ -127,6 +123,7 @@ public partial class RunsAddViewModel : ViewModelBase
         WorkingRun.ErrorsChanged -= WorkingRun_ErrorsChanged;
         WorkingRun = null;
         WorkingRun = new WcRun();
+        WorkingRunLength = "00:00:00";
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
     }
 

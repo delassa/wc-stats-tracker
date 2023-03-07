@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using WCStatsTracker.Models;
 using WCStatsTracker.Utility.Data;
 namespace WCStatsTracker.ViewModels.DesignTime;
