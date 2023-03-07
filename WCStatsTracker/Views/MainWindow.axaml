@@ -28,7 +28,7 @@
             </ui:NavigationView.MenuItemTemplate>
             <ui:NavigationView.Content>
                 <ScrollViewer>
-                    <Border Classes="ThinBorder">
+                    <Border Classes="ThinBorder" Margin="10">
                         <TransitioningContentControl Content="{Binding CurrentView}" />
                     </Border>
                 </ScrollViewer>

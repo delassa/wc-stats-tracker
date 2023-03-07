@@ -22,9 +22,8 @@
                 <Border Classes="ThinBorder"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         Width="{TemplateBinding Width}"
-                        Height="{TemplateBinding Height}"
-                        Margin="{TemplateBinding Margin}">
-                    <DockPanel Margin="10">
+                        Height="{TemplateBinding Height}">
+                    <DockPanel Margin="{StaticResource AppMargin}">
                         <icon:MaterialIcon Kind="{TemplateBinding IconKind}"
                                            DockPanel.Dock="Right"
                                            Height="48"

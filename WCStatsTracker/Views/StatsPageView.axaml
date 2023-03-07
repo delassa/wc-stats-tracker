@@ -5,6 +5,7 @@
              xmlns:vm="using:WCStatsTracker.ViewModels"
              xmlns:controls="using:WCStatsTracker.Controls"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+             xmlns:models="clr-namespace:WCStatsTracker.Models"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -14,13 +15,13 @@
         <vm:StatsPageViewModel />
     </Design.DataContext>
 
-    <Grid Grid.RowDefinitions="Auto,*,Auto,*">
+    <Grid RowDefinitions="Auto,*,Auto,*"
+          Height="1600">
         <!-- Time Header -->
         <TextBlock Grid.Row="0"
                    Classes="h1"
                    Text="Timing Overview"
                    HorizontalAlignment="Center" />
-
         <!-- Timing Grid -->
         <Grid Grid.Row="1"
               RowDefinitions="auto,*,auto">
@@ -28,22 +29,22 @@
                 <controls:StatCard LargeText="{Binding TotalRuns}"
                                    SmallText="Total Runs"
                                    IconKind="ListBox"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="1"
-                                   LargeText="{Binding BestTime}"
+                                   LargeText="{Binding BestTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    SmallText="Best Time"
                                    IconKind="Medal"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="2"
-                                   LargeText="{Binding LastTime}"
+                                   LargeText="{Binding LastTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    SmallText="Last Time"
                                    IconKind="Stopwatch"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="3"
-                                   LargeText="{Binding StandardDeviation}"
+                                   LargeText="{Binding StandardDeviation, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    SmallText="Std Deviation"
                                    IconKind="Calculator"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
             </Grid>
             <Grid Grid.Row="1"
                   ColumnDefinitions="2*,*"
@@ -51,33 +52,125 @@
                 <Border Grid.Column="0"
                         Grid.Row="0"
                         Grid.RowSpan="2"
-                        Classes="ThinBorder">
-                    <lvc:CartesianChart Series="{Binding ChartSeries}"
-                                        XAxes="{Binding XAxes}"
-                                        YAxes="{Binding YAxes}"/>
+                        Classes="ThinBorder"
+                        Margin="{StaticResource AppMargin}">
+                    <Grid RowDefinitions="Auto,*">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="{StaticResource AppMargin}">
+                            <Button Content="Show Skips"
+                                    Command="{ReflectionBinding ToggleSkipViewCommand}" />
+                            <ComboBox Items="{Binding FlagNames}"
+                                      SelectedItem="{Binding SelectedFlagName}"
+                                      SelectedIndex="{Binding SelectedFlagIndex}"
+                                      PlaceholderText="By Flag Set">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Flag">
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <lvc:CartesianChart Grid.Row="1"
+                                            Series="{Binding TimeChartSeries}"
+                                            XAxes="{Binding TimeChartXAxes}"
+                                            YAxes="{Binding TimeChartYAxes}"
+                                            Margin="{StaticResource AppMargin}" />
+                    </Grid>
                 </Border>
                 <controls:StatCard Grid.Row="0"
                                    Grid.Column="1"
                                    SmallText="Average Time"
-                                   LargeText="{Binding AverageTime}"
+                                   LargeText="{Binding AverageTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    IconKind="ChartBellCurve"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Row="1"
                                    Grid.Column="1"
                                    SmallText="Average Last 5"
-                                   LargeText="{Binding AverageLast5}"
+                                   LargeText="{Binding AverageLast5, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    TimeDifference="-00:02:05"
                                    IconKind="ChartBellCurveCumulative"
-                                   Margin="{DynamicResource AppMargin}" />
+                                   Margin="{StaticResource AppMargin}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="*,*,*,*">
+                <controls:StatCard LargeText="{Binding TotalRuns}"
+                                   SmallText="Total Skips"
+                                   IconKind="ClockFast"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard Grid.Column="1"
+                                   LargeText="{Binding BestTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   SmallText="Skip %"
+                                   IconKind="Percent"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard Grid.Column="2"
+                                   LargeText="{Binding LastTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   SmallText="Average Skip Time"
+                                   IconKind="RunFast"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard Grid.Column="3"
+                                   LargeText="{Binding StandardDeviation, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   SmallText="Average No Skip Time"
+                                   IconKind="Toilet"
+                                   Margin="{StaticResource AppMargin}" />
             </Grid>
         </Grid>
         <!-- Party Header -->
-        <Border Grid.Row="2"
-                Classes="ThinBorder">
-            <TextBlock Classes="h1"
-                       Text="Party and Abilities"
-                       HorizontalAlignment="Center" />
-        </Border>
+        <TextBlock Grid.Row="2"
+                   Classes="h1"
+                   Text="Party and Abilities"
+                   HorizontalAlignment="Center" />
         <!-- Party Grid -->
+        <Grid Grid.Row="3"
+              RowDefinitions="*, *"
+              ColumnDefinitions="*,*,*">
+            <UniformGrid Rows="2" Columns="1">
+                <controls:StatCard DockPanel.Dock="Top"
+                                   SmallText="Most Used Starting Character"
+                                   LargeText="Sabin"
+                                   TimeDifference="Total Runs 12"
+                                   IconKind="HumanQueue"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard DockPanel.Dock="Bottom"
+                                   SmallText="Fastest Starting Character"
+                                   LargeText="Cyan"
+                                   TimeDifference="Average Time:"
+                                   IconKind="HumanRunFast"
+                                   Margin="{StaticResource AppMargin}" />
+            </UniformGrid>
+            <Border Grid.Row="0"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Classes="ThinBorder"
+                    Margin="{StaticResource AppMargin}">
+                <lvc:CartesianChart Margin="{StaticResource AppMargin}"
+                                    Series="{Binding CharacterChartSeries}"
+                                    XAxes="{Binding CharacterChartXAxes}" />
+            </Border>
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Classes="ThinBorder"
+                    Margin="{StaticResource AppMargin}">
+                <lvc:CartesianChart Margin="{StaticResource AppMargin}"
+                                    Series="{Binding AbilityChartSeries}"
+                                    XAxes="{Binding AbilityChartXAxes}" />
+            </Border>
+            <UniformGrid Grid.Row="1"
+                       Grid.Column="2"
+                       Rows="2" Columns="1">
+                <controls:StatCard DockPanel.Dock="Top"
+                                   SmallText="Most Used Starting Ability"
+                                   LargeText="Ability Name"
+                                   TimeDifference="Total Runs : 10"
+                                   IconKind="MagicWand"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard DockPanel.Dock="Bottom"
+                                   SmallText="Fastest Starting Ability"
+                                   LargeText="Ability Name"
+                                   TimeDifference="Average Time"
+                                   IconKind="LorryFast"
+                                   Margin="{StaticResource AppMargin}" />
+            </UniformGrid>
+        </Grid>
     </Grid>
 </UserControl>
