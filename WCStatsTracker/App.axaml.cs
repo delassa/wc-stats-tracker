@@ -14,6 +14,8 @@ using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using WCStatsTracker.Models;
 
 namespace WCStatsTracker;
@@ -58,6 +60,8 @@ public class App : Application
         {
             // Put this here to not interfere with design view
             CreateServiceProvider();
+            var context = serviceProvider.GetRequiredService<WcDbContext>();
+            context.GetInfrastructure().GetService<IMigrator>().Migrate();
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
@@ -85,6 +89,8 @@ public class App : Application
         services.AddSingleton<FlagsPageViewModel>();
         services.AddSingleton<StatsPageViewModel>();
         services.AddSingleton<OptionsPageViewModel>();
+        services.AddSingleton<TimingStatsViewModel>();
+        services.AddSingleton<CharacterStatsViewModel>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         // Get a configuration

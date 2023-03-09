@@ -1,54 +1,143 @@
+using System;
 using System.Collections.Generic;
 namespace WCStatsTracker.Wc.Data;
 
 public class Abilities
 {
+    public enum Names
+    {
+        Blitz,
+        Capture,
+        Control,
+        GPRain,
+        Dance,
+        Health,
+        Jump,
+        Lore,
+        Morph,
+        Rage,
+        Runic,
+        Sketch,
+        Slot,
+        Steal,
+        SwdTech,
+        Throw,
+        Tools,
+        XMagic,
+        Shock,
+        MagiTek,
+        Possess
+    }
+
     public static List<AbilityData> AbilitiesAvailable
     {
         get => new()
         {
             new AbilityData
-                { Name = "Blitz" },
+            {
+                Name = "Blitz",
+                Abbrev = "Bltz"
+            },
             new AbilityData
-                { Name = "Capture" },
+            {
+                Name = "Capture",
+                Abbrev = "Cptr"
+            },
             new AbilityData
-                { Name = "Control" },
+            {
+                Name = "Control",
+                Abbrev = "Ctrl"
+            },
             new AbilityData
-                { Name = "GP Rain" },
+            {
+                Name = "GP Rain",
+                Abbrev = "GPRn"
+            },
             new AbilityData
-                { Name = "Dance" },
+            {
+                Name = "Dance",
+                Abbrev = "Dnce"
+            },
             new AbilityData
-                { Name = "Health" },
+            {
+                Name = "Health",
+                Abbrev = "Hlth"
+            },
             new AbilityData
-                { Name = "Jump" },
+            {
+                Name = "Jump",
+                Abbrev = "Jump"
+            },
             new AbilityData
-                { Name = "Lore" },
+            {
+                Name = "Lore",
+                Abbrev = "Lore"
+            },
             new AbilityData
-                { Name = "Morph" },
+            {
+                Name = "Morph",
+                Abbrev = "Mrph"
+            },
             new AbilityData
-                { Name = "Rage" },
+            {
+                Name = "Rage",
+                Abbrev = "Rage"
+            },
             new AbilityData
-                { Name = "Runic" },
+            {
+                Name = "Runic",
+                Abbrev = "Rnic"
+            },
             new AbilityData
-                { Name = "Sketch" },
+            {
+                Name = "Sketch",
+                Abbrev = "Skch"
+            },
             new AbilityData
-                { Name = "Slot" },
+            {
+                Name = "Slot",
+                Abbrev = "Slot"
+            },
             new AbilityData
-                { Name = "Steal" },
+            {
+                Name = "Steal",
+                Abbrev = "Stl"
+            },
             new AbilityData
-                { Name = "SwdTech" },
+            {
+                Name = "SwdTech",
+                Abbrev = "SwdT"
+            },
             new AbilityData
-                { Name = "Throw" },
+            {
+                Name = "Throw",
+                Abbrev = "Thrw"
+            },
             new AbilityData
-                { Name = "Tools" },
+            {
+                Name = "Tools",
+                Abbrev = "Tool"
+            },
             new AbilityData
-                { Name = "X Magic" },
+            {
+                Name = "X Magic",
+                Abbrev = "XMag"
+            },
             new AbilityData
-                { Name = "Shock" },
+            {
+                Name = "Shock",
+                Abbrev = "Shck"
+            },
             new AbilityData
-                { Name = "MagiTek" },
+            {
+                Name = "MagiTek",
+                Abbrev = "MagT"
+            },
             new AbilityData
-                { Name = "Possess" }
+            {
+                Name = "Possess",
+                Abbrev = "Psss"
+            }
         };
     }
 }

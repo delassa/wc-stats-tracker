@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WCStatsTracker.ViewModels"
+             xmlns:controls="clr-namespace:WCStatsTracker.Controls"
+             xmlns:liveChart="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="WCStatsTracker.Views.CharacterStatsView">
+    <Design.DataContext>
+        <viewModels:CharacterStatsViewModel />
+    </Design.DataContext>
+
+        <Grid Grid.Row="0"
+              RowDefinitions="*, *"
+              ColumnDefinitions="*,*,*">
+            <UniformGrid Rows="2"
+                         Columns="1">
+                <controls:StatCard DockPanel.Dock="Top"
+                                   SmallText="Most Used Starting Character"
+                                   LargeText="Sabin"
+                                   TimeDifference="Total Runs 12"
+                                   IconKind="HumanQueue"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard DockPanel.Dock="Bottom"
+                                   SmallText="Fastest Starting Character"
+                                   LargeText="Cyan"
+                                   TimeDifference="Average Time:"
+                                   IconKind="HumanRunFast"
+                                   Margin="{StaticResource AppMargin}" />
+            </UniformGrid>
+            <Border Grid.Row="0"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Classes="ThinBorder"
+                    Margin="{StaticResource AppMargin}">
+                <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
+                                          Series="{Binding CharacterChartSeries}"
+                                          XAxes="{Binding CharacterChartXAxes}" />
+            </Border>
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Classes="ThinBorder"
+                    Margin="{StaticResource AppMargin}">
+                <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
+                                          Series="{Binding AbilityChartSeries}"
+                                          XAxes="{Binding AbilityChartXAxes}" />
+            </Border>
+            <UniformGrid Grid.Row="1"
+                         Grid.Column="2"
+                         Rows="2"
+                         Columns="1">
+                <controls:StatCard DockPanel.Dock="Top"
+                                   SmallText="Most Used Starting Ability"
+                                   LargeText="Ability Name"
+                                   TimeDifference="Total Runs : 10"
+                                   IconKind="MagicWand"
+                                   Margin="{StaticResource AppMargin}" />
+                <controls:StatCard DockPanel.Dock="Bottom"
+                                   SmallText="Fastest Starting Ability"
+                                   LargeText="Ability Name"
+                                   TimeDifference="Average Time"
+                                   IconKind="LorryFast"
+                                   Margin="{StaticResource AppMargin}" />
+            </UniformGrid>
+        </Grid>
+</UserControl>
