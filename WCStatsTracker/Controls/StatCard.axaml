@@ -4,14 +4,10 @@
         xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
     <Design.PreviewWith>
         <StackPanel Orientation="Horizontal">
-            <controls:StatCard SmallText="Total Runs"
-                               LargeText="40"
-                               IconKind="Alpha"
-                               BottomText="00:02:20" />
-            <controls:StatCard SmallText="Average Time"
-                               LargeText="1:20:05"
-                               IconKind="TimerCheck"
-                               BottomText="00:02:30" />
+            <controls:StatCard Header="Header Text"
+                               IconKind="AccountAdd"
+                               LargeBody="Large Body Text"
+                               SmallBody="Small Body Text"/>
         </StackPanel>
     </Design.PreviewWith>
 
@@ -32,11 +28,11 @@
                                            Foreground="{TemplateBinding Foreground}" />
                         <StackPanel DockPanel.Dock="Left">
                             <TextBlock Classes="h4"
-                                       Text="{TemplateBinding SmallText}" />
+                                       Text="{TemplateBinding Header}" />
                             <TextBlock Classes="h2"
-                                       Text="{TemplateBinding LargeText}" />
+                                       Text="{TemplateBinding LargeBody}" />
                             <TextBlock Classes="h5"
-                                       Text="{TemplateBinding BottomText}" />
+                                       Text="{TemplateBinding SmallBody}" />
                         </StackPanel>
 
                     </DockPanel>

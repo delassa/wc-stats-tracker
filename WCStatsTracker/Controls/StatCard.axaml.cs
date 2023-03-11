@@ -15,30 +15,30 @@ public class StatCard : TemplatedControl
         set => SetValue(IconKindProperty, value);
     }
 
-    public readonly static StyledProperty<string> LargeTextProperty = AvaloniaProperty.Register<StatCard, string>(
-        nameof(LargeText));
+    public readonly static StyledProperty<string> LargeBodyProperty = AvaloniaProperty.Register<StatCard, string>(
+        nameof(LargeBody));
 
-    public string LargeText
+    public string LargeBody
     {
-        get => GetValue(LargeTextProperty);
-        set => SetValue(LargeTextProperty, value);
+        get => GetValue(LargeBodyProperty);
+        set => SetValue(LargeBodyProperty, value);
     }
 
-    public readonly static StyledProperty<string> SmallTextProperty = AvaloniaProperty.Register<StatCard, string>(
-        nameof(SmallText));
+    public readonly static StyledProperty<string> SmallBodyProperty = AvaloniaProperty.Register<StatCard, string>(
+        nameof(SmallBody));
 
-    public string SmallText
+    public string SmallBody
     {
-        get => GetValue(SmallTextProperty);
-        set => SetValue(SmallTextProperty, value);
+        get => GetValue(SmallBodyProperty);
+        set => SetValue(SmallBodyProperty, value);
     }
 
-    public readonly static StyledProperty<string> BottomTextProperty = AvaloniaProperty.Register<StatCard, string>(
-        nameof(BottomText));
+    public readonly static StyledProperty<string> HeaderProperty = AvaloniaProperty.Register<StatCard, string>(
+        nameof(Header));
 
-    public string BottomText
+    public string Header
     {
-        get => GetValue(BottomTextProperty);
-        set => SetValue(BottomTextProperty, value);
+        get => GetValue(HeaderProperty);
+        set => SetValue(HeaderProperty, value);
     }
 }
