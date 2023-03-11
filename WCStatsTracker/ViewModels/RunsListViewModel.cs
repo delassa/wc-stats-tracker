@@ -3,10 +3,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
+using WCStatsTracker.Services.Messages;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsListViewModel : ViewModelBase
@@ -30,7 +32,6 @@ public partial class RunsListViewModel : ViewModelBase
         set
         {
             SetProperty(ref _workingRunLength, value, true);
-            OnWorkingRunLengthChanged(value);
         }
     }
 
@@ -44,21 +45,6 @@ public partial class RunsListViewModel : ViewModelBase
         _unitOfWork.WcRun.Load();
         RunList = _unitOfWork.WcRun.GetAllObservable();
         FlagList = _unitOfWork.Flag.GetAllObservable();
-    }
-
-    /// <summary>
-    ///     Set the string representation of our working run to the actual datetime in the object if
-    ///     it parses correctly (it should due to validation)
-    /// </summary>
-    /// <param name="value">The new value of the working run length string</param>
-    private void OnWorkingRunLengthChanged(string value)
-    {
-        if (SelectedItem is null) return;
-        var isValidTime = TimeSpan.TryParseExact(value, @"hh\:mm\:ss", null, out _);
-        if (isValidTime && SelectedItem is not null)
-        {
-            SelectedItem.RunLength = TimeSpan.ParseExact(value, @"hh\:mm\:ss", null);
-        }
     }
 
     /// <summary>
@@ -76,6 +62,13 @@ public partial class RunsListViewModel : ViewModelBase
     [RelayCommand]
     public void CellEditFinished()
     {
+        // If we are editing the time on the grid parse it out and copy it over to the selected item
+        var isValidTime = TimeSpan.TryParseExact(WorkingRunLength, @"h\:mm\:ss", null, out _);
+        if (isValidTime && SelectedItem is not null)
+        {
+            SelectedItem.RunLength = TimeSpan.ParseExact(WorkingRunLength, @"h\:mm\:ss", null);
+            WorkingRunLength = "";
+        }
         SaveChangesCommand.NotifyCanExecuteChanged();
     }
 
@@ -106,6 +99,7 @@ public partial class RunsListViewModel : ViewModelBase
     public void SaveChanges()
     {
         _unitOfWork.Save();
+        WeakReferenceMessenger.Default.Send<RunsUpdatedMessage>();
     }
 
     /// <summary>

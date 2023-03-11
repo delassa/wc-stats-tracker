@@ -38,7 +38,8 @@
                   SelectedItem="{Binding SelectedItem}"
                   SelectionMode="Single">
             <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="CellEditEnded" SourceObject="RunListGrid">
+                <ia:EventTriggerBehavior EventName="CellEditEnded"
+                                         SourceObject="RunListGrid">
                     <ia:InvokeCommandAction Command="{Binding CellEditFinishedCommand}" />
                 </ia:EventTriggerBehavior>
             </i:Interaction.Behaviors>
@@ -47,7 +48,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DateRan, StringFormat=\{0:MM/dd/yy\}}"
-                                       VerticalAlignment="Center" Margin="12,0" />
+                                       VerticalAlignment="Center"
+                                       Margin="12,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -59,12 +61,15 @@
                 <DataGridTemplateColumn Header="Run Length">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding RunLength}" Margin="12,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding RunLength}"
+                                       Margin="12,0"
+                                       VerticalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox VerticalAlignment="Center" Margin="12,0"
+                            <TextBox VerticalAlignment="Center"
+                                     Margin="12,0"
                                      Text="{Binding $parent[UserControl].DataContext.WorkingRunLength}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
@@ -88,11 +93,15 @@
                                     Binding="{Binding ChestsOpened}"
                                     Header="Chests" />
                 <!-- This checkbox is still wierd in that you have to click outside of the cell for it to recheck -->
-                <DataGridCheckBoxColumn Binding="{Binding DidKTSkip}" Header="KT Skip" />
-                <DataGridTemplateColumn Width="auto" Header="Flag Set">
+                <DataGridCheckBoxColumn Binding="{Binding DidKTSkip}"
+                                        Header="KT Skip" />
+                <DataGridTemplateColumn Width="auto"
+                                        Header="Flag Set">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Flag.Name}" VerticalAlignment="Center" Margin="12,0" />
+                            <TextBlock Text="{Binding Flag.Name}"
+                                       VerticalAlignment="Center"
+                                       Margin="12,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -113,12 +122,15 @@
                                     Header="Seed" />
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
+        <Grid Grid.Row="2"
+              ColumnDefinitions="Auto,*">
             <Button Grid.Column="0"
                     HorizontalAlignment="Left"
                     Command="{ReflectionBinding DeleteSelectedRunCommand}"
                     Content="Delete Selected Run" />
-            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
                 <Button Margin="{DynamicResource AppMargin}"
                         Command="{ReflectionBinding SaveChangesCommand}"
                         Content="{icon:MaterialIconExt Kind=Check}"
