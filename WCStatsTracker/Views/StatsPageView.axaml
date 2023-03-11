@@ -3,9 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:WCStatsTracker.ViewModels"
-             xmlns:controls="using:WCStatsTracker.Controls"
-             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
-             xmlns:models="clr-namespace:WCStatsTracker.Models"
              xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d"
              d:DesignWidth="800"
@@ -19,15 +16,17 @@
     <TabControl Items="{Binding StatViews}">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <StackPanel Orientation="Horizontal" >
-                    <icon:MaterialIcon Kind="{Binding IconName}" Height="24"/>
-                    <TextBlock Classes="h3" Text="{Binding ViewName}"/>
+                <StackPanel Orientation="Horizontal">
+                    <icon:MaterialIcon Kind="{Binding IconName}"
+                                       Height="24" />
+                    <TextBlock Classes="h3"
+                               Text="{Binding ViewName}" />
                 </StackPanel>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
             <DataTemplate>
-                <TransitioningContentControl Content="{Binding}"/>
+                <TransitioningContentControl Content="{Binding}" />
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>
