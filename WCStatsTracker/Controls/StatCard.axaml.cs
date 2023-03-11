@@ -5,8 +5,9 @@ namespace WCStatsTracker.Controls;
 
 public class StatCard : TemplatedControl
 {
-    public readonly static StyledProperty<MaterialIconKind> IconKindProperty = AvaloniaProperty.Register<StatCard, MaterialIconKind>(
-        nameof(IconKind));
+    public readonly static StyledProperty<MaterialIconKind> IconKindProperty =
+        AvaloniaProperty.Register<StatCard, MaterialIconKind>(
+            nameof(IconKind));
 
     public MaterialIconKind IconKind
     {
@@ -32,12 +33,12 @@ public class StatCard : TemplatedControl
         set => SetValue(SmallTextProperty, value);
     }
 
-    public readonly static StyledProperty<string> TimeDifferenceProperty = AvaloniaProperty.Register<StatCard, string>(
-        nameof(TimeDifference));
+    public readonly static StyledProperty<string> BottomTextProperty = AvaloniaProperty.Register<StatCard, string>(
+        nameof(BottomText));
 
-    public string TimeDifference
+    public string BottomText
     {
-        get => GetValue(TimeDifferenceProperty);
-        set => SetValue(TimeDifferenceProperty, value);
+        get => GetValue(BottomTextProperty);
+        set => SetValue(BottomTextProperty, value);
     }
 }

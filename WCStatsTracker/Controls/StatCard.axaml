@@ -7,11 +7,11 @@
             <controls:StatCard SmallText="Total Runs"
                                LargeText="40"
                                IconKind="Alpha"
-                               TimeDifference="00:02:20" />
+                               BottomText="00:02:20" />
             <controls:StatCard SmallText="Average Time"
                                LargeText="1:20:05"
                                IconKind="TimerCheck"
-                               TimeDifference="00:02:30" />
+                               BottomText="00:02:30" />
         </StackPanel>
     </Design.PreviewWith>
 
@@ -36,7 +36,7 @@
                             <TextBlock Classes="h2"
                                        Text="{TemplateBinding LargeText}" />
                             <TextBlock Classes="h5"
-                                       Text="{TemplateBinding TimeDifference}" />
+                                       Text="{TemplateBinding BottomText}" />
                         </StackPanel>
 
                     </DockPanel>
