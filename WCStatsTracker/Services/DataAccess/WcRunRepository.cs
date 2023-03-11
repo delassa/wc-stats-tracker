@@ -24,8 +24,8 @@ public class WcRunRepository : GenericRepository<WcRun>, IWcRunRepository
     {
         var runsWithIncludes = _context.WCRuns
             .Include(u => u.Flag)
-            .Include(u => u.StartingAbilities)
-            .Include(u => u.StartingCharacters);
+            .Include(u => u.Abilities)
+            .Include(u => u.Characters);
         return runsWithIncludes;
     }
 }
