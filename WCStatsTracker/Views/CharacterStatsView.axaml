@@ -18,15 +18,15 @@
         <UniformGrid Rows="2"
                      Columns="1">
             <controls:StatCard DockPanel.Dock="Top"
-                               SmallText="{Binding MostUsedCharacterCardValues.SmallText}"
-                               LargeText="{Binding MostUsedCharacterCardValues.LargeText}"
-                               BottomText="{Binding MostUsedCharacterCardValues.BottomText}"
+                               Header="{Binding MostUsedCharacterCardValues.Header}"
+                               LargeBody="{Binding MostUsedCharacterCardValues.LargeBody}"
+                               SmallBody="{Binding MostUsedCharacterCardValues.SmallBody}"
                                IconKind="HumanQueue"
                                Margin="{StaticResource AppMargin}" />
             <controls:StatCard DockPanel.Dock="Bottom"
-                               SmallText="{Binding FastestCharacterCardValues.SmallText}"
-                               LargeText="{Binding FastestCharacterCardValues.LargeText}"
-                               BottomText="{Binding FastestCharacterCardValues.BottomText}"
+                               Header="{Binding FastestCharacterCardValues.Header}"
+                               LargeBody="{Binding FastestCharacterCardValues.LargeBody}"
+                               SmallBody="{Binding FastestCharacterCardValues.SmallBody}"
                                IconKind="HumanRunFast"
                                Margin="{StaticResource AppMargin}" />
         </UniformGrid>
@@ -55,15 +55,15 @@
                      Rows="2"
                      Columns="1">
             <controls:StatCard DockPanel.Dock="Top"
-                               SmallText="{Binding MostUsedAbilityCardValues.SmallText}"
-                               LargeText="{Binding MostUsedAbilityCardValues.LargeText}"
-                               BottomText="{Binding MostUsedAbilityCardValues.BottomText}"
+                               Header="{Binding MostUsedAbilityCardValues.Header}"
+                               LargeBody="{Binding MostUsedAbilityCardValues.LargeBody}"
+                               SmallBody="{Binding MostUsedAbilityCardValues.SmallBody}"
                                IconKind="MagicWand"
                                Margin="{StaticResource AppMargin}" />
             <controls:StatCard DockPanel.Dock="Bottom"
-                               SmallText="{Binding FastestAbilityCardValues.SmallText}"
-                               LargeText="{Binding FastestAbilityCardValues.LargeText}"
-                               BottomText="{Binding FastestAbilityCardValues.BottomText}"
+                               Header="{Binding FastestAbilityCardValues.Header}"
+                               LargeBody="{Binding FastestAbilityCardValues.LargeBody}"
+                               SmallBody="{Binding FastestAbilityCardValues.SmallBody}"
                                IconKind="LorryFast"
                                Margin="{StaticResource AppMargin}" />
         </UniformGrid>

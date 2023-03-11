@@ -20,23 +20,23 @@
         <Grid Grid.Row="1"
               RowDefinitions="auto,*,auto">
             <Grid ColumnDefinitions="*,*,*,*">
-                <controls:StatCard LargeText="{Binding TotalRuns}"
-                                   SmallText="Total Runs"
+                <controls:StatCard LargeBody="{Binding TotalRuns}"
+                                   Header="Total Runs"
                                    IconKind="ListBox"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="1"
-                                   LargeText="{Binding BestTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   SmallText="Best Time"
+                                   LargeBody="{Binding BestTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Best Time"
                                    IconKind="Medal"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="2"
-                                   LargeText="{Binding LastTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   SmallText="Last Time"
+                                   LargeBody="{Binding LastTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Last Time"
                                    IconKind="Stopwatch"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="3"
-                                   LargeText="{Binding StandardDeviation, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   SmallText="Std Deviation"
+                                   LargeBody="{Binding StandardDeviation, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Std Deviation"
                                    IconKind="Calculator"
                                    Margin="{StaticResource AppMargin}" />
             </Grid>
@@ -73,37 +73,37 @@
                 </Border>
                 <controls:StatCard Grid.Row="0"
                                    Grid.Column="1"
-                                   SmallText="Average Time"
-                                   LargeText="{Binding AverageTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Average Time"
+                                   LargeBody="{Binding AverageTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    IconKind="ChartBellCurve"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Row="1"
                                    Grid.Column="1"
-                                   SmallText="Average Last 5"
-                                   LargeText="{Binding AverageLast5, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   BottomText="-00:02:05"
+                                   Header="Average Last 5"
+                                   LargeBody="{Binding AverageLast5, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   SmallBody="-00:02:05"
                                    IconKind="ChartBellCurveCumulative"
                                    Margin="{StaticResource AppMargin}" />
             </Grid>
             <Grid Grid.Row="2"
                   ColumnDefinitions="*,*,*,*">
-                <controls:StatCard LargeText="{Binding KtSkipCount}"
-                                   SmallText="Total Skips"
+                <controls:StatCard LargeBody="{Binding KtSkipCount}"
+                                   Header="Total Skips"
                                    IconKind="ClockFast"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="1"
-                                   LargeText="{Binding KtSkipPercentage, StringFormat={}{0}%}"
-                                   SmallText="Skip %"
+                                   LargeBody="{Binding KtSkipPercentage, StringFormat={}{0}%}"
+                                   Header="Skip %"
                                    IconKind="Percent"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="2"
-                                   LargeText="{Binding AverageKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   SmallText="Average Skip Time"
+                                   LargeBody="{Binding AverageKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Average Skip Time"
                                    IconKind="RunFast"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="3"
-                                   LargeText="{Binding AverageNoKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   SmallText="Average No Skip Time"
+                                   LargeBody="{Binding AverageNoKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   Header="Average No Skip Time"
                                    IconKind="Toilet"
                                    Margin="{StaticResource AppMargin}" />
             </Grid>
