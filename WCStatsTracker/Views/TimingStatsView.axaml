@@ -11,7 +11,6 @@
              d:DesignHeight="450"
              x:DataType="viewModels:TimingStatsViewModel"
              x:Class="WCStatsTracker.Views.TimingStatsView">
-
     <Design.DataContext>
         <viewModels:TimingStatsViewModel />
     </Design.DataContext>
@@ -66,10 +65,10 @@
                             </ComboBox>
                         </StackPanel>
                         <avalonia:CartesianChart Grid.Row="1"
-                                            Series="{Binding TimeChartSeries}"
-                                            XAxes="{Binding TimeChartXAxes}"
-                                            YAxes="{Binding TimeChartYAxes}"
-                                            Margin="{StaticResource AppMargin}" />
+                                                 Series="{Binding TimeChartSeries}"
+                                                 XAxes="{Binding TimeChartXAxes}"
+                                                 YAxes="{Binding TimeChartYAxes}"
+                                                 Margin="{StaticResource AppMargin}" />
                     </Grid>
                 </Border>
                 <controls:StatCard Grid.Row="0"
@@ -82,28 +81,28 @@
                                    Grid.Column="1"
                                    SmallText="Average Last 5"
                                    LargeText="{Binding AverageLast5, StringFormat=\{0:hh\\:mm\\:ss\}}"
-                                   TimeDifference="-00:02:05"
+                                   BottomText="-00:02:05"
                                    IconKind="ChartBellCurveCumulative"
                                    Margin="{StaticResource AppMargin}" />
             </Grid>
             <Grid Grid.Row="2"
                   ColumnDefinitions="*,*,*,*">
-                <controls:StatCard LargeText="{Binding TotalRuns}"
+                <controls:StatCard LargeText="{Binding KtSkipCount}"
                                    SmallText="Total Skips"
                                    IconKind="ClockFast"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="1"
-                                   LargeText="{Binding BestTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   LargeText="{Binding KtSkipPercentage, StringFormat={}{0}%}"
                                    SmallText="Skip %"
                                    IconKind="Percent"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="2"
-                                   LargeText="{Binding LastTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   LargeText="{Binding AverageKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    SmallText="Average Skip Time"
                                    IconKind="RunFast"
                                    Margin="{StaticResource AppMargin}" />
                 <controls:StatCard Grid.Column="3"
-                                   LargeText="{Binding StandardDeviation, StringFormat=\{0:hh\\:mm\\:ss\}}"
+                                   LargeText="{Binding AverageNoKtSkipTime, StringFormat=\{0:hh\\:mm\\:ss\}}"
                                    SmallText="Average No Skip Time"
                                    IconKind="Toilet"
                                    Margin="{StaticResource AppMargin}" />

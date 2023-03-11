@@ -1,9 +1,8 @@
 using System;
-using System.Dynamic;
 namespace WCStatsTracker.Models;
 
 /// <summary>
-/// Simple class to hold a count of a certain character
+///     Simple class to hold a count of a certain character
 /// </summary>
 public class CharacterDataPoint
 {

@@ -32,10 +32,7 @@ public partial class RunsAddViewModel : ViewModelBase
     public string WorkingRunLength
     {
         get => _workingRunLength;
-        set
-        {
-            SetProperty(ref _workingRunLength, value, true);
-        }
+        set => SetProperty(ref _workingRunLength, value, true);
     }
 
     public RunsAddViewModel(IUnitOfWork unitOfWork)
@@ -59,7 +56,7 @@ public partial class RunsAddViewModel : ViewModelBase
         FlagList = _unitOfWork.Flag.GetAllObservable();
         WorkingRun = new WcRun();
         WorkingRunLength = "00:00:00";
-        this.PropertyChanged += OnPropertyChanged;
+        PropertyChanged += OnPropertyChanged;
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
     }
 
@@ -74,7 +71,7 @@ public partial class RunsAddViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Used to add our current run length to the working run object
+    ///     Used to add our current run length to the working run object
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -97,23 +94,23 @@ public partial class RunsAddViewModel : ViewModelBase
 
         // Copy over the starting characters and abilities to the run we're saving
         // Or clear them out if they are already present
-        if (WorkingRun!.StartingCharacters is null) WorkingRun.StartingCharacters = new List<Character>();
-        else WorkingRun.StartingCharacters.Clear();
-        if (WorkingRun.StartingAbilities is null) WorkingRun.StartingAbilities = new List<Ability>();
-        else WorkingRun.StartingAbilities.Clear();
+        if (WorkingRun!.Characters is null) WorkingRun.Characters = new List<Character>();
+        else WorkingRun.Characters.Clear();
+        if (WorkingRun.Abilities is null) WorkingRun.Abilities = new List<Ability>();
+        else WorkingRun.Abilities.Clear();
 
         foreach (var check in StartingAbilities)
         {
             if (check.HaveOne)
             {
-                WorkingRun.StartingAbilities.Add(new Ability { Name = check.Name });
+                WorkingRun.Abilities.Add(new Ability { Name = check.Name });
             }
         }
         foreach (var check in StartingCharacters)
         {
             if (check.HaveOne)
             {
-                WorkingRun.StartingCharacters.Add(new Character { Name = check.Name });
+                WorkingRun.Characters.Add(new Character { Name = check.Name });
             }
         }
         //Create the new db entry

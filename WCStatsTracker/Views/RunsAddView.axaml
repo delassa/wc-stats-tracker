@@ -16,11 +16,15 @@
     </Design.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate x:Key="CharacterOwnTemplate" DataType="{x:Type model:CharacterOwn}">
-            <CheckBox Content="{Binding RelativeSource, Path=Name}" IsChecked="{Binding RelativeSource, Path=HaveOne}" />
+        <DataTemplate x:Key="CharacterOwnTemplate"
+                      DataType="{x:Type model:CharacterOwn}">
+            <CheckBox Content="{Binding RelativeSource, Path=Name}"
+                      IsChecked="{Binding RelativeSource, Path=HaveOne}" />
         </DataTemplate>
-        <DataTemplate x:Key="AbilityOwnTemplate" DataType="{x:Type model:AbilityOwn}">
-            <CheckBox Content="{Binding RelativeSource, Path=Name}" IsChecked="{Binding RelativeSource, Path=HaveOne}" />
+        <DataTemplate x:Key="AbilityOwnTemplate"
+                      DataType="{x:Type model:AbilityOwn}">
+            <CheckBox Content="{Binding RelativeSource, Path=Name}"
+                      IsChecked="{Binding RelativeSource, Path=HaveOne}" />
         </DataTemplate>
     </UserControl.Resources>
 
@@ -43,7 +47,8 @@
                        Classes="h3"
                        Text="Timing and Checks" />
 
-            <Border Grid.Row="1" Classes="ThinBorder">
+            <Border Grid.Row="1"
+                    Classes="ThinBorder">
                 <Grid Name="SliderGrid"
                       Margin="{DynamicResource AppMargin}"
                       ColumnDefinitions="auto,*,auto"
@@ -51,20 +56,30 @@
 
                     <Grid.Styles>
                         <Style Selector="Slider">
-                            <Setter Property="MinWidth" Value="100" />
-                            <Setter Property="TickFrequency" Value="1" />
-                            <Setter Property="IsSnapToTickEnabled" Value="True" />
-                            <Setter Property="Grid.Column" Value="1" />
+                            <Setter Property="MinWidth"
+                                    Value="100" />
+                            <Setter Property="TickFrequency"
+                                    Value="1" />
+                            <Setter Property="IsSnapToTickEnabled"
+                                    Value="True" />
+                            <Setter Property="Grid.Column"
+                                    Value="1" />
                         </Style>
                         <Style Selector="TextBox">
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="Grid.Column" Value="2" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Left" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="Grid.Column"
+                                    Value="2" />
                         </Style>
                         <Style Selector="TextBlock.InputLabel">
-                            <Setter Property="MinWidth" Value="50" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="MinWidth"
+                                    Value="50" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Left" />
                         </Style>
                     </Grid.Styles>
 
@@ -86,7 +101,8 @@
                             Maximum="14"
                             Minimum="0"
                             Value="{Binding WorkingRun.CharactersFound}" />
-                    <TextBox Grid.Row="2" Text="{Binding WorkingRun.CharactersFound}" />
+                    <TextBox Grid.Row="2"
+                             Text="{Binding WorkingRun.CharactersFound}" />
 
                     <TextBlock Grid.Row="3"
                                Classes="InputLabel"
@@ -96,7 +112,8 @@
                             Maximum="27"
                             Minimum="0"
                             Value="{Binding WorkingRun.EspersFound}" />
-                    <TextBox Grid.Row="3" Text="{Binding WorkingRun.EspersFound}" />
+                    <TextBox Grid.Row="3"
+                             Text="{Binding WorkingRun.EspersFound}" />
 
                     <Slider Grid.Row="4"
                             Maximum="8"
@@ -106,7 +123,8 @@
                                Grid.Column="0"
                                Classes="InputLabel"
                                Text="Dragons Killed" />
-                    <TextBox Grid.Row="4" Text="{Binding WorkingRun.DragonsKilled}" />
+                    <TextBox Grid.Row="4"
+                             Text="{Binding WorkingRun.DragonsKilled}" />
 
                     <Slider Grid.Row="5"
                             Maximum="120"
@@ -116,7 +134,8 @@
                                Grid.Column="0"
                                Classes="InputLabel"
                                Text="Chests Opened" />
-                    <TextBox Grid.Row="5" Text="{Binding WorkingRun.ChestsOpened}" />
+                    <TextBox Grid.Row="5"
+                             Text="{Binding WorkingRun.ChestsOpened}" />
 
                     <Slider Grid.Row="6"
                             Maximum="100"
@@ -126,7 +145,8 @@
                                Grid.Column="0"
                                Classes="InputLabel"
                                Text="Checks Done" />
-                    <TextBox Grid.Row="6" Text="{Binding WorkingRun.ChecksDone}" />
+                    <TextBox Grid.Row="6"
+                             Text="{Binding WorkingRun.ChecksDone}" />
 
                     <Slider Grid.Row="7"
                             Maximum="38"
@@ -136,7 +156,8 @@
                                Grid.Column="0"
                                Classes="InputLabel"
                                Text="Bosses Killed" />
-                    <TextBox Grid.Row="7" Text="{Binding WorkingRun.BossesKilled}" />
+                    <TextBox Grid.Row="7"
+                             Text="{Binding WorkingRun.BossesKilled}" />
 
                     <TextBlock Classes="InputLabel"
                                Grid.Row="8"
@@ -217,7 +238,8 @@
                     VerticalAlignment="Top">
 
 
-                <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingCharacters}">
+                <ItemsControl Margin="{DynamicResource AppMargin}"
+                              Items="{Binding StartingCharacters}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="2" />
@@ -225,7 +247,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="model:CharacterOwn">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
+                            <CheckBox Content="{Binding Name}"
+                                      IsChecked="{Binding HaveOne}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -236,7 +259,8 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top">
-                <ItemsControl Margin="{DynamicResource AppMargin}" Items="{Binding StartingAbilities}">
+                <ItemsControl Margin="{DynamicResource AppMargin}"
+                              Items="{Binding StartingAbilities}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="2" />
@@ -244,7 +268,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="model:AbilityOwn">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding HaveOne}" />
+                            <CheckBox Content="{Binding Name}"
+                                      IsChecked="{Binding HaveOne}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

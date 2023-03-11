@@ -50,7 +50,7 @@ public static class GenerateData
                 ChecksDone = rand.Next(0, Checks.ConstantCount),
                 ChestsOpened = rand.Next(0, Chests.ConstantCount),
                 DidKTSkip = rand.Next(0, 1) != 0,
-                StartingAbilities = new List<Ability>
+                Abilities = new List<Ability>
                 {
                     new()
                         { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
@@ -59,7 +59,7 @@ public static class GenerateData
                     new()
                         { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name }
                 },
-                StartingCharacters = new List<Character>
+                Characters = new List<Character>
                 {
                     new()
                         { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },

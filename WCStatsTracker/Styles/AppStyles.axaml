@@ -4,11 +4,16 @@
         <Border Padding="20">
             <Border Classes="ThinBorder">
                 <StackPanel>
-                    <TextBlock Classes="h1" Text="Booom"></TextBlock>
-                    <TextBlock Classes="h2" Text="Booom"></TextBlock>
-                    <TextBlock Classes="h3" Text="Booom"></TextBlock>
-                    <TextBlock Classes="h4" Text="Booom"></TextBlock>
-                    <TextBlock Classes="h5" Text="Booom"></TextBlock>
+                    <TextBlock Classes="h1"
+                               Text="Booom" />
+                    <TextBlock Classes="h2"
+                               Text="Booom" />
+                    <TextBlock Classes="h3"
+                               Text="Booom" />
+                    <TextBlock Classes="h4"
+                               Text="Booom" />
+                    <TextBlock Classes="h5"
+                               Text="Booom" />
 
                 </StackPanel>
             </Border><!-- Add Controls for Previewer Here -->
@@ -16,35 +21,49 @@
     </Design.PreviewWith>
 
     <Style Selector="TextBlock.h1">
-        <Setter Property="FontSize" Value="32"/>
-        <Setter Property="FontWeight" Value="Black"/>
+        <Setter Property="FontSize"
+                Value="32" />
+        <Setter Property="FontWeight"
+                Value="Black" />
     </Style>
 
     <Style Selector="TextBlock.h2">
-        <Setter Property="FontSize" Value="28"/>
-        <Setter Property="FontWeight" Value="Heavy"/>
+        <Setter Property="FontSize"
+                Value="28" />
+        <Setter Property="FontWeight"
+                Value="Heavy" />
     </Style>
 
     <Style Selector="TextBlock.h3">
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize"
+                Value="24" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
     </Style>
 
     <Style Selector="TextBlock.h4">
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize"
+                Value="20" />
+        <Setter Property="FontWeight"
+                Value="Medium" />
     </Style>
 
     <Style Selector="TextBlock.h5">
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="FontWeight" Value="Regular"/>
-        </Style>
+        <Setter Property="FontSize"
+                Value="16" />
+        <Setter Property="FontWeight"
+                Value="Regular" />
+    </Style>
     <!-- Global styles for the application -->
     <Style Selector="Border.ThinBorder">
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefault}" />
-        <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="BoxShadow" Value="2 2 3 3 Black" />
+        <Setter Property="BorderThickness"
+                Value="2" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource ControlStrongStrokeColorDefault}" />
+        <Setter Property="CornerRadius"
+                Value="4" />
+        <Setter Property="BoxShadow"
+                Value="2 2 3 3 Black" />
     </Style>
 
     <Styles.Resources>
@@ -52,7 +71,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- Button On CalendarDatePicker doesn't seem to work in FluentAvalonia, reverting to default
                 Calendar date picker -->
-                <ResourceInclude Source="avares://Avalonia.Themes.Fluent/Controls/CalendarDatePicker.xaml"/>
+                <ResourceInclude Source="avares://Avalonia.Themes.Fluent/Controls/CalendarDatePicker.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>

@@ -4,7 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         xmlns:vm="using:WCStatsTracker.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        Width="1800"
+        Height="900"
         x:Class="WCStatsTracker.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         x:DataType="vm:MainWindowViewModel"
@@ -14,7 +18,10 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="50,*">
-        <TextBlock HorizontalAlignment="Center" FontSize="24" FontWeight="Black" Text="Worlds Collide Stats Tracker" />
+        <TextBlock HorizontalAlignment="Center"
+                   FontSize="24"
+                   FontWeight="Black"
+                   Text="Worlds Collide Stats Tracker" />
 
         <ui:NavigationView PaneDisplayMode="Left"
                            MenuItems="{Binding Views}"
@@ -23,12 +30,14 @@
                            Grid.Row="1">
             <ui:NavigationView.MenuItemTemplate>
                 <DataTemplate>
-                    <ui:NavigationViewItem Content="{Binding ViewName}" IconSource="{Binding IconName}" />
+                    <ui:NavigationViewItem Content="{Binding ViewName}"
+                                           IconSource="{Binding IconName}" />
                 </DataTemplate>
             </ui:NavigationView.MenuItemTemplate>
             <ui:NavigationView.Content>
                 <ScrollViewer>
-                    <Border Classes="ThinBorder" Margin="10">
+                    <Border Classes="ThinBorder"
+                            Margin="10">
                         <TransitioningContentControl Content="{Binding CurrentView}" />
                     </Border>
                 </ScrollViewer>

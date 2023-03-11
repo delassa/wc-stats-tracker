@@ -3,7 +3,7 @@ using WCStatsTracker.Models;
 using WCStatsTracker.Utility.Data;
 namespace WCStatsTracker.ViewModels.DesignTime;
 
-public partial class DesignRunListViewModel : ViewModelBase
+public class DesignRunListViewModel : ViewModelBase
 {
     public ObservableCollection<WcRun> RunList { get; set; }
 

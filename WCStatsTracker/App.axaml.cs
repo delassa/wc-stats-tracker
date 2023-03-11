@@ -4,20 +4,19 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using WCStatsTracker.Models;
-
 namespace WCStatsTracker;
 
 public class App : Application

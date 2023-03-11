@@ -3,7 +3,7 @@ namespace WCStatsTracker.ViewModels;
 
 public class StatsPageViewModel : ViewModelBase
 {
-    private List<IViewModelBase> StatViews { get; set; }
+    private List<IViewModelBase> StatViews { get; }
 
     public StatsPageViewModel(TimingStatsViewModel timingStatsViewModel, CharacterStatsViewModel characterStatsViewModel)
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Serilog;
 namespace WCStatsTracker;
 
 internal class Program
@@ -12,6 +13,8 @@ internal class Program
     {
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
+
+        Log.CloseAndFlush();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

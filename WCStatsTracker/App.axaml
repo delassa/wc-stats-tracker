@@ -17,7 +17,7 @@
         <materialIcons:MaterialIconStyles />
         <StyleInclude Source="/Styles/DataValidationErrors.axaml" />
         <StyleInclude Source="/Styles/AppStyles.axaml" />
-        <StyleInclude Source="/Controls/StatCard.axaml"/>
+        <StyleInclude Source="/Controls/StatCard.axaml" />
         <!--<StyleInclude Source="/Controls/ImageButton.axaml"/>-->
     </Application.Styles>
 </Application>

@@ -3,7 +3,7 @@ using WCStatsTracker.Models;
 using WCStatsTracker.Utility.Data;
 namespace WCStatsTracker.ViewModels.DesignTime;
 
-public partial class DesignFlagsPageViewModel : ViewModelBase
+public class DesignFlagsPageViewModel : ViewModelBase
 {
     public ObservableCollection<Flag>? FlagList { get; set; }
 

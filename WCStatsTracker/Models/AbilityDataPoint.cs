@@ -2,7 +2,7 @@ using System;
 namespace WCStatsTracker.Models;
 
 /// <summary>
-/// Simply class to hold the count of a certain ability
+///     Simply class to hold the count of a certain ability
 /// </summary>
 public class AbilityDataPoint
 {
