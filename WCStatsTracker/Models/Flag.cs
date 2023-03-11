@@ -7,9 +7,9 @@ namespace WCStatsTracker.Models;
 /// <summary>
 ///     Class to represent a flagset for a particular seed
 /// </summary>
-public partial class Flag : BaseModelObject, ICloneable
+public partial class Flag : ObservableValidator, ICloneable
 {
-
+    public int FlagId { get; set; }
     /// <summary>
     ///     Flagstring of this particular flagset
     /// </summary>
@@ -38,8 +38,8 @@ public partial class Flag : BaseModelObject, ICloneable
     {
         return new Flag
         {
-            Name = this.Name,
-            FlagString = this.FlagString,
+            Name = Name,
+            FlagString = FlagString,
             Runs = new List<WcRun>()
         };
     }

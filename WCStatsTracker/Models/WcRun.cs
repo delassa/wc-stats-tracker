@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.Models;
 
 /// <summary>
 ///     Data for a WC Run
 /// </summary>
-public class WcRun : BaseModelObject
+public class WcRun : ObservableValidator
 {
     private int _bossesKilled;
 
@@ -18,9 +19,12 @@ public class WcRun : BaseModelObject
     private bool _didKTSkip;
     private int _dragonsKilled;
     private int _espersFound;
-    private Flag? _flag;
+    private Flag _flag = new();
     private TimeSpan _runLength;
     private string _seed = string.Empty;
+
+
+    public int WcRunId { get; set; }
 
     [Range(0, Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
     public int BossesKilled
@@ -29,7 +33,7 @@ public class WcRun : BaseModelObject
         set => SetProperty(ref _bossesKilled, value, true);
     }
 
-    [Range(0, Characters.ConstantCount, ErrorMessage = "Characters must be between 0 and 14")]
+    [Range(0, Wc.Data.Characters.ConstantCount, ErrorMessage = "Characters must be between 0 and 14")]
     public int CharactersFound
     {
         get => _charactersFound;
@@ -102,10 +106,6 @@ public class WcRun : BaseModelObject
     /// <summary>
     ///     Starting characters used in this run
     /// </summary>
-    public virtual ICollection<Character>? StartingCharacters { get; set; }
-
-    /// <summary>
-    ///     Starting abilities used in this run
-    /// </summary>
-    public virtual ICollection<Ability>? StartingAbilities { get; set; }
+    public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+    public virtual ICollection<Ability> Abilities { get; set; } = new List<Ability>();
 }
