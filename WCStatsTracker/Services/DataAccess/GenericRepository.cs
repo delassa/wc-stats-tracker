@@ -39,9 +39,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     ///     Gets all the entities in the db context
     /// </summary>
     /// <returns>A list of the entities</returns>
-    public IEnumerable<T> GetAll()
+    public IQueryable<T> GetAll()
     {
-        return _context.Set<T>().ToList();
+        return _context.Set<T>();
     }
 
     /// <summary>

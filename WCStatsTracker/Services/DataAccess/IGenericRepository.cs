@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 namespace WCStatsTracker.Services.DataAccess;
 
@@ -21,7 +22,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
     ///     Get all records of a specific entity
     /// </summary>
     /// <returns>An IEnumerable of all the entities</returns>
-    IEnumerable<TEntity> GetAll();
+    IQueryable<TEntity> GetAll();
 
     /// <summary>
     ///     Finds entities with the specified func
@@ -56,13 +57,13 @@ public interface IGenericRepository<TEntity> where TEntity : class
     void RemoveRange(IEnumerable<TEntity> entities);
 
     /// <summary>
-    /// Grabs the local from the dbcontext as an observable collection
+    ///     Grabs the local from the dbcontext as an observable collection
     /// </summary>
     /// <returns>An Observable collection of the local from the dbcontext</returns>
     ObservableCollection<TEntity> GetAllObservable();
 
     /// <summary>
-    /// Loads the data from the DB to populate the local value of the dbcontext
+    ///     Loads the data from the DB to populate the local value of the dbcontext
     /// </summary>
     void Load();
 }
