@@ -13,58 +13,59 @@
         <viewModels:CharacterStatsViewModel />
     </Design.DataContext>
 
-        <Grid Grid.Row="0"
-              RowDefinitions="*, *"
-              ColumnDefinitions="*,*,*">
-            <UniformGrid Rows="2"
-                         Columns="1">
-                <controls:StatCard DockPanel.Dock="Top"
-                                   SmallText="Most Used Starting Character"
-                                   LargeText="Sabin"
-                                   TimeDifference="Total Runs 12"
-                                   IconKind="HumanQueue"
-                                   Margin="{StaticResource AppMargin}" />
-                <controls:StatCard DockPanel.Dock="Bottom"
-                                   SmallText="Fastest Starting Character"
-                                   LargeText="Cyan"
-                                   TimeDifference="Average Time:"
-                                   IconKind="HumanRunFast"
-                                   Margin="{StaticResource AppMargin}" />
-            </UniformGrid>
-            <Border Grid.Row="0"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Classes="ThinBorder"
-                    Margin="{StaticResource AppMargin}">
-                <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
-                                          Series="{Binding CharacterChartSeries}"
-                                          XAxes="{Binding CharacterChartXAxes}" />
-            </Border>
-            <Border Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Classes="ThinBorder"
-                    Margin="{StaticResource AppMargin}">
-                <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
-                                          Series="{Binding AbilityChartSeries}"
-                                          XAxes="{Binding AbilityChartXAxes}" />
-            </Border>
-            <UniformGrid Grid.Row="1"
-                         Grid.Column="2"
-                         Rows="2"
-                         Columns="1">
-                <controls:StatCard DockPanel.Dock="Top"
-                                   SmallText="Most Used Starting Ability"
-                                   LargeText="Ability Name"
-                                   TimeDifference="Total Runs : 10"
-                                   IconKind="MagicWand"
-                                   Margin="{StaticResource AppMargin}" />
-                <controls:StatCard DockPanel.Dock="Bottom"
-                                   SmallText="Fastest Starting Ability"
-                                   LargeText="Ability Name"
-                                   TimeDifference="Average Time"
-                                   IconKind="LorryFast"
-                                   Margin="{StaticResource AppMargin}" />
-            </UniformGrid>
-        </Grid>
+    <Grid RowDefinitions="*, *"
+          ColumnDefinitions="*,*,*,*">
+        <UniformGrid Rows="2"
+                     Columns="1">
+            <controls:StatCard DockPanel.Dock="Top"
+                               SmallText="{Binding MostUsedCharacterCardValues.SmallText}"
+                               LargeText="{Binding MostUsedCharacterCardValues.LargeText}"
+                               BottomText="{Binding MostUsedCharacterCardValues.BottomText}"
+                               IconKind="HumanQueue"
+                               Margin="{StaticResource AppMargin}" />
+            <controls:StatCard DockPanel.Dock="Bottom"
+                               SmallText="{Binding FastestCharacterCardValues.SmallText}"
+                               LargeText="{Binding FastestCharacterCardValues.LargeText}"
+                               BottomText="{Binding FastestCharacterCardValues.BottomText}"
+                               IconKind="HumanRunFast"
+                               Margin="{StaticResource AppMargin}" />
+        </UniformGrid>
+        <Border Grid.Row="0"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Classes="ThinBorder"
+                Margin="{StaticResource AppMargin}">
+            <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
+                                      Series="{Binding CharacterChartSeries}"
+                                      XAxes="{Binding CharacterChartXAxes}"
+                                      YAxes="{Binding CharacterChartYAxes}" />
+        </Border>
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Classes="ThinBorder"
+                Margin="{StaticResource AppMargin}">
+            <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
+                                      Series="{Binding AbilityChartSeries}"
+                                      XAxes="{Binding AbilityChartXAxes}"
+                                      YAxes="{Binding AbilityChartYAxes}" />
+        </Border>
+        <UniformGrid Grid.Row="1"
+                     Grid.Column="3"
+                     Rows="2"
+                     Columns="1">
+            <controls:StatCard DockPanel.Dock="Top"
+                               SmallText="{Binding MostUsedAbilityCardValues.SmallText}"
+                               LargeText="{Binding MostUsedAbilityCardValues.LargeText}"
+                               BottomText="{Binding MostUsedAbilityCardValues.BottomText}"
+                               IconKind="MagicWand"
+                               Margin="{StaticResource AppMargin}" />
+            <controls:StatCard DockPanel.Dock="Bottom"
+                               SmallText="{Binding FastestAbilityCardValues.SmallText}"
+                               LargeText="{Binding FastestAbilityCardValues.LargeText}"
+                               BottomText="{Binding FastestAbilityCardValues.BottomText}"
+                               IconKind="LorryFast"
+                               Margin="{StaticResource AppMargin}" />
+        </UniformGrid>
+    </Grid>
 </UserControl>
