@@ -14,25 +14,25 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="*, *"
-          ColumnDefinitions="*,*,*,*">
+          ColumnDefinitions="*,4*,*">
         <UniformGrid Rows="2"
                      Columns="1">
             <controls:StatCard DockPanel.Dock="Top"
-                               Header="{Binding MostUsedCharacterCardValues.Header}"
-                               LargeBody="{Binding MostUsedCharacterCardValues.LargeBody}"
-                               SmallBody="{Binding MostUsedCharacterCardValues.SmallBody}"
+                               Header="{Binding MostUsedCharacterCard.Header}"
+                               LargeBody="{Binding MostUsedCharacterCard.LargeBody}"
+                               SmallBody="{Binding MostUsedCharacterCard.SmallBody}"
                                IconKind="HumanQueue"
                                Margin="{StaticResource AppMargin}" />
             <controls:StatCard DockPanel.Dock="Bottom"
-                               Header="{Binding FastestCharacterCardValues.Header}"
-                               LargeBody="{Binding FastestCharacterCardValues.LargeBody}"
-                               SmallBody="{Binding FastestCharacterCardValues.SmallBody}"
+                               Header="{Binding FastestCharacterCard.Header}"
+                               LargeBody="{Binding FastestCharacterCard.LargeBody}"
+                               SmallBody="{Binding FastestCharacterCard.SmallBody}"
                                IconKind="HumanRunFast"
                                Margin="{StaticResource AppMargin}" />
         </UniformGrid>
         <Border Grid.Row="0"
                 Grid.Column="1"
-                Grid.ColumnSpan="3"
+                Grid.ColumnSpan="2"
                 Classes="ThinBorder"
                 Margin="{StaticResource AppMargin}">
             <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
@@ -42,7 +42,7 @@
         </Border>
         <Border Grid.Row="1"
                 Grid.Column="0"
-                Grid.ColumnSpan="3"
+                Grid.ColumnSpan="2"
                 Classes="ThinBorder"
                 Margin="{StaticResource AppMargin}">
             <liveChart:CartesianChart Margin="{StaticResource AppMargin}"
@@ -51,19 +51,19 @@
                                       YAxes="{Binding AbilityChartYAxes}" />
         </Border>
         <UniformGrid Grid.Row="1"
-                     Grid.Column="3"
+                     Grid.Column="2"
                      Rows="2"
                      Columns="1">
             <controls:StatCard DockPanel.Dock="Top"
-                               Header="{Binding MostUsedAbilityCardValues.Header}"
-                               LargeBody="{Binding MostUsedAbilityCardValues.LargeBody}"
-                               SmallBody="{Binding MostUsedAbilityCardValues.SmallBody}"
+                               Header="{Binding MostUsedAbilityCard.Header}"
+                               LargeBody="{Binding MostUsedAbilityCard.LargeBody}"
+                               SmallBody="{Binding MostUsedAbilityCard.SmallBody}"
                                IconKind="MagicWand"
                                Margin="{StaticResource AppMargin}" />
             <controls:StatCard DockPanel.Dock="Bottom"
-                               Header="{Binding FastestAbilityCardValues.Header}"
-                               LargeBody="{Binding FastestAbilityCardValues.LargeBody}"
-                               SmallBody="{Binding FastestAbilityCardValues.SmallBody}"
+                               Header="{Binding FastestAbilityCard.Header}"
+                               LargeBody="{Binding FastestAbilityCard.LargeBody}"
+                               SmallBody="{Binding FastestAbilityCard.SmallBody}"
                                IconKind="LorryFast"
                                Margin="{StaticResource AppMargin}" />
         </UniformGrid>

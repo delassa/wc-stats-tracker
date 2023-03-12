@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LiveChartsCore;
@@ -11,12 +12,15 @@ using SkiaSharp;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Utility;
-using WCStatsTracker.Wc.Data;
+using WCStatsTracker.DataTypes;
+// ReSharper disable CollectionNeverQueried.Local
 namespace WCStatsTracker.ViewModels;
 
 public partial class CharacterStatsViewModel : ViewModelBase
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     private ObservableCollection<ISeries> CharacterChartSeries { get; set; }
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     private ObservableCollection<ISeries> AbilityChartSeries { get; set; }
     private List<Axis> CharacterChartXAxes { get; } = new();
     private List<Axis> CharacterChartYAxes { get; } = new();
@@ -25,17 +29,15 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private readonly ObservableCollection<CharacterDataPoint> _characterDataSeries;
     private readonly ObservableCollection<AbilityDataPoint> _abilityDataSeries;
     private readonly ObservableCollection<WcRun> _runs;
-    private ObservableCollection<Character> _characters;
-    private ObservableCollection<Ability> _abilities;
 
     [ObservableProperty]
-    private StatCardValues _mostUsedCharacterCardValues;
+    private StatCardValues _mostUsedCharacterCard;
     [ObservableProperty]
-    private StatCardValues _fastestCharacterCardValues;
+    private StatCardValues _fastestCharacterCard;
     [ObservableProperty]
-    private StatCardValues _mostUsedAbilityCardValues;
+    private StatCardValues _mostUsedAbilityCard;
     [ObservableProperty]
-    private StatCardValues _fastestAbilityCardValues;
+    private StatCardValues _fastestAbilityCard;
 
     public CharacterStatsViewModel(IUnitOfWork unitOfWork)
     {
@@ -43,20 +45,18 @@ public partial class CharacterStatsViewModel : ViewModelBase
         IconName = "HumanQueue";
 
         _runs = unitOfWork.WcRun.GetAllObservable();
-        _characters = unitOfWork.Character.GetAllObservable();
-        _abilities = unitOfWork.Ability.GetAllObservable();
 
         // Set up our counts of characters and abilities
         _characterDataSeries = new ObservableCollection<CharacterDataPoint>();
         _abilityDataSeries = new ObservableCollection<AbilityDataPoint>();
 
         //Load up a count of how many runs each ability and character was used in
-        foreach (var ability in Abilities.AbilitiesAvailable)
+        foreach (var ability in AbilityData.Names)
         {
-            var abilityRuns = _runs.Where(run => run.Abilities.Any(a => a.Name == ability.Name)).ToList();
+            var abilityRuns = _runs.Where(run => run.Abilities.Any(a => a.Name == ability)).ToList();
             var abilityDataPoint = new AbilityDataPoint
             {
-                Name = ability.Name,
+                Name = ability,
                 Count = abilityRuns.Count
             };
             if (abilityDataPoint.Count > 0)
@@ -64,13 +64,12 @@ public partial class CharacterStatsViewModel : ViewModelBase
                     TimeSpan.FromSeconds(abilityRuns.Average(r => r.RunLength.TotalSeconds));
             _abilityDataSeries.Add(abilityDataPoint);
         }
-
-        foreach (var character in Characters.CharactersAvailable)
+        foreach (var character in CharacterData.Names)
         {
-            var characterRuns = _runs.Where(run => run.Characters.Any(c => c.Name == character.Name)).ToList();
+            var characterRuns = _runs.Where(run => run.Characters.Any(c => c.Name == character)).ToList();
             var characterDataPoint = new CharacterDataPoint
             {
-                Name = character.Name,
+                Name = character,
                 Count = characterRuns.Count()
             };
             if (characterDataPoint.Count > 0)
@@ -85,56 +84,56 @@ public partial class CharacterStatsViewModel : ViewModelBase
 
     private void SetupStatCards()
     {
-        MostUsedCharacterCardValues = new StatCardValues
+        MostUsedCharacterCard = new StatCardValues
         {
-            SmallText = "Most Used Character"
+            Header = "Most Used Character"
         };
         var mostUsedCharacter = _characterDataSeries.MaxBy(cdp => cdp.Count);
         if (mostUsedCharacter is not null)
         {
-            MostUsedCharacterCardValues.LargeText = mostUsedCharacter.Name;
-            MostUsedCharacterCardValues.BottomText = $"Times Used : {mostUsedCharacter.Count}";
+            MostUsedCharacterCard.LargeBody = mostUsedCharacter.Name;
+            MostUsedCharacterCard.SmallBody = $"Times Used : {mostUsedCharacter.Count}";
         }
 
-        FastestCharacterCardValues = new StatCardValues
+        FastestCharacterCard = new StatCardValues
         {
-            SmallText = "Fastest Character"
+            Header = "Fastest Character"
         };
         var fastestCharacter = _characterDataSeries.Where(cdp => cdp.AverageRunLength > TimeSpan.Zero)
             .MinBy(cdp => cdp.AverageRunLength);
         if (fastestCharacter is not null)
         {
-            FastestCharacterCardValues.LargeText = fastestCharacter.Name;
-            FastestCharacterCardValues.BottomText = $"Average Run : {fastestCharacter.AverageRunLength:hh\\:mm\\:ss}";
+            FastestCharacterCard.LargeBody = fastestCharacter.Name;
+            FastestCharacterCard.SmallBody = $"Average Run : {fastestCharacter.AverageRunLength:hh\\:mm\\:ss}";
         }
 
-        MostUsedAbilityCardValues = new StatCardValues
+        MostUsedAbilityCard = new StatCardValues
         {
-            SmallText = "Most Used Ability"
+            Header = "Most Used Ability"
         };
         var mostUsedAbility = _abilityDataSeries.MaxBy(ads => ads.Count);
         if (mostUsedAbility is not null)
         {
-            MostUsedAbilityCardValues.LargeText = mostUsedAbility.Name;
-            MostUsedAbilityCardValues.BottomText = $"Times Used : {mostUsedAbility.Count}";
+            MostUsedAbilityCard.LargeBody = mostUsedAbility.Name;
+            MostUsedAbilityCard.SmallBody = $"Times Used : {mostUsedAbility.Count}";
         }
 
-        FastestAbilityCardValues = new StatCardValues
+        FastestAbilityCard = new StatCardValues
         {
-            SmallText = "Fastest Ability"
+            Header = "Fastest Ability"
         };
         var fastestAbility = _abilityDataSeries.Where(ads => ads.AverageRunLength > TimeSpan.Zero)
             .MinBy(ads => ads.AverageRunLength);
         if (fastestAbility is not null)
         {
-            FastestAbilityCardValues.LargeText = fastestAbility.Name;
-            FastestAbilityCardValues.BottomText = $"Average Run : {fastestAbility.AverageRunLength:hh\\:mm\\:ss}";
+            FastestAbilityCard.LargeBody = fastestAbility.Name;
+            FastestAbilityCard.SmallBody = $"Average Run : {fastestAbility.AverageRunLength:hh\\:mm\\:ss}";
         }
     }
 
     private void SetupCharts()
     {
-        Paint foregroundBarPaint = new SolidColorPaint(new SKColor(0xf9, 0xda, 0xda, 0x80));
+        Paint foregroundBarPaint = new SolidColorPaint(new SKColor(0x03, 0xda, 0xc6, 0x50));
 
         CharacterChartSeries = new ObservableCollection<ISeries>
         {
@@ -150,7 +149,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 },
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
-                ZIndex = 0
+                ZIndex = 0,
             },
             new ColumnSeries<CharacterDataPoint>
             {
@@ -163,16 +162,16 @@ public partial class CharacterStatsViewModel : ViewModelBase
                     point.SecondaryValue = point.Context.Entity.EntityIndex;
                 },
                 ScalesYAt = 1,
-                IgnoresBarPosition = true,
+                IgnoresBarPosition = false,
                 ZIndex = 1,
-                Fill = foregroundBarPaint
+                Fill = foregroundBarPaint,
             }
         };
         CharacterChartXAxes.Add(
             new Axis
             {
                 Labels = _characterDataSeries.Select(cds => cds.Name).ToList(),
-                LabelsRotation = 60
+                LabelsRotation = 60,
             }
         );
         CharacterChartYAxes.Add(new Axis { IsVisible = false });
@@ -189,7 +188,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
             {
                 Values = _abilityDataSeries,
                 TooltipLabelFormatter = chartPoint =>
-                    $"{chartPoint.Model!.Name}: {chartPoint.Model.Count}",
+                    $"{chartPoint.Model!.Name}: {chartPoint.Model.Count} Runs",
                 Mapping = (abilityCount, point) =>
                 {
                     point.PrimaryValue = abilityCount.Count;
@@ -197,7 +196,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 },
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
-                ZIndex = 0
+                ZIndex = 0,
             },
             new ColumnSeries<AbilityDataPoint>
             {
@@ -210,9 +209,9 @@ public partial class CharacterStatsViewModel : ViewModelBase
                     point.SecondaryValue = point.Context.Entity.EntityIndex;
                 },
                 ScalesYAt = 1,
-                IgnoresBarPosition = true,
+                IgnoresBarPosition = false,
                 ZIndex = 1,
-                Fill = foregroundBarPaint
+                Fill = foregroundBarPaint,
             }
         };
         AbilityChartXAxes.Add(
@@ -220,7 +219,6 @@ public partial class CharacterStatsViewModel : ViewModelBase
             {
                 Labels = _abilityDataSeries.Select(ads => ads.Name).ToList(),
                 LabelsRotation = 60,
-                Padding = new Padding(0.01)
             });
         AbilityChartYAxes.Add(new Axis { IsVisible = false });
         AbilityChartYAxes.Add(
