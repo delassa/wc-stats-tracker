@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using WCStatsTracker.Models;
-using WCStatsTracker.Utility.Data;
+using WCStatsTracker.Utility;
 namespace WCStatsTracker.ViewModels.DesignTime;
 
 public class DesignFlagsPageViewModel : ViewModelBase

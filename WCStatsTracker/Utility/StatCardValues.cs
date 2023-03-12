@@ -4,9 +4,9 @@ namespace WCStatsTracker.Utility;
 public partial class StatCardValues : ObservableObject
 {
     [ObservableProperty]
-    private string _smallText = string.Empty;
+    private string _header = string.Empty;
     [ObservableProperty]
-    private string _largeText = string.Empty;
+    private string _largeBody = string.Empty;
     [ObservableProperty]
-    private string _bottomText = string.Empty;
+    private string _smallBody = string.Empty;
 }

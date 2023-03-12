@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.Wc.Data;
+using WCStatsTracker.DataTypes;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsAddViewModel : ViewModelBase
@@ -42,15 +42,15 @@ public partial class RunsAddViewModel : ViewModelBase
         IconName = "Add";
 
         StartingCharacters = new List<CharacterOwn>();
-        foreach (var character in Characters.CharactersAvailable)
+        foreach (var character in CharacterData.Names)
         {
-            StartingCharacters.Add(new CharacterOwn(character.Name, false));
+            StartingCharacters.Add(new CharacterOwn(character, false));
         }
 
         StartingAbilities = new List<AbilityOwn>();
-        foreach (var ability in Abilities.AbilitiesAvailable)
+        foreach (var ability in AbilityData.Names)
         {
-            StartingAbilities.Add(new AbilityOwn(ability.Name, false));
+            StartingAbilities.Add(new AbilityOwn(ability, false));
         }
 
         FlagList = _unitOfWork.Flag.GetAllObservable();

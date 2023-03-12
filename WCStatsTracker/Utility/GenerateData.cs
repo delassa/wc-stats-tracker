@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using WCStatsTracker.Models;
 using WCStatsTracker.Wc.Data;
-namespace WCStatsTracker.Utility.Data;
+using WCStatsTracker.DataTypes;
+namespace WCStatsTracker.Utility;
 
 /// <summary>
 ///     Static class to generate some random data
@@ -43,7 +44,7 @@ public static class GenerateData
             WcRun run = new()
             {
                 RunLength = new TimeSpan(rand.Next(0, 3), rand.Next(0, 60), rand.Next(0, 60)),
-                CharactersFound = rand.Next(0, Characters.ConstantCount),
+                CharactersFound = rand.Next(0, CharacterData.MaxAvailable),
                 EspersFound = rand.Next(0, Espers.ConstantCount),
                 BossesKilled = rand.Next(0, Bosses.ConstantCount),
                 DragonsKilled = rand.Next(0, Dragons.ConstantCount),
@@ -53,20 +54,20 @@ public static class GenerateData
                 Abilities = new List<Ability>
                 {
                     new()
-                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                        { Name = AbilityData.Names[rand.Next(0, 21)] },
                     new()
-                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name },
+                        { Name = AbilityData.Names[rand.Next(0, 21)] },
                     new()
-                        { Name = Abilities.AbilitiesAvailable[rand.Next(0, 21)].Name }
+                        { Name = AbilityData.Names[rand.Next(0, 21)] },
                 },
                 Characters = new List<Character>
                 {
                     new()
-                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                        { Name = CharacterData.Names[rand.Next(0, 21)] },
                     new()
-                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name },
+                        { Name = CharacterData.Names[rand.Next(0, 21)] },
                     new()
-                        { Name = Characters.CharactersAvailable[rand.Next(0, 14)].Name }
+                        { Name = CharacterData.Names[rand.Next(0, 21)] },
                 },
                 DateRan = DateTime.Now,
                 Flag = new Flag

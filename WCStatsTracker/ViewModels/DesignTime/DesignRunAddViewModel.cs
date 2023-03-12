@@ -1,30 +1,27 @@
 ﻿using System.Collections.Generic;
 using WCStatsTracker.Models;
-using WCStatsTracker.Wc.Data;
+using WCStatsTracker.DataTypes;
 namespace WCStatsTracker.ViewModels.DesignTime;
 
 public class DesignRunAddViewModel : ViewModelBase
 {
+    public List<CharacterOwn> StartingCharacters { get; set; }
+    public List<AbilityOwn> StartingAbilities { get; set; }
+    public WcRun WorkingRun { get; set; }
+
     public DesignRunAddViewModel()
     {
         StartingCharacters = new List<CharacterOwn>();
-        foreach (var character in Characters.CharactersAvailable)
+        foreach (var characterName in CharacterData.Names)
         {
-            StartingCharacters.Add(new CharacterOwn(character.Name, false));
+            StartingCharacters.Add(new CharacterOwn(characterName, false));
         }
 
         StartingAbilities = new List<AbilityOwn>();
-        foreach (var ability in Abilities.AbilitiesAvailable)
+        foreach (var abilityName in AbilityData.Names)
         {
-            StartingAbilities.Add(new AbilityOwn(ability.Name, false));
+            StartingAbilities.Add(new AbilityOwn(abilityName, false));
         }
-
         WorkingRun = new WcRun();
     }
-
-    public List<CharacterOwn> StartingCharacters { get; set; }
-
-    public List<AbilityOwn> StartingAbilities { get; set; }
-
-    public WcRun WorkingRun { get; set; }
 }
