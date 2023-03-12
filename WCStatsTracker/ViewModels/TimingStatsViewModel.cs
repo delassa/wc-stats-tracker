@@ -15,6 +15,7 @@ using SkiaSharp;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Services.Messages;
+using WCStatsTracker.Utility;
 namespace WCStatsTracker.ViewModels;
 
 public partial class TimingStatsViewModel : ViewModelBase
@@ -38,26 +39,27 @@ public partial class TimingStatsViewModel : ViewModelBase
     private string _selectedFlagName;
     [ObservableProperty]
     private int _selectedFlagIndex;
+
     [ObservableProperty]
-    private int _totalRuns;
+    private StatCardValues _totalRunsCard;
     [ObservableProperty]
-    private TimeSpan _bestTime;
+    private StatCardValues _bestTimeCard;
     [ObservableProperty]
-    private TimeSpan _lastTime;
+    private StatCardValues _lastTimeCard;
     [ObservableProperty]
-    private TimeSpan _averageTime;
+    private StatCardValues _averageTimeCard;
     [ObservableProperty]
-    private TimeSpan _averageLast5;
+    private StatCardValues _averageLast5Card;
     [ObservableProperty]
-    private TimeSpan _standardDeviation;
+    private StatCardValues _standardDeviationCard;
     [ObservableProperty]
-    private int _ktSkipCount;
+    private StatCardValues _ktSkipCountCard;
     [ObservableProperty]
-    private int _ktSkipPercentage;
+    private StatCardValues _ktSkipPercentCard;
     [ObservableProperty]
-    private TimeSpan _averageKtSkipTime;
+    private StatCardValues _averageKtSkipCard;
     [ObservableProperty]
-    private TimeSpan _averageNoKtSkipTime;
+    private StatCardValues _averageNoKtSkipCard;
 
     #endregion
 
@@ -76,6 +78,19 @@ public partial class TimingStatsViewModel : ViewModelBase
         }
         Runs.CollectionChanged += RunsOnCollectionChanged;
         _flags.CollectionChanged += FlagsOnCollectionChanged;
+
+        // set up initial values for stat cards
+        TotalRunsCard = new StatCardValues { Header = "Total Runs", LargeBody = "0"};
+        BestTimeCard = new StatCardValues { Header = "Best Time", LargeBody = "00:00:00", SmallBody = "00:00:00 from average"};
+        LastTimeCard = new StatCardValues { Header = "Last Time", LargeBody = "00:00:00", SmallBody = "00:00:00 from average"};
+        AverageTimeCard = new StatCardValues { Header = "Average Time" , LargeBody = "00:00:00", SmallBody = ""};
+        AverageLast5Card = new StatCardValues { Header = "Average of Last 5 Runs" , LargeBody = "00:00:00", SmallBody = ""};
+        StandardDeviationCard = new StatCardValues { Header = "Standard Deviation", LargeBody = "00:00:00"};
+        KtSkipCountCard = new StatCardValues { Header = "Total KT Skips", LargeBody = "0"};
+        KtSkipPercentCard = new StatCardValues { Header = "KT Skip Percentage", LargeBody = "0%"};
+        AverageKtSkipCard = new StatCardValues { Header = "Average KT Skip Time" , LargeBody = "00:00:00", SmallBody = ""};
+        AverageNoKtSkipCard = new StatCardValues { Header = "Average No KT Skip Time", LargeBody = "00:00:00", SmallBody = ""};
+
         // Set up our chart series
         SetupCharts();
         CalculateTimes();
@@ -92,45 +107,59 @@ public partial class TimingStatsViewModel : ViewModelBase
         // None of these calculations work or matter if we have no runs
         if (Runs!.Count <= 0)
         {
-            TotalRuns = 0;
-            BestTime = TimeSpan.Zero;
-            LastTime = TimeSpan.Zero;
-            AverageLast5 = TimeSpan.Zero;
-            AverageTime = TimeSpan.Zero;
-            StandardDeviation = TimeSpan.Zero;
-            AverageKtSkipTime = TimeSpan.Zero;
-            AverageNoKtSkipTime = TimeSpan.Zero;
-            KtSkipCount = 0;
-            KtSkipPercentage = 0;
             return;
         }
+        var averageTime = TimeSpan.FromSeconds(Runs.Average(r => r.RunLength.TotalSeconds));
+        var totalRuns = Runs.Count;
+        TotalRunsCard.LargeBody = Runs.Count.ToString();
 
-        TotalRuns = Runs.Count;
-        BestTime = Runs.Select(x => x.RunLength).MinBy(runLength => runLength.TotalSeconds);
-        LastTime = Runs.Select(
-                x => (x.DateRan, x.RunLength))
-            .MaxBy(x => x.DateRan)
-            .RunLength;
-        StandardDeviation = TimeSpan.FromSeconds(Runs.Select(x => x.RunLength.TotalSeconds).StandardDeviation());
-        AverageTime = TimeSpan.FromSeconds(Runs.Average(x => x.RunLength.TotalSeconds));
+        var bestTime = Runs.Select(x => x.RunLength).MinBy(rl => rl);
+        var outputString = ((bestTime - averageTime) < TimeSpan.Zero ? "-" : "") + @$"{(bestTime - averageTime):h\:mm\:ss} compared to average";
+
+        BestTimeCard.LargeBody = @$"{bestTime:h\:mm\:ss}";
+        BestTimeCard.SmallBody = outputString;
+
+        var lastTime = Runs.Select(r => (r.DateRan, r.RunLength)).MaxBy(r => r.DateRan).RunLength;
+        outputString = ((lastTime - averageTime) < TimeSpan.Zero ? "-" : "") + @$"{(lastTime - averageTime):h\:mm\:ss} compared to average";
+        LastTimeCard.LargeBody = @$"{lastTime:h\:mm\:ss}";
+        LastTimeCard.SmallBody = outputString;
+
+        var standardDeviation = TimeSpan.FromSeconds(Runs.Select(r => r.RunLength.TotalSeconds).StandardDeviation());
+        StandardDeviationCard.LargeBody = @$"{standardDeviation:h\:mm\:ss}";
+
+        AverageTimeCard.LargeBody = @$"{averageTime:h\:mm\:ss}";
+
         var last5 = Runs.Select(
                 run => (run.DateRan, run))
             .OrderByDescending(run => run.DateRan)
             .Take(5);
-        AverageLast5 = TimeSpan.FromSeconds((int)last5.Average(x => x.Item2.RunLength.TotalSeconds));
-        KtSkipCount = Runs.Count(x => x.DidKTSkip);
-        KtSkipPercentage = (KtSkipCount * 200 + TotalRuns) / (TotalRuns * 2);
-        // Fix this for no kt skip
-        if (KtSkipCount > 0)
+        var averageLast5 = TimeSpan.FromSeconds((int)last5.Average(x => x.Item2.RunLength.TotalSeconds));
+        outputString = ((averageLast5 - averageTime) < TimeSpan.Zero ? "-" : "") + @$"{(averageLast5 - averageTime):h\:mm\:ss} compared to average";
+        AverageLast5Card.LargeBody = $@"{averageLast5:h\:mm\:ss}";
+        AverageLast5Card.SmallBody = outputString;
+
+        var ktSkipCount = Runs.Count(x => x.DidKTSkip);
+
+        if (ktSkipCount > 0)
         {
-            AverageKtSkipTime = TimeSpan.FromSeconds(Runs.Where(x => x.DidKTSkip).Average(r => r.RunLength.TotalSeconds));
-            AverageNoKtSkipTime = TimeSpan.FromSeconds(Runs.Where(x => !x.DidKTSkip).Average(r => r.RunLength.TotalSeconds));
+            KtSkipCountCard.LargeBody = ktSkipCount.ToString();
+            KtSkipPercentCard.LargeBody = $@"{((ktSkipCount * 200 + totalRuns) / (totalRuns * 2))}%";
+            var averageKtSkipTime = TimeSpan.FromSeconds(Runs.Where(x => x.DidKTSkip).Average(r => r.RunLength.TotalSeconds));
+            outputString = ((averageKtSkipTime - averageTime) < TimeSpan.Zero ? "-" : "") + @$"{(averageKtSkipTime - averageTime):h\:mm\:ss} compared to average";
+            AverageKtSkipCard.LargeBody = $@"{averageKtSkipTime:h\:mm\:ss}";
+            AverageKtSkipCard.SmallBody = outputString;
         }
         else
         {
-            AverageKtSkipTime = TimeSpan.Zero;
-            AverageNoKtSkipTime = TimeSpan.Zero;
+            KtSkipCountCard.LargeBody = "0";
+            KtSkipPercentCard.LargeBody = "0%";
+            AverageKtSkipCard.LargeBody = "0:00:00";
+            AverageKtSkipCard.SmallBody = "";
         }
+        var averageNoKtSkipTime = TimeSpan.FromSeconds(Runs.Where(x => !x.DidKTSkip).Average(r => r.RunLength.TotalSeconds));
+        outputString = ((averageNoKtSkipTime - averageTime) < TimeSpan.Zero ? "-" : "") + @$"{(averageNoKtSkipTime - averageTime):h\:mm\:ss} compared to average";
+        AverageNoKtSkipCard.LargeBody = $@"{averageNoKtSkipTime:h\:mm\:ss}";
+        AverageNoKtSkipCard.SmallBody = outputString;
     }
 
     private void SetupCharts()
@@ -148,6 +177,7 @@ public partial class TimingStatsViewModel : ViewModelBase
                 Values = Runs.Where(x => x.DidKTSkip).OrderBy(x => x.DateRan),
                 IsVisible = false,
                 Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 4 },
+                Fill = new SolidColorPaint(SKColors.Red),
                 TooltipLabelFormatter = chartPoint => "",
                 Mapping = (run, point) =>
                 {
