@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:WCStatsTracker.ViewModels"
              xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:models="clr-namespace:WCStatsTracker.Models"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="800"
@@ -12,23 +13,39 @@
     <Design.DataContext>
         <vm:StatsPageViewModel />
     </Design.DataContext>
-
-    <TabControl Items="{Binding StatViews}">
-        <TabControl.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Orientation="Horizontal">
-                    <icon:MaterialIcon Kind="{Binding IconName}"
-                                       Height="24" />
-                    <TextBlock Classes="h3"
-                               Text="{Binding ViewName}" />
-                </StackPanel>
-            </DataTemplate>
-        </TabControl.ItemTemplate>
-        <TabControl.ContentTemplate>
-            <DataTemplate>
-                <TransitioningContentControl Content="{Binding}" />
-            </DataTemplate>
-        </TabControl.ContentTemplate>
-    </TabControl>
-
+    <Grid>
+        <ComboBox Margin="0,8,17,0"
+                  HorizontalAlignment="Right"
+                  ZIndex="1"
+                  Items="{Binding FlagNames}"
+                  SelectedItem="{Binding SelectedFlagName}"
+                  SelectedIndex="{Binding SelectedFlagIndex}"
+                  FontSize="20"
+                  FontWeight="Medium"
+                  PlaceholderText="By Flag Set">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="models:Flag">
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TabControl Items="{Binding StatViews}"
+                    ZIndex="0">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <icon:MaterialIcon Kind="{Binding IconName}"
+                                           Height="24" />
+                        <TextBlock Classes="h3"
+                                   Text="{Binding ViewName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <TransitioningContentControl Content="{Binding}" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
 </UserControl>

@@ -5,10 +5,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
+using WCStatsTracker.DataTypes;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Services.Messages;
+using WCStatsTracker.Utility;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsListViewModel : ViewModelBase
@@ -29,10 +31,7 @@ public partial class RunsListViewModel : ViewModelBase
     public string WorkingRunLength
     {
         get => _workingRunLength;
-        set
-        {
-            SetProperty(ref _workingRunLength, value, true);
-        }
+        set => SetProperty(ref _workingRunLength, value, true);
     }
 
     public RunsListViewModel(IUnitOfWork unitOfWork)
@@ -45,6 +44,35 @@ public partial class RunsListViewModel : ViewModelBase
         _unitOfWork.WcRun.Load();
         RunList = _unitOfWork.WcRun.GetAllObservable();
         FlagList = _unitOfWork.Flag.GetAllObservable();
+    }
+
+    /// <summary>
+    ///     Method to cram a bunch of new data into the DB
+    /// </summary>
+    private void GenerateNewData()
+    {
+        _unitOfWork.Character.Load();
+        _unitOfWork.Ability.Load();
+        var characters = _unitOfWork.Character.GetAllObservable();
+        var abilities = _unitOfWork.Ability.GetAllObservable();
+        foreach (var flag in GenerateData.GenerateFlags(5))
+        {
+            FlagList.Add(flag);
+        }
+        var rand = new Random();
+        foreach (var run in GenerateData.GenerateRuns(50))
+        {
+            run.Flag = FlagList[rand.Next(0, 4)];
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
+            RunList.Add(run);
+        }
+        _unitOfWork.Save();
+
     }
 
     /// <summary>

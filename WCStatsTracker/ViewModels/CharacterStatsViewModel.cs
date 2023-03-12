@@ -4,15 +4,16 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore;
-using LiveChartsCore.Drawing;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using WCStatsTracker.DataTypes;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
+using WCStatsTracker.Services.Messages;
 using WCStatsTracker.Utility;
-using WCStatsTracker.DataTypes;
 // ReSharper disable CollectionNeverQueried.Local
 namespace WCStatsTracker.ViewModels;
 
@@ -29,6 +30,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private readonly ObservableCollection<CharacterDataPoint> _characterDataSeries;
     private readonly ObservableCollection<AbilityDataPoint> _abilityDataSeries;
     private readonly ObservableCollection<WcRun> _runs;
+    private string _selectedFlagName;
 
     [ObservableProperty]
     private StatCardValues _mostUsedCharacterCard;
@@ -45,41 +47,66 @@ public partial class CharacterStatsViewModel : ViewModelBase
         IconName = "HumanQueue";
 
         _runs = unitOfWork.WcRun.GetAllObservable();
+        WeakReferenceMessenger.Default.Register<CharacterStatsViewModel, SelectedFlagChangedMessage>(this, Receive);
 
         // Set up our counts of characters and abilities
         _characterDataSeries = new ObservableCollection<CharacterDataPoint>();
         _abilityDataSeries = new ObservableCollection<AbilityDataPoint>();
 
-        //Load up a count of how many runs each ability and character was used in
-        foreach (var ability in AbilityData.Names)
-        {
-            var abilityRuns = _runs.Where(run => run.Abilities.Any(a => a.Name == ability)).ToList();
-            var abilityDataPoint = new AbilityDataPoint
-            {
-                Name = ability,
-                Count = abilityRuns.Count
-            };
-            if (abilityDataPoint.Count > 0)
-                abilityDataPoint.AverageRunLength =
-                    TimeSpan.FromSeconds(abilityRuns.Average(r => r.RunLength.TotalSeconds));
-            _abilityDataSeries.Add(abilityDataPoint);
-        }
-        foreach (var character in CharacterData.Names)
-        {
-            var characterRuns = _runs.Where(run => run.Characters.Any(c => c.Name == character)).ToList();
-            var characterDataPoint = new CharacterDataPoint
-            {
-                Name = character,
-                Count = characterRuns.Count()
-            };
-            if (characterDataPoint.Count > 0)
-                characterDataPoint.AverageRunLength =
-                    TimeSpan.FromSeconds(characterRuns.Average(r => r.RunLength.TotalSeconds));
-            _characterDataSeries.Add(characterDataPoint);
-        }
-
-        SetupCharts();
+        UpdateDataSeries();
         SetupStatCards();
+        SetupCharts();
+    }
+
+    private void Receive(CharacterStatsViewModel recipient, SelectedFlagChangedMessage message)
+    {
+        _selectedFlagName = message.Value;
+        UpdateDataSeries();
+        SetupStatCards();
+    }
+
+    /// <summary>
+    ///     Sets and updates the data series for the two charts
+    /// </summary>
+    private void UpdateDataSeries()
+    {
+        List<WcRun> flagsetRuns;
+        if (_selectedFlagName == StringConstants.AllRuns)
+            flagsetRuns = _runs.ToList();
+        else
+            flagsetRuns = _runs.Where(run => run.Flag.Name == _selectedFlagName).ToList();
+        _abilityDataSeries.Clear();
+        _characterDataSeries.Clear();
+        if (flagsetRuns.Any())
+        {
+
+            foreach (var ability in AbilityData.Names)
+            {
+                var abilityRuns = flagsetRuns.Where(run => run.Abilities.Any(a => a.Name == ability)).ToList();
+                var abilityDataPoint = new AbilityDataPoint
+                {
+                    Name = ability,
+                    Count = abilityRuns.Count
+                };
+                if (abilityDataPoint.Count > 0)
+                    abilityDataPoint.AverageRunLength =
+                        TimeSpan.FromSeconds(abilityRuns.Average(r => r.RunLength.TotalSeconds));
+                _abilityDataSeries.Add(abilityDataPoint);
+            }
+            foreach (var character in CharacterData.Names)
+            {
+                var characterRuns = flagsetRuns.Where(run => run.Characters.Any(c => c.Name == character)).ToList();
+                var characterDataPoint = new CharacterDataPoint
+                {
+                    Name = character,
+                    Count = characterRuns.Count()
+                };
+                if (characterDataPoint.Count > 0)
+                    characterDataPoint.AverageRunLength =
+                        TimeSpan.FromSeconds(characterRuns.Average(r => r.RunLength.TotalSeconds));
+                _characterDataSeries.Add(characterDataPoint);
+            }
+        }
     }
 
     private void SetupStatCards()
@@ -134,7 +161,6 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private void SetupCharts()
     {
         Paint foregroundBarPaint = new SolidColorPaint(new SKColor(0x03, 0xda, 0xc6, 0x50));
-
         CharacterChartSeries = new ObservableCollection<ISeries>
         {
             new ColumnSeries<CharacterDataPoint>
@@ -149,7 +175,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 },
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
-                ZIndex = 0,
+                ZIndex = 0
             },
             new ColumnSeries<CharacterDataPoint>
             {
@@ -164,14 +190,14 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 ScalesYAt = 1,
                 IgnoresBarPosition = false,
                 ZIndex = 1,
-                Fill = foregroundBarPaint,
+                Fill = foregroundBarPaint
             }
         };
         CharacterChartXAxes.Add(
             new Axis
             {
-                Labels = _characterDataSeries.Select(cds => cds.Name).ToList(),
-                LabelsRotation = 60,
+                Labels = CharacterData.Names,
+                LabelsRotation = 60
             }
         );
         CharacterChartYAxes.Add(new Axis { IsVisible = false });
@@ -196,7 +222,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 },
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
-                ZIndex = 0,
+                ZIndex = 0
             },
             new ColumnSeries<AbilityDataPoint>
             {
@@ -211,14 +237,14 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 ScalesYAt = 1,
                 IgnoresBarPosition = false,
                 ZIndex = 1,
-                Fill = foregroundBarPaint,
+                Fill = foregroundBarPaint
             }
         };
         AbilityChartXAxes.Add(
             new Axis
             {
-                Labels = _abilityDataSeries.Select(ads => ads.Name).ToList(),
-                LabelsRotation = 60,
+                Labels = AbilityData.Names,
+                LabelsRotation = 60
             });
         AbilityChartYAxes.Add(new Axis { IsVisible = false });
         AbilityChartYAxes.Add(

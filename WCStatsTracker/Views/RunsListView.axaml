@@ -28,8 +28,8 @@
                    Classes="h1"
                    HorizontalAlignment="Center"
                    Text="Run Listing" />
-        <DataGrid Name="RunListGrid"
-                  Grid.Row="1"
+        <DataGrid Grid.Row="1"
+                  Name="RunListGrid"
                   Margin="{DynamicResource AppMargin}"
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="True"
@@ -143,5 +143,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-
 </UserControl>

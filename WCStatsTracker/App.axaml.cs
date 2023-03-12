@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using FluentAvalonia.Styling;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +66,8 @@ public class App : Application
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
+            var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+            faTheme.CustomAccentColor = Color.FromRgb(0, 140, 120);
             desktop.MainWindow = new MainWindow
             {
                 DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()

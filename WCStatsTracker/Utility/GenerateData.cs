@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using WCStatsTracker.DataTypes;
 using WCStatsTracker.Models;
 using WCStatsTracker.Wc.Data;
-using WCStatsTracker.DataTypes;
 namespace WCStatsTracker.Utility;
 
 /// <summary>
-///     Static class to generate some random data
+///     static class to return some random data, return values need to be added to the db context and manually linked
+///     to prevent generation of duplicate data
 /// </summary>
 public static class GenerateData
 {
-    /// <summary>
-    ///     Generates a fake set of flags
-    /// </summary>
-    /// <param name="FlagSetCount">The number of flags to generate</param>
-    /// <returns>A set of random flags filled out</returns>
-    public static IEnumerable<Flag> GenerateFlags(int FlagSetCount)
+    public static ObservableCollection<Flag> GenerateFlags(int FlagSetCount)
     {
         var flags = new List<Flag>();
         for (var i = 0; i < FlagSetCount; i++)
@@ -25,16 +22,10 @@ public static class GenerateData
             flag.FlagString = "Flag String #" + i;
             flags.Add(flag);
         }
-
-        return flags;
+        return new ObservableCollection<Flag>(flags);
     }
 
-    /// <summary>
-    ///     Returns a set of random runs
-    /// </summary>
-    /// <param name="Count">The number of runs to generate</param>
-    /// <returns>A collection of the runs</returns>
-    public static IEnumerable<WcRun> GenerateRuns(int Count)
+    public static ObservableCollection<WcRun> GenerateRuns(int Count)
     {
         var flag = new List<Flag>(GenerateFlags(10));
         var runs = new List<WcRun>();
@@ -44,43 +35,19 @@ public static class GenerateData
             WcRun run = new()
             {
                 RunLength = new TimeSpan(rand.Next(0, 3), rand.Next(0, 60), rand.Next(0, 60)),
-                CharactersFound = rand.Next(0, CharacterData.MaxAvailable),
+                CharactersFound = rand.Next(0, CharacterData.Count),
                 EspersFound = rand.Next(0, Espers.ConstantCount),
                 BossesKilled = rand.Next(0, Bosses.ConstantCount),
                 DragonsKilled = rand.Next(0, Dragons.ConstantCount),
                 ChecksDone = rand.Next(0, Checks.ConstantCount),
                 ChestsOpened = rand.Next(0, Chests.ConstantCount),
                 DidKTSkip = rand.Next(0, 1) != 0,
-                Abilities = new List<Ability>
-                {
-                    new()
-                        { Name = AbilityData.Names[rand.Next(0, 21)] },
-                    new()
-                        { Name = AbilityData.Names[rand.Next(0, 21)] },
-                    new()
-                        { Name = AbilityData.Names[rand.Next(0, 21)] },
-                },
-                Characters = new List<Character>
-                {
-                    new()
-                        { Name = CharacterData.Names[rand.Next(0, 21)] },
-                    new()
-                        { Name = CharacterData.Names[rand.Next(0, 21)] },
-                    new()
-                        { Name = CharacterData.Names[rand.Next(0, 21)] },
-                },
-                DateRan = DateTime.Now,
-                Flag = new Flag
-                {
-                    Name = flag[rand.Next(0, 9)].Name,
-                    FlagString = flag[rand.Next(0, 9)].FlagString
-                }
+                DateRan = DateTime.Now - TimeSpan.FromDays(rand.Next(1, 30))
             };
             const int len = 10;
             for (var j = 0; j < len; j++) run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower();
             runs.Add(run);
         }
-
-        return runs;
+        return new ObservableCollection<WcRun>(runs);
     }
 }

@@ -7,7 +7,7 @@
             <controls:StatCard Header="Header Text"
                                IconKind="AccountAdd"
                                LargeBody="Large Body Text"
-                               SmallBody="Small Body Text"/>
+                               SmallBody="Small Body Text" />
         </StackPanel>
     </Design.PreviewWith>
 

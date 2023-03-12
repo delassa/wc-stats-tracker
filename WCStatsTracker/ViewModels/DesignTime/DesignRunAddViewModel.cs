@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using WCStatsTracker.Models;
 using WCStatsTracker.DataTypes;
+using WCStatsTracker.Models;
 namespace WCStatsTracker.ViewModels.DesignTime;
 
 public class DesignRunAddViewModel : ViewModelBase

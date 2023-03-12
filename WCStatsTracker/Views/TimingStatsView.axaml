@@ -5,7 +5,6 @@
              xmlns:viewModels="clr-namespace:WCStatsTracker.ViewModels"
              xmlns:controls="clr-namespace:WCStatsTracker.Controls"
              xmlns:avalonia="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
-             xmlns:models="clr-namespace:WCStatsTracker.Models"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -53,24 +52,19 @@
                     <Grid RowDefinitions="Auto,*">
                         <StackPanel Orientation="Horizontal"
                                     Margin="{StaticResource AppMargin}">
-                            <ToggleButton Content="Show Skips"
+                            <ToggleButton Margin="{StaticResource AppMargin}"
+                                          Content="Toggle Showing Skips"
+                                          FontSize="20"
+                                          FontWeight="Medium"
+                                          IsChecked="{Binding IsShowingSkips}"
                                           Command="{ReflectionBinding ToggleSkipViewCommand}" />
-                            <ComboBox Items="{Binding FlagNames}"
-                                      SelectedItem="{Binding SelectedFlagName}"
-                                      SelectedIndex="{Binding SelectedFlagIndex}"
-                                      PlaceholderText="By Flag Set">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="models:Flag">
-                                        <TextBlock Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
                         </StackPanel>
                         <avalonia:CartesianChart Grid.Row="1"
                                                  Series="{Binding TimeChartSeries}"
                                                  XAxes="{Binding TimeChartXAxes}"
                                                  YAxes="{Binding TimeChartYAxes}"
-                                                 Margin="{StaticResource AppMargin}" />
+                                                 Margin="{StaticResource AppMargin}"
+                                                 ZoomMode="X" />
                     </Grid>
                 </Border>
                 <controls:StatCard Grid.Row="0"

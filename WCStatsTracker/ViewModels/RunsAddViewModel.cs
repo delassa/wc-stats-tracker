@@ -5,10 +5,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WCStatsTracker.DataTypes;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.DataTypes;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsAddViewModel : ViewModelBase

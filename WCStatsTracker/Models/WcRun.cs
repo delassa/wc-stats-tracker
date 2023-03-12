@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
+using WCStatsTracker.DataTypes;
 using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.Models;
 
@@ -33,7 +34,7 @@ public class WcRun : ObservableValidator
         set => SetProperty(ref _bossesKilled, value, true);
     }
 
-    [Range(0, DataTypes.CharacterData.MaxAvailable, ErrorMessage = "Characters must be between 0 and 14")]
+    [Range(0, CharacterData.ConstCount, ErrorMessage = "Characters must be between 0 and 14")]
     public int CharactersFound
     {
         get => _charactersFound;
