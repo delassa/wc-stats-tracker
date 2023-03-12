@@ -25,32 +25,14 @@ public class WcDbContext : DbContext
         get => Set<Flag>();
     }
 
-    /// <summary>
-    ///     Protected set to allow characters to be accessed as no tracking
-    ///     since it is a read only table
-    /// </summary>
-    protected DbSet<Character> CharactersProtected
+    public DbSet<Character> Characters
     {
         get => Set<Character>();
     }
 
-    public IQueryable<Character> Characters
-    {
-        get => CharactersProtected.AsNoTracking();
-    }
-
-    /// <summary>
-    ///     Protected set to allow abilities to be accessed as no tracking
-    ///     since it is a read only table
-    /// </summary>
-    protected DbSet<Ability> AbilitiesProtected
+    public DbSet<Ability> Abilities
     {
         get => Set<Ability>();
-    }
-
-    public IQueryable<Ability> Abilities
-    {
-        get => AbilitiesProtected.AsNoTracking();
     }
 
     /// <summary>
@@ -72,7 +54,7 @@ public class WcDbContext : DbContext
             new { Name = "Edgar", CharacterId = 5 },
             new { Name = "Sabin", CharacterId = 6 },
             new { Name = "Celes", CharacterId = 7 },
-            new { Name = "Strage", CharacterId = 8 },
+            new { Name = "Strago", CharacterId = 8 },
             new { Name = "Relm", CharacterId = 9 },
             new { Name = "Setzer", CharacterId = 10 },
             new { Name = "Mog", CharacterId = 11 },
@@ -81,27 +63,27 @@ public class WcDbContext : DbContext
             new { Name = "Umaro", CharacterId = 14 }
         );
         modelBuilder.Entity<Ability>().HasData(
-            new { Name = "Blitz", AbilityId = 21 },
-            new { Name = "Capture", AbilityId = 1 },
-            new { Name = "Control", AbilityId = 2 },
-            new { Name = "GP Rain", AbilityId = 3 },
-            new { Name = "Dance", AbilityId = 4 },
-            new { Name = "Health", AbilityId = 5 },
-            new { Name = "Jump", AbilityId = 6 },
-            new { Name = "Lore", AbilityId = 7 },
-            new { Name = "Morph", AbilityId = 8 },
-            new { Name = "Rage", AbilityId = 9 },
-            new { Name = "Runic", AbilityId = 10 },
-            new { Name = "Sketch", AbilityId = 11 },
-            new { Name = "Slot", AbilityId = 12 },
-            new { Name = "Steal", AbilityId = 13 },
-            new { Name = "SwdTech", AbilityId = 14 },
-            new { Name = "Throw", AbilityId = 15 },
-            new { Name = "Tools", AbilityId = 16 },
-            new { Name = "X Magic", AbilityId = 17 },
-            new { Name = "Shock", AbilityId = 18 },
-            new { Name = "MagiTek", AbilityId = 19 },
-            new { Name = "Possess", AbilityId = 20 }
+            new { Name = "Blitz", AbilityId = 1 },
+            new { Name = "Capture", AbilityId = 2 },
+            new { Name = "Control", AbilityId = 3 },
+            new { Name = "GP Rain", AbilityId = 4 },
+            new { Name = "Dance", AbilityId = 5 },
+            new { Name = "Health", AbilityId = 6 },
+            new { Name = "Jump", AbilityId = 7 },
+            new { Name = "Lore", AbilityId = 8 },
+            new { Name = "Morph", AbilityId = 9 },
+            new { Name = "Rage", AbilityId = 10 },
+            new { Name = "Runic", AbilityId = 11 },
+            new { Name = "Sketch", AbilityId = 12 },
+            new { Name = "Slot", AbilityId = 13 },
+            new { Name = "Steal", AbilityId = 14 },
+            new { Name = "SwdTech", AbilityId = 15 },
+            new { Name = "Throw", AbilityId = 16 },
+            new { Name = "Tools", AbilityId = 17 },
+            new { Name = "X Magic", AbilityId = 18 },
+            new { Name = "Shock", AbilityId = 19 },
+            new { Name = "MagiTek", AbilityId = 20 },
+            new { Name = "Possess", AbilityId = 21 }
         );
     }
 }
