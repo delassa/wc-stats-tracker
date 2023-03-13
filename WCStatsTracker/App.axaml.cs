@@ -19,12 +19,13 @@ using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
+#pragma warning disable CS8602
 namespace WCStatsTracker;
 
 public class App : Application
 {
-    public static ServiceProvider serviceProvider;
-    public static IConfigurationRoot _configuration;
+    private static ServiceProvider? _serviceProvider;
+    private static IConfigurationRoot? _configuration;
 
     public override void Initialize()
     {
@@ -61,7 +62,7 @@ public class App : Application
         {
             // Put this here to not interfere with design view
             CreateServiceProvider();
-            var context = serviceProvider.GetRequiredService<WcDbContext>();
+            var context = _serviceProvider!.GetRequiredService<WcDbContext>();
             context.GetInfrastructure().GetService<IMigrator>().Migrate();
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
@@ -70,7 +71,7 @@ public class App : Application
             faTheme.CustomAccentColor = Color.FromRgb(0, 140, 120);
             desktop.MainWindow = new MainWindow
             {
-                DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()
+                DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>()
             };
         }
 
@@ -100,16 +101,14 @@ public class App : Application
 
         // Database resides in current working dir
 
-        var fixedConnectionString = _configuration.GetConnectionString("Default")
+        var fixedConnectionString = _configuration!.GetConnectionString("Default")
             .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
 
         // Add in the Db Context
         // enable logging on our db and sensitive data logging for development
         services.AddDbContext<WcDbContext>(options => options
             .LogTo(Log.Logger.Information, LogLevel.Information).EnableSensitiveDataLogging()
-            .UseLazyLoadingProxies()
-            .UseSqlite(fixedConnectionString));
-
-        serviceProvider = services.BuildServiceProvider();
+            .UseSqlite(fixedConnectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+        _serviceProvider = services.BuildServiceProvider();
     }
 }
