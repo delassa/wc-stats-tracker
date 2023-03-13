@@ -12,40 +12,40 @@ namespace WCStatsTracker.Utility;
 /// </summary>
 public static class GenerateData
 {
-    public static ObservableCollection<Flag> GenerateFlags(int FlagSetCount)
-    {
+    public static IEnumerable<Flag> GenerateFlags(int FlagSetCount)
+         {
         var flags = new List<Flag>();
         for (var i = 0; i < FlagSetCount; i++)
         {
             Flag flag = new();
-            flag.Name += "Flag Set # " + i;
+            flag.Name = "Flag Set # " + i;
             flag.FlagString = "Flag String #" + i;
             flags.Add(flag);
         }
         return new ObservableCollection<Flag>(flags);
     }
 
-    public static ObservableCollection<WcRun> GenerateRuns(int Count)
+    public static IEnumerable<WcRun> GenerateRuns(int Count)
     {
-        var flag = new List<Flag>(GenerateFlags(10));
         var runs = new List<WcRun>();
         var rand = new Random();
         for (var i = 0; i < Count; i++)
         {
             WcRun run = new()
             {
-                RunLength = new TimeSpan(rand.Next(0, 3), rand.Next(0, 60), rand.Next(0, 60)),
+                RunLength = new TimeSpan(1, rand.Next(0, 60), rand.Next(0, 60)),
                 CharactersFound = rand.Next(0, CharacterData.Count),
                 EspersFound = rand.Next(0, Espers.ConstantCount),
                 BossesKilled = rand.Next(0, Bosses.ConstantCount),
                 DragonsKilled = rand.Next(0, Dragons.ConstantCount),
                 ChecksDone = rand.Next(0, Checks.ConstantCount),
                 ChestsOpened = rand.Next(0, Chests.ConstantCount),
-                DidKTSkip = rand.Next(0, 1) != 0,
+                DidKTSkip = rand.Next(0, 2) != 0,
                 DateRan = DateTime.Now - TimeSpan.FromDays(rand.Next(1, 30))
             };
             const int len = 10;
-            for (var j = 0; j < len; j++) run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower();
+            for (var j = 0; j < len; j++) 
+                run.Seed += ((char)rand.Next(1, 26) + 64).ToString().ToLower();
             runs.Add(run);
         }
         return new ObservableCollection<WcRun>(runs);
