@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:design="using:WCStatsTracker.ViewModels.DesignTime"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:model="using:WCStatsTracker.Models"
+             xmlns:dt="using:WCStatsTracker.DataTypes"
              d:DesignHeight="800"
              d:DesignWidth="1000"
              mc:Ignorable="d">
@@ -17,12 +17,12 @@
 
     <UserControl.Resources>
         <DataTemplate x:Key="CharacterOwnTemplate"
-                      DataType="{x:Type model:CharacterOwn}">
+                      DataType="{x:Type dt:CharacterOwn}">
             <CheckBox Content="{Binding RelativeSource, Path=Name}"
                       IsChecked="{Binding RelativeSource, Path=HaveOne}" />
         </DataTemplate>
         <DataTemplate x:Key="AbilityOwnTemplate"
-                      DataType="{x:Type model:AbilityOwn}">
+                      DataType="{x:Type dt:AbilityOwn}">
             <CheckBox Content="{Binding RelativeSource, Path=Name}"
                       IsChecked="{Binding RelativeSource, Path=HaveOne}" />
         </DataTemplate>
@@ -246,7 +246,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="model:CharacterOwn">
+                        <DataTemplate x:DataType="dt:CharacterOwn">
                             <CheckBox Content="{Binding Name}"
                                       IsChecked="{Binding HaveOne}" />
                         </DataTemplate>
@@ -267,7 +267,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="model:AbilityOwn">
+                        <DataTemplate x:DataType="dt:AbilityOwn">
                             <CheckBox Content="{Binding Name}"
                                       IsChecked="{Binding HaveOne}" />
                         </DataTemplate>
