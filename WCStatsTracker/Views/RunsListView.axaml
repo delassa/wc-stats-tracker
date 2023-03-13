@@ -44,7 +44,8 @@
                 </ia:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Date Ran">
+                <DataGridTemplateColumn Header="Date Ran"
+										SortMemberPath="DateRan">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DateRan, StringFormat=\{0:MM/dd/yy\}}"
@@ -58,7 +59,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Run Length">
+                <DataGridTemplateColumn Header="Run Length"
+										SortMemberPath="RunLength">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding RunLength}"
@@ -96,7 +98,8 @@
                 <DataGridCheckBoxColumn Binding="{Binding DidKTSkip}"
                                         Header="KT Skip" />
                 <DataGridTemplateColumn Width="auto"
-                                        Header="Flag Set">
+                                        Header="Flag Set"
+										SortMemberPath="Flag.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Flag.Name}"
