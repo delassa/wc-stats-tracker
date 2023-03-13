@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WCStatsTracker.DataTypes;
@@ -86,12 +87,12 @@ public partial class RunsAddViewModel : ViewModelBase
                 WorkingRun.RunLength = TimeSpan.ParseExact(WorkingRunLength, @"hh\:mm\:ss", null);
             }
         }
+        SaveRunCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand(CanExecute = nameof(CanSaveRun))]
     public void SaveRun()
     {
-
         // Copy over the starting characters and abilities to the run we're saving
         // Or clear them out if they are already present
         if (WorkingRun!.Characters is null) WorkingRun.Characters = new List<Character>();
@@ -99,24 +100,22 @@ public partial class RunsAddViewModel : ViewModelBase
         if (WorkingRun.Abilities is null) WorkingRun.Abilities = new List<Ability>();
         else WorkingRun.Abilities.Clear();
 
-        foreach (var check in StartingAbilities)
+        foreach (var ability in StartingAbilities.Where(sa => sa.HaveOne))
         {
-            if (check.HaveOne)
-            {
-                WorkingRun.Abilities.Add(new Ability { Name = check.Name });
-            }
+            WorkingRun.Abilities.Add(_unitOfWork.Ability.GetById(
+                AbilityData.GetIdFromName(ability.Name))!);
         }
-        foreach (var check in StartingCharacters)
+        foreach (var character in StartingCharacters.Where(sc => sc.HaveOne))
         {
-            if (check.HaveOne)
-            {
-                WorkingRun.Characters.Add(new Character { Name = check.Name });
-            }
+            WorkingRun.Characters.Add(_unitOfWork.Character.GetById(
+                CharacterData.GetIdFromName(character.Name))!);
         }
+
         //Create the new db entry
         _unitOfWork.WcRun.Add(WorkingRun);
         _unitOfWork.Save();
-        //Start a new working run so we can get correct auto ID from entity framework when we add it
+
+        //Reset the temp run so its ready to be saved as a new one later
         WorkingRun.ErrorsChanged -= WorkingRun_ErrorsChanged;
         WorkingRun = null;
         WorkingRun = new WcRun();
@@ -127,6 +126,7 @@ public partial class RunsAddViewModel : ViewModelBase
     public bool CanSaveRun()
     {
         // Check if the current working run is ok to save
-        return WorkingRun is not null && !WorkingRun.HasErrors;
+        
+        return WorkingRun is not null && !WorkingRun.HasErrors && !HasErrors;
     }
 }

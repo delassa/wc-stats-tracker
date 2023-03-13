@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -51,28 +52,28 @@ public partial class RunsListViewModel : ViewModelBase
     /// </summary>
     private void GenerateNewData()
     {
-        _unitOfWork.Character.Load();
-        _unitOfWork.Ability.Load();
-        var characters = _unitOfWork.Character.GetAllObservable();
-        var abilities = _unitOfWork.Ability.GetAllObservable();
+        var characters = _unitOfWork.Character.GetAll().ToList();
+        var abilities = _unitOfWork.Ability.GetAll().ToList();
         foreach (var flag in GenerateData.GenerateFlags(5))
         {
-            FlagList.Add(flag);
+            // Check if the flag is already in the database by the name and string
+            var f = _unitOfWork.Flag.Get(f => f.Name == flag.Name && f.FlagString == flag.FlagString);
+            if (!f.Any())
+                FlagList!.Add(flag);
         }
         var rand = new Random();
         foreach (var run in GenerateData.GenerateRuns(50))
         {
-            run.Flag = FlagList[rand.Next(0, 4)];
-            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
-            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
-            run.Characters.Add(characters[rand.Next(0, CharacterData.Count - 1)]);
-            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
-            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
-            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count - 1)]);
-            RunList.Add(run);
+            run.Flag = FlagList![rand.Next(0, 5)];
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count)]);
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count)]);
+            run.Characters.Add(characters[rand.Next(0, CharacterData.Count)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count)]);
+            run.Abilities.Add(abilities[rand.Next(0, AbilityData.Count)]);
+            RunList!.Add(run);
         }
         _unitOfWork.Save();
-
     }
 
     /// <summary>

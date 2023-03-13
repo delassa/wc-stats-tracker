@@ -19,9 +19,8 @@ namespace WCStatsTracker.ViewModels;
 
 public partial class CharacterStatsViewModel : ViewModelBase
 {
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+    private IUnitOfWork _unitOfWork;
     private ObservableCollection<ISeries> CharacterChartSeries { get; set; }
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     private ObservableCollection<ISeries> AbilityChartSeries { get; set; }
     private List<Axis> CharacterChartXAxes { get; } = new();
     private List<Axis> CharacterChartYAxes { get; } = new();
@@ -29,7 +28,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private List<Axis> AbilityChartYAxes { get; } = new();
     private readonly ObservableCollection<CharacterDataPoint> _characterDataSeries;
     private readonly ObservableCollection<AbilityDataPoint> _abilityDataSeries;
-    private readonly ObservableCollection<WcRun> _runs;
+    private readonly IEnumerable<WcRun> _runs;
     private string _selectedFlagName;
 
     [ObservableProperty]
@@ -45,8 +44,9 @@ public partial class CharacterStatsViewModel : ViewModelBase
     {
         ViewName = "Character And Ability Stats";
         IconName = "HumanQueue";
+        _unitOfWork = unitOfWork;
 
-        _runs = unitOfWork.WcRun.GetAllObservable();
+        _runs = unitOfWork.WcRun.Get(r => true, r => r.OrderBy(r => r.DateRan), "Flag,Characters,Abilities"); 
         WeakReferenceMessenger.Default.Register<CharacterStatsViewModel, SelectedFlagChangedMessage>(this, Receive);
 
         // Set up our counts of characters and abilities
@@ -70,16 +70,15 @@ public partial class CharacterStatsViewModel : ViewModelBase
     /// </summary>
     private void UpdateDataSeries()
     {
-        List<WcRun> flagsetRuns;
+        IEnumerable<WcRun> flagsetRuns;
         if (_selectedFlagName == StringConstants.AllRuns)
-            flagsetRuns = _runs.ToList();
+            flagsetRuns = _unitOfWork.WcRun.Get(r => true, null, "Characters,Abilities");
         else
-            flagsetRuns = _runs.Where(run => run.Flag.Name == _selectedFlagName).ToList();
+            flagsetRuns = _unitOfWork.WcRun.Get(r => r.Flag.Name == _selectedFlagName);
         _abilityDataSeries.Clear();
         _characterDataSeries.Clear();
         if (flagsetRuns.Any())
         {
-
             foreach (var ability in AbilityData.Names)
             {
                 var abilityRuns = flagsetRuns.Where(run => run.Abilities.Any(a => a.Name == ability)).ToList();

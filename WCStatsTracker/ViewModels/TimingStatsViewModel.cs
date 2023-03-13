@@ -143,12 +143,20 @@ public partial class TimingStatsViewModel : ViewModelBase
         var last5 = runSubSet.Select(
                 run => (run.DateRan, run))
             .OrderByDescending(run => run.DateRan)
-            .Take(5);
-        var averageLast5 = TimeSpan.FromSeconds((int)last5.Average(x => x.Item2.RunLength.TotalSeconds));
-        outputString = (averageLast5 - averageTime < TimeSpan.Zero ? "-" : "") +
-                       @$"{averageLast5 - averageTime:h\:mm\:ss} compared to average";
-        AverageLast5Card.LargeBody = $@"{averageLast5:h\:mm\:ss}";
-        AverageLast5Card.SmallBody = outputString;
+            .Take(5).ToList();
+        if (last5.Count == 5)
+        {
+            var averageLast5 = TimeSpan.FromSeconds((int)last5.Average(x => x.Item2.RunLength.TotalSeconds));
+            outputString = (averageLast5 - averageTime < TimeSpan.Zero ? "-" : "") +
+                           @$"{averageLast5 - averageTime:h\:mm\:ss} compared to average";
+            AverageLast5Card.LargeBody = $@"{averageLast5:h\:mm\:ss}";
+            AverageLast5Card.SmallBody = outputString;
+        }
+        else
+        {
+            AverageLast5Card.LargeBody = "0:00:00";
+            AverageLast5Card.SmallBody = "Less than 5 runs to average";
+        }
 
         var ktSkipCount = runSubSet.Count(x => x.DidKTSkip);
 
@@ -239,22 +247,21 @@ public partial class TimingStatsViewModel : ViewModelBase
     private void SelectedFlagNameChanged(string value)
     {
         SelectedFlagName = value;
+        TimeChartXAxes[0].MinLimit = -0.5;
         if (SelectedFlagName == StringConstants.AllRuns)
         {
             TimeChartSeries[0].Values = Runs.OrderBy(x => x.DateRan);
+            TimeChartXAxes[0].MaxLimit = Runs.Count() - 0.5;
             TimeChartSeries[1].Values = Runs.Where(x => x.DidKTSkip).OrderBy(x => x.DateRan);
         }
         else
         {
             TimeChartSeries[0].Values = Runs.Where(x => x.Flag.Name == SelectedFlagName).OrderBy(x => x.DateRan);
+            TimeChartXAxes[0].MaxLimit = Runs.Where(x => x.Flag.Name == SelectedFlagName).OrderBy(x => x.DateRan).Count() - 0.5;
             TimeChartSeries[1].Values = Runs.Where(x => x.Flag.Name == SelectedFlagName)
                 .Where(x => x.DidKTSkip)
                 .OrderBy(x => x.DateRan);
         }
-        TimeChartXAxes[0].MaxLimit = null;
-        TimeChartXAxes[0].MinLimit = null;
-        TimeChartYAxes[0].MaxLimit = null;
-        TimeChartYAxes[0].MaxLimit = null;
         CalculateTimes();
     }
 
@@ -262,10 +269,15 @@ public partial class TimingStatsViewModel : ViewModelBase
     private void ToggleSkipView()
     {
         // TODO : Fix axis scaling here when toggling
-        TimeChartSeries![1].IsVisible ^= true;
+        TimeChartXAxes[0].MinLimit = -0.5;
         if (SelectedFlagName == StringConstants.AllRuns)
         {
+            TimeChartXAxes[0].MaxLimit = Runs.Count() - 0.5;
         }
-
+        else
+        {
+            TimeChartXAxes[0].MaxLimit = Runs.Where(r => r.Flag.Name == SelectedFlagName).OrderBy(r => r.DateRan).Count() + 0.5;
+        }
+        TimeChartSeries![1].IsVisible ^= true;
     }
 }
