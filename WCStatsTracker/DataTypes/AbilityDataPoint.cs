@@ -8,5 +8,5 @@ public class AbilityDataPoint
 {
     public string Name { get; set; } = string.Empty;
     public int Count { get; set; } = 0;
-    public TimeSpan AverageRunLength = TimeSpan.Zero;
+    public TimeSpan AverageRunLength { get; set; } = TimeSpan.Zero;
 }
