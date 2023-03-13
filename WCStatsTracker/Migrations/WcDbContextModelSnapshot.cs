@@ -59,112 +59,112 @@ namespace WCStatsTracker.Migrations
 
                     b.HasKey("AbilityId");
 
-                    b.ToTable("AbilitiesProtected");
+                    b.ToTable("Abilities");
 
                     b.HasData(
                         new
                         {
-                            AbilityId = 21,
+                            AbilityId = 1,
                             Name = "Blitz"
                         },
                         new
                         {
-                            AbilityId = 1,
+                            AbilityId = 2,
                             Name = "Capture"
                         },
                         new
                         {
-                            AbilityId = 2,
+                            AbilityId = 3,
                             Name = "Control"
                         },
                         new
                         {
-                            AbilityId = 3,
+                            AbilityId = 4,
                             Name = "GP Rain"
                         },
                         new
                         {
-                            AbilityId = 4,
+                            AbilityId = 5,
                             Name = "Dance"
                         },
                         new
                         {
-                            AbilityId = 5,
+                            AbilityId = 6,
                             Name = "Health"
                         },
                         new
                         {
-                            AbilityId = 6,
+                            AbilityId = 7,
                             Name = "Jump"
                         },
                         new
                         {
-                            AbilityId = 7,
+                            AbilityId = 8,
                             Name = "Lore"
                         },
                         new
                         {
-                            AbilityId = 8,
+                            AbilityId = 9,
                             Name = "Morph"
                         },
                         new
                         {
-                            AbilityId = 9,
+                            AbilityId = 10,
                             Name = "Rage"
                         },
                         new
                         {
-                            AbilityId = 10,
+                            AbilityId = 11,
                             Name = "Runic"
                         },
                         new
                         {
-                            AbilityId = 11,
+                            AbilityId = 12,
                             Name = "Sketch"
                         },
                         new
                         {
-                            AbilityId = 12,
+                            AbilityId = 13,
                             Name = "Slot"
                         },
                         new
                         {
-                            AbilityId = 13,
+                            AbilityId = 14,
                             Name = "Steal"
                         },
                         new
                         {
-                            AbilityId = 14,
+                            AbilityId = 15,
                             Name = "SwdTech"
                         },
                         new
                         {
-                            AbilityId = 15,
+                            AbilityId = 16,
                             Name = "Throw"
                         },
                         new
                         {
-                            AbilityId = 16,
+                            AbilityId = 17,
                             Name = "Tools"
                         },
                         new
                         {
-                            AbilityId = 17,
+                            AbilityId = 18,
                             Name = "X Magic"
                         },
                         new
                         {
-                            AbilityId = 18,
+                            AbilityId = 19,
                             Name = "Shock"
                         },
                         new
                         {
-                            AbilityId = 19,
+                            AbilityId = 20,
                             Name = "MagiTek"
                         },
                         new
                         {
-                            AbilityId = 20,
+                            AbilityId = 21,
                             Name = "Possess"
                         });
                 });
@@ -181,7 +181,7 @@ namespace WCStatsTracker.Migrations
 
                     b.HasKey("CharacterId");
 
-                    b.ToTable("CharactersProtected");
+                    b.ToTable("Characters");
 
                     b.HasData(
                         new
