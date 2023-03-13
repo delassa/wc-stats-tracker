@@ -12,7 +12,6 @@ namespace WCStatsTracker.Models;
 public class WcRun : ObservableValidator
 {
     private int _bossesKilled;
-
     private int _charactersFound;
     private int _checksDone;
     private int _chestsOpened;
@@ -24,8 +23,10 @@ public class WcRun : ObservableValidator
     private TimeSpan _runLength;
     private string _seed = string.Empty;
 
-
+    [Key]
     public int WcRunId { get; set; }
+    public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+    public virtual ICollection<Ability> Abilities { get; set; } = new List<Ability>();
 
     [Range(0, Bosses.ConstantCount, ErrorMessage = "Bosses must be between 0 and 38")]
     public int BossesKilled
@@ -103,10 +104,4 @@ public class WcRun : ObservableValidator
         get => _dateRan;
         set => SetProperty(ref _dateRan, value, true);
     }
-
-    /// <summary>
-    ///     Starting characters used in this run
-    /// </summary>
-    public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
-    public virtual ICollection<Ability> Abilities { get; set; } = new List<Ability>();
 }

@@ -9,6 +9,7 @@ namespace WCStatsTracker.Models;
 /// </summary>
 public partial class Flag : ObservableValidator, ICloneable
 {
+    [Key]
     public int FlagId { get; set; }
     /// <summary>
     ///     Flagstring of this particular flagset

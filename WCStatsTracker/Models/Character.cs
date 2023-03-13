@@ -4,6 +4,7 @@ namespace WCStatsTracker.Models;
 
 public class Character
 {
+    [Key]
     public int CharacterId { get; set; }
 
     [Required]
