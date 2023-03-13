@@ -1,8 +1,8 @@
 using System;
-namespace WCStatsTracker.Models;
+namespace WCStatsTracker.DataTypes;
 
 /// <summary>
-///     Simply class to hold the count of a certain ability
+///     Simply class to hold the data for charts of a certain ability
 /// </summary>
 public class AbilityDataPoint
 {

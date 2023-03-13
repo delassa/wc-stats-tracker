@@ -1,8 +1,8 @@
 using System;
-namespace WCStatsTracker.Models;
+namespace WCStatsTracker.DataTypes;
 
 /// <summary>
-///     Simple class to hold a count of a certain character
+///     Simple class to hold a chart point dataset for a certain character
 /// </summary>
 public class CharacterDataPoint
 {
