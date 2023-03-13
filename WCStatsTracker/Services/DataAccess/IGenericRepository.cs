@@ -16,13 +16,13 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="id">The id of the entity to get</param>
     /// <returns>The entity requested</returns>
-    TEntity GetById(int id);
+    TEntity? GetById(int id);
 
     /// <summary>
     ///     Get all records of a specific entity
     /// </summary>
     /// <returns>An IEnumerable of all the entities</returns>
-    IQueryable<TEntity> GetAll();
+    IEnumerable<TEntity> GetAll();
 
     /// <summary>
     ///     Finds entities with the specified func
@@ -66,4 +66,9 @@ public interface IGenericRepository<TEntity> where TEntity : class
     ///     Loads the data from the DB to populate the local value of the dbcontext
     /// </summary>
     void Load();
+
+    public IEnumerable<TEntity> Get(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        string includeProperties = "");
 }

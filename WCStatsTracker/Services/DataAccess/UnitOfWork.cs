@@ -5,6 +5,9 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly WcDbContext _context;
 
+    // Allows getting the context for debug viewing
+    public WcDbContext Context { get => _context; }
+
     public UnitOfWork(WcDbContext context)
     {
         _context = context;
