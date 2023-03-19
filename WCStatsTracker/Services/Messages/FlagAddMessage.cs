@@ -5,9 +5,9 @@ namespace WCStatsTracker.Services.Messages;
 /// <summary>
 ///     A message signifying that we need to update flag sets from the DB to synchronize them
 /// </summary>
-public sealed class FlagSetAddMessage : ValueChangedMessage<Flag>
+public sealed class FlagAddMessage : ValueChangedMessage<string>
 {
-    public FlagSetAddMessage(Flag flag) : base(flag)
+    public FlagAddMessage(string flagName) : base(flagName)
     {
     }
 }

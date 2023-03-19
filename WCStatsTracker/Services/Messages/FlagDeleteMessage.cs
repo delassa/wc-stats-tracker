@@ -2,9 +2,9 @@
 using WCStatsTracker.Models;
 namespace WCStatsTracker.Services.Messages;
 
-public sealed class FlagSetDeleteMessage : ValueChangedMessage<Flag>
+public sealed class FlagDeleteMessage : ValueChangedMessage<string>
 {
-    public FlagSetDeleteMessage(Flag flag) : base(flag)
+    public FlagDeleteMessage(string flagName) : base(flagName)
     {
     }
 }
