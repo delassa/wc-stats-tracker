@@ -24,8 +24,8 @@ namespace WCStatsTracker;
 
 public class App : Application
 {
-    private static ServiceProvider? _serviceProvider;
-    private static IConfigurationRoot? _configuration;
+    private static ServiceProvider? ServiceProvider { get; set; }
+    private static IConfigurationRoot? Configuration { get; set; }
 
     public override void Initialize()
     {
@@ -35,13 +35,13 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         // Setup Logger
-        _configuration = new ConfigurationBuilder()
+        Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
 
         var log = new LoggerConfiguration()
-            .ReadFrom.Configuration(_configuration)
+            .ReadFrom.Configuration(Configuration)
             .CreateLogger();
 
         Log.Logger = log;
@@ -62,7 +62,7 @@ public class App : Application
         {
             // Put this here to not interfere with design view
             CreateServiceProvider();
-            var context = _serviceProvider!.GetRequiredService<WcDbContext>();
+            var context = ServiceProvider!.GetRequiredService<WcDbContext>();
             context.GetInfrastructure().GetService<IMigrator>().Migrate();
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
@@ -71,7 +71,7 @@ public class App : Application
             faTheme.CustomAccentColor = Color.FromRgb(0, 140, 120);
             desktop.MainWindow = new MainWindow
             {
-                DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>()
+                DataContext = ServiceProvider!.GetRequiredService<MainWindowViewModel>()
             };
         }
 
@@ -101,7 +101,7 @@ public class App : Application
 
         // Database resides in current working dir
 
-        var fixedConnectionString = _configuration!.GetConnectionString("Default")
+        var fixedConnectionString = Configuration!.GetConnectionString("Default")
             .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
 
         // Add in the Db Context
@@ -109,6 +109,6 @@ public class App : Application
         services.AddDbContext<WcDbContext>(options => options
             .LogTo(Log.Logger.Information, LogLevel.Information).EnableSensitiveDataLogging()
             .UseSqlite(fixedConnectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
-        _serviceProvider = services.BuildServiceProvider();
+        ServiceProvider = services.BuildServiceProvider();
     }
 }
