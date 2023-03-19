@@ -21,7 +21,7 @@ public partial class RunsListViewModel : ViewModelBase
     private string _workingRunLength = string.Empty;
 
     [ObservableProperty]
-    private DataGridCollectionView _collectionView;
+    private DataGridCollectionView? _collectionView;
 
     [ObservableProperty]
     private ObservableCollection<Flag>? _flagList;
@@ -145,7 +145,7 @@ public partial class RunsListViewModel : ViewModelBase
     /// <returns>True if should be enabled false otherwise</returns>
     public bool CanSaveChanges()
     {
-        try
+        if (RunList is not null)
         {
             if (RunList.Count > 0)
                 foreach (var run in RunList)
@@ -157,13 +157,10 @@ public partial class RunsListViewModel : ViewModelBase
                         return false;
                     }
                 }
+            return true;
         }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "RunList is null in CanSaveChanges");
-            return false;
-        }
-        return true;
+        Log.Warning("RunList null in CanSaveChanges for RunListViewModel");
+        return false;
     }
 
     /// <summary>

@@ -86,25 +86,28 @@ public partial class FlagsPageViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanSaveClick))]
     private async Task SaveClick()
     {
-        // Check the flag has a unique name
-        if (FlagList.FirstOrDefault(f => f.Name == WorkingFlag.Name, null) is null)
+        if ((FlagList is not null) && (WorkingFlag is not null))
         {
-            FlagList.Add(WorkingFlag);
-            _unitOfWork.Flag.Add(WorkingFlag);
-            _unitOfWork.Save();
-            WorkingFlag = null;
-            WorkingFlag = new Flag();
-        }
-        else
-        {
-            var invalidFlagDialog = new ContentDialog
+            // Check the flag has a unique name
+            if (FlagList.FirstOrDefault(f => f!.Name == WorkingFlag.Name, null) is null)
             {
-                Title = "Duplicate flag name",
-                Content = "Flag name must be unique",
-                PrimaryButtonText = "Ok",
-                IsSecondaryButtonEnabled = false
-            };
-            await invalidFlagDialog.ShowAsync();
+                FlagList.Add(WorkingFlag);
+                _unitOfWork.Flag.Add(WorkingFlag);
+                _unitOfWork.Save();
+                WorkingFlag = null;
+                WorkingFlag = new Flag();
+            }
+            else
+            {
+                var invalidFlagDialog = new ContentDialog
+                {
+                    Title = "Duplicate flag name",
+                    Content = "Flag name must be unique",
+                    PrimaryButtonText = "Ok",
+                    IsSecondaryButtonEnabled = false
+                };
+                await invalidFlagDialog.ShowAsync();
+            }
         }
     }
 
@@ -138,14 +141,21 @@ public partial class FlagsPageViewModel : ViewModelBase
         Log.Debug("Delete flag result = {0}", Enum.GetName(result));
         if (result == ContentDialogResult.Primary)
         {
-            var flagToDelete = SelectedFlag;
-            Log.Debug("User accepted deletion of flag, continue with deleting flag");
-            WeakReferenceMessenger.Default.Send(new FlagDeleteMessage(SelectedFlag.Name));
-            FlagList.Remove(flagToDelete);
-            _unitOfWork.Flag.Remove(flagToDelete);
-            _unitOfWork.Save();
-            SelectedFlag = null;
-            SelectedIndex = -1;
+            if ((SelectedFlag is not null) && (FlagList is not null))
+            {
+                var flagToDelete = SelectedFlag;
+                Log.Debug("User accepted deletion of flag, continue with deleting flag");
+                WeakReferenceMessenger.Default.Send(new FlagDeleteMessage(SelectedFlag.Name));
+                FlagList.Remove(flagToDelete);
+                _unitOfWork.Flag.Remove(flagToDelete);
+                _unitOfWork.Save();
+                SelectedFlag = null;
+                SelectedIndex = -1;
+            }
+            else
+            {
+                Log.Warning("Flag or Selected flag null in DeleteSelectedFlag command");
+            }
         }
         else
         {

@@ -68,7 +68,7 @@ public partial class RunsAddViewModel : ViewModelBase
 
     private void Receive(RunsAddViewModel recipient, FlagDeleteMessage message)
     {
-        var flag = FlagList.FirstOrDefault(f => f.Name == message.Value, null);
+        var flag = FlagList.FirstOrDefault(f => f!.Name == message.Value, null);
         if (flag is not null)
         {
             Log.Debug("Deleted Flag found in flaglist");

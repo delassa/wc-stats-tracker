@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+#pragma warning disable CS8618
 namespace WCStatsTracker.Models;
 
 public class Ability

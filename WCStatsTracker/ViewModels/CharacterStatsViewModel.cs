@@ -19,7 +19,7 @@ namespace WCStatsTracker.ViewModels;
 
 public partial class CharacterStatsViewModel : ViewModelBase
 {
-    private IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private ObservableCollection<ISeries> CharacterChartSeries { get; set; }
     private ObservableCollection<ISeries> AbilityChartSeries { get; set; }
     private List<Axis> CharacterChartXAxes { get; } = new();
@@ -29,16 +29,16 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private readonly ObservableCollection<CharacterDataPoint> _characterDataSeries;
     private readonly ObservableCollection<AbilityDataPoint> _abilityDataSeries;
     private readonly IEnumerable<WcRun> _runs;
-    private string _selectedFlagName;
+    private string _selectedFlagName = string.Empty;
 
     [ObservableProperty]
-    private StatCardValues _mostUsedCharacterCard;
+    private StatCardValues? _mostUsedCharacterCard;
     [ObservableProperty]
-    private StatCardValues _fastestCharacterCard;
+    private StatCardValues? _fastestCharacterCard;
     [ObservableProperty]
-    private StatCardValues _mostUsedAbilityCard;
+    private StatCardValues? _mostUsedAbilityCard;
     [ObservableProperty]
-    private StatCardValues _fastestAbilityCard;
+    private StatCardValues? _fastestAbilityCard;
 
     public CharacterStatsViewModel(IUnitOfWork unitOfWork)
     {
@@ -46,12 +46,14 @@ public partial class CharacterStatsViewModel : ViewModelBase
         IconName = "HumanQueue";
         _unitOfWork = unitOfWork;
 
-        _runs = unitOfWork.WcRun.Get(r => true, r => r.OrderBy(r => r.DateRan), "Flag,Characters,Abilities"); 
+        _runs = unitOfWork.WcRun.Get(r => true, r => r.OrderBy(r => r.DateRan), "Flag,Characters,Abilities");
         WeakReferenceMessenger.Default.Register<CharacterStatsViewModel, SelectedFlagChangedMessage>(this, Receive);
 
         // Set up our counts of characters and abilities
         _characterDataSeries = new ObservableCollection<CharacterDataPoint>();
         _abilityDataSeries = new ObservableCollection<AbilityDataPoint>();
+        CharacterChartSeries = new ObservableCollection<ISeries>();
+        AbilityChartSeries = new ObservableCollection<ISeries>();
 
         UpdateDataSeries();
         SetupStatCards();
@@ -160,8 +162,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
     private void SetupCharts()
     {
         Paint foregroundBarPaint = new SolidColorPaint(new SKColor(0x03, 0xda, 0xc6, 0x50));
-        CharacterChartSeries = new ObservableCollection<ISeries>
-        {
+        CharacterChartSeries.Add(
             new ColumnSeries<CharacterDataPoint>
             {
                 Values = _characterDataSeries,
@@ -175,7 +176,8 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
                 ZIndex = 0
-            },
+            });
+        CharacterChartSeries.Add(
             new ColumnSeries<CharacterDataPoint>
             {
                 Values = _characterDataSeries,
@@ -190,8 +192,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 IgnoresBarPosition = false,
                 ZIndex = 1,
                 Fill = foregroundBarPaint
-            }
-        };
+            });
         CharacterChartXAxes.Add(
             new Axis
             {
@@ -206,9 +207,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 Labeler = value => TimeSpan.FromTicks((long)value).ToString(@"h\:mm\:ss")
             });
 
-        AbilityChartSeries = new ObservableCollection<ISeries>
-        {
-
+        AbilityChartSeries.Add(
             new ColumnSeries<AbilityDataPoint>
             {
                 Values = _abilityDataSeries,
@@ -222,7 +221,8 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 ScalesYAt = 0,
                 IgnoresBarPosition = true,
                 ZIndex = 0
-            },
+            });
+        AbilityChartSeries.Add(
             new ColumnSeries<AbilityDataPoint>
             {
                 Values = _abilityDataSeries,
@@ -237,8 +237,7 @@ public partial class CharacterStatsViewModel : ViewModelBase
                 IgnoresBarPosition = false,
                 ZIndex = 1,
                 Fill = foregroundBarPaint
-            }
-        };
+            });
         AbilityChartXAxes.Add(
             new Axis
             {

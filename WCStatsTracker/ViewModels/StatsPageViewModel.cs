@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,7 +18,7 @@ public partial class StatsPageViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<string>? _flagNames;
     [ObservableProperty]
-    private string _selectedFlagName;
+    private string _selectedFlagName = string.Empty;
     [ObservableProperty]
     private int _selectedFlagIndex;
 
@@ -63,7 +64,7 @@ public partial class StatsPageViewModel : ViewModelBase
             {
                 SelectedFlagIndex = -1;
                 SelectedFlagName = "";
-                if (FlagNames.Contains(item.Name))
+                if (FlagNames!.Contains(item.Name))
                 {
                     FlagNames.RemoveAt(FlagNames.IndexOf(item.Name));
                 }

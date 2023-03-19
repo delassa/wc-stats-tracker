@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
+#pragma warning disable CS8618
 namespace WCStatsTracker.Models;
 
 /// <summary>
