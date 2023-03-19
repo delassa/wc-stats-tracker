@@ -34,7 +34,7 @@
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="True"
                   IsReadOnly="False"
-                  Items="{Binding RunList, Mode=TwoWay}"
+                  Items="{Binding CollectionView, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedItem}"
                   SelectionMode="Single">
             <i:Interaction.Behaviors>
@@ -45,7 +45,7 @@
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Date Ran"
-										SortMemberPath="DateRan">
+                                        SortMemberPath="DateRan">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DateRan, StringFormat=\{0:MM/dd/yy\}}"
@@ -60,7 +60,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Run Length"
-										SortMemberPath="RunLength">
+                                        SortMemberPath="RunLength">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding RunLength}"
@@ -99,7 +99,7 @@
                                         Header="KT Skip" />
                 <DataGridTemplateColumn Width="auto"
                                         Header="Flag Set"
-										SortMemberPath="Flag.Name">
+                                        SortMemberPath="Flag.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Flag.Name}"

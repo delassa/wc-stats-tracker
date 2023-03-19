@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -18,6 +19,9 @@ public partial class RunsListViewModel : ViewModelBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private string _workingRunLength = string.Empty;
+
+    [ObservableProperty]
+    private DataGridCollectionView _collectionView;
 
     [ObservableProperty]
     private ObservableCollection<Flag>? _flagList;
@@ -45,16 +49,20 @@ public partial class RunsListViewModel : ViewModelBase
         _unitOfWork.WcRun.Load();
         RunList = _unitOfWork.WcRun.GetAllObservable();
         FlagList = _unitOfWork.Flag.GetAllObservable();
+        CollectionView = new DataGridCollectionView(RunList, false, false);
+        CollectionView.GroupDescriptions.Add(new DataGridPathGroupDescription("Flag.Name"));
     }
 
     /// <summary>
-    ///     Method to cram a bunch of new data into the DB
+    ///     Generates test data to fill db with random parameters
     /// </summary>
-    private void GenerateNewData()
+    /// <param name="flagCount">The number of flags to generate</param>
+    /// <param name="runCount">The number of runs to generate</param>
+    private void GenerateNewData(int flagCount, int runCount)
     {
         var characters = _unitOfWork.Character.GetAll().ToList();
         var abilities = _unitOfWork.Ability.GetAll().ToList();
-        foreach (var flag in GenerateData.GenerateFlags(5))
+        foreach (var flag in GenerateData.GenerateFlags(flagCount))
         {
             // Check if the flag is already in the database by the name and string
             var f = _unitOfWork.Flag.Get(f => f.Name == flag.Name && f.FlagString == flag.FlagString);
@@ -62,7 +70,7 @@ public partial class RunsListViewModel : ViewModelBase
                 FlagList!.Add(flag);
         }
         var rand = new Random();
-        foreach (var run in GenerateData.GenerateRuns(50))
+        foreach (var run in GenerateData.GenerateRuns(runCount))
         {
             run.Flag = FlagList![rand.Next(0, 5)];
             run.Characters.Add(characters[rand.Next(0, CharacterData.Count)]);
