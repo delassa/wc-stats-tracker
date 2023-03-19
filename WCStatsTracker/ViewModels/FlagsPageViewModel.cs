@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using FluentAvalonia.UI.Controls;
 using Serilog;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
-using WCStatsTracker.Services.Messages;
 namespace WCStatsTracker.ViewModels;
 
 public partial class FlagsPageViewModel : ViewModelBase
@@ -56,7 +49,7 @@ public partial class FlagsPageViewModel : ViewModelBase
         _unitOfWork = unitOfWork;
         ViewName = "Flags";
         IconName = "Flag";
-        FlagList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
+        FlagList = _unitOfWork.Flag.GetAllObservable();
         WorkingFlag = new Flag();
     }
 
@@ -84,28 +77,13 @@ public partial class FlagsPageViewModel : ViewModelBase
     ///     for other view models to monitor if they need to change their flag sets as well
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanSaveClick))]
-    private async Task SaveClick()
+    private void SaveClick()
     {
-        // Check the flag has a unique name
-        if (FlagList.FirstOrDefault(f => f.Name == WorkingFlag.Name, null) is null)
-        {
-            FlagList.Add(WorkingFlag);
-            _unitOfWork.Flag.Add(WorkingFlag);
-            _unitOfWork.Save();
-            WorkingFlag = null;
-            WorkingFlag = new Flag();
-        }
-        else
-        {
-            var invalidFlagDialog = new ContentDialog
-            {
-                Title = "Duplicate flag name",
-                Content = "Flag name must be unique",
-                PrimaryButtonText = "Ok",
-                IsSecondaryButtonEnabled = false
-            };
-            await invalidFlagDialog.ShowAsync();
-        }
+        FlagList.Add(WorkingFlag);
+        _unitOfWork.Save();
+
+        WorkingFlag = null;
+        WorkingFlag = new Flag();
     }
 
     /// <summary>
@@ -122,36 +100,18 @@ public partial class FlagsPageViewModel : ViewModelBase
     }
 
     /// <summary>
+    ///     Deletes the selected flag and sends a message out about it so other
+    ///     view models can update their collections
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanDeleteSelectedFlag))]
-    private async Task DeleteSelectedFlag(Window window)
+    private void DeleteSelectedFlag()
     {
-        var deleteFlagDialog = new ContentDialog
-        {
-            Title = "Delete associated runs?",
-            Content = "Deleting this flag will delete all associated runs.  Do you want to delete it?",
-            PrimaryButtonText = "Delete",
-            CloseButtonText = "Cancel"
-        };
-        var result = await deleteFlagDialog.ShowAsync();
+        FlagList.Remove(SelectedFlag);
+        //Remove the flag from tracking
+        _unitOfWork.Save();
 
-        Log.Debug("Delete flag result = {0}", Enum.GetName(result));
-        if (result == ContentDialogResult.Primary)
-        {
-            var flagToDelete = SelectedFlag;
-            Log.Debug("User accepted deletion of flag, continue with deleting flag");
-            WeakReferenceMessenger.Default.Send(new FlagDeleteMessage(SelectedFlag.Name));
-            FlagList.Remove(flagToDelete);
-            _unitOfWork.Flag.Remove(flagToDelete);
-            _unitOfWork.Save();
-            SelectedFlag = null;
-            SelectedIndex = -1;
-        }
-        else
-        {
-            Log.Debug("User cancelled flag deletion from dialog.");
-            // User cancelled deletion, do nothing and close dialog
-        }
+        SelectedFlag = null;
+        SelectedIndex = -1;
     }
 
     /// <summary>
