@@ -98,6 +98,7 @@
                                Text="Characters Found"
                                Classes="InputLabel" />
                     <Slider Grid.Row="2"
+                            IsTabStop="False"
                             Maximum="14"
                             Minimum="0"
                             Value="{Binding WorkingRun.CharactersFound}" />
@@ -109,6 +110,7 @@
                                Grid.Column="0"
                                Text="Espers Found" />
                     <Slider Grid.Row="3"
+                            IsTabStop="False"
                             Maximum="27"
                             Minimum="0"
                             Value="{Binding WorkingRun.EspersFound}" />
@@ -116,6 +118,7 @@
                              Text="{Binding WorkingRun.EspersFound}" />
 
                     <Slider Grid.Row="4"
+                            IsTabStop="False"
                             Maximum="8"
                             Minimum="0"
                             Value="{Binding WorkingRun.DragonsKilled}" />
@@ -127,6 +130,7 @@
                              Text="{Binding WorkingRun.DragonsKilled}" />
 
                     <Slider Grid.Row="5"
+                            IsTabStop="False"
                             Maximum="120"
                             Minimum="0"
                             Value="{Binding WorkingRun.ChestsOpened}" />
@@ -138,6 +142,7 @@
                              Text="{Binding WorkingRun.ChestsOpened}" />
 
                     <Slider Grid.Row="6"
+                            IsTabStop="False"
                             Maximum="100"
                             Minimum="0"
                             Value="{Binding WorkingRun.ChecksDone}" />
@@ -149,6 +154,7 @@
                              Text="{Binding WorkingRun.ChecksDone}" />
 
                     <Slider Grid.Row="7"
+                            IsTabStop="False"
                             Maximum="38"
                             Minimum="0"
                             Value="{Binding WorkingRun.BossesKilled}" />
