@@ -6,10 +6,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Serilog;
 using WCStatsTracker.DataTypes;
 using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
+using WCStatsTracker.Services.Messages;
 namespace WCStatsTracker.ViewModels;
 
 public partial class RunsAddViewModel : ViewModelBase
@@ -59,6 +62,22 @@ public partial class RunsAddViewModel : ViewModelBase
         WorkingRunLength = "00:00:00";
         PropertyChanged += OnPropertyChanged;
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
+
+        WeakReferenceMessenger.Default.Register<RunsAddViewModel, FlagDeleteMessage>(this, Receive);
+    }
+
+    private void Receive(RunsAddViewModel recipient, FlagDeleteMessage message)
+    {
+        var flag = FlagList.FirstOrDefault(f => f.Name == message.Value, null);
+        if (flag is not null)
+        {
+            Log.Debug("Deleted Flag found in flaglist");
+            FlagList.Remove(flag);
+        }
+        else
+        {
+            Log.Debug("Deleted Flag not found in flaglist");
+        }
     }
 
     /// <summary>
@@ -126,7 +145,7 @@ public partial class RunsAddViewModel : ViewModelBase
     public bool CanSaveRun()
     {
         // Check if the current working run is ok to save
-        
+
         return WorkingRun is not null && !WorkingRun.HasErrors && !HasErrors;
     }
 }
