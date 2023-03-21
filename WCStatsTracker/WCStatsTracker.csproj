@@ -32,6 +32,12 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
         <PackageReference Include="FluentAvalonia.UI.Windowing" Version="2.0.0-preview5" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview5" />
+        <PackageReference Include="Google.Protobuf" Version="3.22.1" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.52.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="LinqStatistics" Version="2.3.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.700-11.0.0-preview5" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.0.0-preview2" />
@@ -62,5 +68,12 @@
     <ItemGroup>
         <Folder Include="Controls\" />
         <Folder Include="Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Protos\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Protobuf Include="Protos\sni.proto" GrpcServices="Client" />
     </ItemGroup>
 </Project>
