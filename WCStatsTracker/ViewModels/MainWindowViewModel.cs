@@ -36,7 +36,7 @@ public partial class MainWindowViewModel : ViewModelBase
         RunsAddViewModel runsAddViewModel,
         FlagsPageViewModel flagsPageViewModel,
         StatsPageViewModel statsPageViewModel,
-        RecordPageViewModel recordPageViewModel,
+        RecordRunViewModel recordRunViewModel,
         OptionsPageViewModel optionsPageViewModel)
     {
         Views = new List<ViewModelBase>
@@ -45,7 +45,7 @@ public partial class MainWindowViewModel : ViewModelBase
             runsAddViewModel,
             flagsPageViewModel,
             statsPageViewModel,
-            recordPageViewModel,
+            recordRunViewModel,
             optionsPageViewModel
         };
 
