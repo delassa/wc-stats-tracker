@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WCStatsTracker.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="WCStatsTracker.Views.RecordPageView"
+             x:DataType="viewModels:RecordPageViewModel">
+    <Design.DataContext>
+        <viewModels:RecordPageViewModel />
+    </Design.DataContext>
+    <StackPanel>
+        <Button Content="Start Recording Run"
+                Command="{Binding StartTimerCommand}"/>
+        <Button Content="Pause Timer"
+                Command="{Binding PauseTimerCommand}"/>
+        <Button Content="End Recording Run"
+                Command="{Binding EndRunCommand}"/>
+        <TextBlock Text="{Binding RunTime, StringFormat=\{0:h\\:mm\\:ss\\.ff\}}" />
+    </StackPanel>
+</UserControl>

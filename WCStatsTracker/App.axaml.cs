@@ -95,6 +95,7 @@ public class App : Application
         services.AddSingleton<OptionsPageViewModel>();
         services.AddSingleton<TimingStatsViewModel>();
         services.AddSingleton<CharacterStatsViewModel>();
+        services.AddSingleton<RecordPageViewModel>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         // Get a configuration
