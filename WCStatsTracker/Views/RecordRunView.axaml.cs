@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace WCStatsTracker.Views;
 
-public partial class RecordPageView : UserControl
+public partial class RecordRunView : UserControl
 {
-    public RecordPageView()
+    public RecordRunView()
     {
         InitializeComponent();
     }
@@ -16,4 +16,3 @@ public partial class RecordPageView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 }
-
