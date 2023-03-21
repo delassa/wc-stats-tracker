@@ -16,7 +16,6 @@ public class DesignRunAddViewModel : ViewModelBase
         {
             StartingCharacters.Add(new CharacterOwn(characterName, false));
         }
-
         StartingAbilities = new List<AbilityOwn>();
         foreach (var abilityName in AbilityData.Names)
         {
