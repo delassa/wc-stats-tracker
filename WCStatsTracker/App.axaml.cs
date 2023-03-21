@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
+using WCStatsTracker.Services.GameAccess;
 using WCStatsTracker.ViewModels;
 using WCStatsTracker.Views;
 #pragma warning disable CS8602
@@ -95,7 +96,8 @@ public class App : Application
         services.AddSingleton<OptionsPageViewModel>();
         services.AddSingleton<TimingStatsViewModel>();
         services.AddSingleton<CharacterStatsViewModel>();
-        services.AddSingleton<RecordPageViewModel>();
+        services.AddSingleton<RecordRunViewModel>();
+        services.AddSingleton<ISniService, SniService>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         // Get a configuration
