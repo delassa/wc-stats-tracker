@@ -8,11 +8,9 @@
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
+			 d:DataContext="{viewModels:TimingStatsViewModel}"
              x:DataType="viewModels:TimingStatsViewModel"
              x:Class="WCStatsTracker.Views.TimingStatsView">
-    <Design.DataContext>
-        <viewModels:TimingStatsViewModel />
-    </Design.DataContext>
 
     <Grid RowDefinitions="Auto,*">
         <!-- Timing Grid -->

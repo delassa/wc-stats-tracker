@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -58,6 +57,10 @@ public partial class FlagsPageViewModel : ViewModelBase
         IconName = "Flag";
         FlagList = new ObservableCollection<Flag>(_unitOfWork.Flag.GetAll());
         WorkingFlag = new Flag();
+    }
+
+    public FlagsPageViewModel()
+    {
     }
 
     /// <summary>

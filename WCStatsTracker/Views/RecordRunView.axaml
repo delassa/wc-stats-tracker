@@ -1,40 +1,60 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="WCStatsTracker.Views.RecordRunView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:WCStatsTracker.ViewModels"
-             xmlns:designTime="clr-namespace:WCStatsTracker.ViewModels.DesignTime"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
+             x:Name="recordRunViewControl"
+             d:DataContext="{viewModels:RecordRunViewModel}"
              d:DesignHeight="450"
-             x:Class="WCStatsTracker.Views.RecordRunView"
+             d:DesignWidth="800"
              x:DataType="viewModels:RecordRunViewModel"
-             x:Name="recordRunView">
-    <Design.DataContext>
-        <designTime:DesignRecordRunViewModel />
-    </Design.DataContext>
-
+             mc:Ignorable="d">
+    <Grid ColumnDefinitions="*,*">
+        <StackPanel Grid.Column="0" Margin="{StaticResource AppMargin}">
+            <Border Classes="ThinBorder">
+                <StackPanel>
+                    <ComboBox Margin="{StaticResource AppMargin}"
+                              Items="{Binding DeviceNames}"
+                              PlaceholderText="Select a SNI device to attach to"
+                              SelectedIndex="{Binding SelectedDeviceIndex}" />
+                    <Button Margin="{StaticResource AppMargin}"
+                            Command="{Binding RefreshDevicesCommand}"
+                            Content="Refresh Devices" />
+                    <Button Margin="{StaticResource AppMargin}"
+                            Command="{Binding ReconnectToSniCommand}"
+                            Content="Reconnect To Sni" />
+                </StackPanel>
+            </Border>
+            <Border Classes="ThinBorder">
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding StartRecordRunCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <icon:MaterialIcon Foreground="Red" Kind="RecordCircle" />
+                            <TextBlock Text="Start Recording Run" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding PauseRecordRunCommand}" Content="Pause Timer" />
+                    <Button Command="{Binding EndRecordRunCommand}" Content="End Recording Run" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <ItemsRepeater HorizontalAlignment="Stretch" Items="{Binding StatusMessages}">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="{StaticResource AppMargin}" Classes="ThinBorder">
+                            <TextBlock Text="{Binding}" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </StackPanel>
+    </Grid>
     <Interaction.Behaviors>
-        <EventTriggerBehavior EventName="Loaded"
-                              SourceObject="recordRunView">
-            <CallMethodAction TargetObject="{Binding}"
-                              MethodName="OnLoaded" />
+        <EventTriggerBehavior EventName="Loaded" SourceObject="recordRunViewControl">
+            <CallMethodAction MethodName="OnLoaded" TargetObject="{Binding}" />
         </EventTriggerBehavior>
     </Interaction.Behaviors>
-    <StackPanel>
-        <ComboBox Items="{Binding DeviceNames}"
-                  PlaceholderText="Select a SNI device to attach to"
-                  SelectedIndex="{Binding SelectedIndex}" />
-        <Button Content="Refresh Devices"
-                Command="{Binding RefreshDevicesCommand}" />
-        <Button Content="Start Recording Run"
-                Command="{Binding StartRecordRunCommand}" />
-        <Button Content="Pause Timer"
-                Command="{Binding PauseRecordRunCommand}" />
-        <Button Content="End Recording Run"
-                Command="{Binding EndRecordRunCommand}" />
-        <TextBlock Text="{Binding RunTime, StringFormat=\{0:h\\:mm\\:ss\\.ff\}}" />
-        <Button Content="Reconnect To Sni"
-                Command="{Binding ReconnectToSniCommand}" />
-    </StackPanel>
 </UserControl>

@@ -1,5 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-namespace WCStatsTracker.Utility;
+namespace WCStatsTracker.DataTypes;
 
 public partial class StatCardValues : ObservableObject
 {

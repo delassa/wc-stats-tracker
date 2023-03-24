@@ -4,7 +4,7 @@ namespace WCStatsTracker.Services.GameAccess;
 
 public interface ISniService
 {
-    public bool IsInit { get; }
+    public bool IsInitialized { get; }
     public bool InitClient(string address);
     public IEnumerable<string> GetDeviceNames();
     public bool SelectDevice(int index);

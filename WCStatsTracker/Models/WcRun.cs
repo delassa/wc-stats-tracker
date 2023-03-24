@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
+using WCStatsTracker.Converters;
 using WCStatsTracker.DataTypes;
 using WCStatsTracker.Wc.Data;
 namespace WCStatsTracker.Models;

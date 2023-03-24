@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Serilog;
 using WCStatsTracker.DataTypes;
-using WCStatsTracker.Helpers;
 using WCStatsTracker.Models;
 using WCStatsTracker.Services.DataAccess;
 using WCStatsTracker.Services.Messages;
@@ -18,7 +15,7 @@ namespace WCStatsTracker.ViewModels;
 public partial class RunsAddViewModel : ViewModelBase
 {
     private readonly IUnitOfWork _unitOfWork;
-    private string _workingRunLength = null!;
+    private string _workingRunLengthString = null!;
 
     [ObservableProperty]
     private ObservableCollection<Flag> _flagList = null!;
@@ -31,13 +28,6 @@ public partial class RunsAddViewModel : ViewModelBase
 
     [ObservableProperty]
     private WcRun? _workingRun;
-
-    [CustomValidation(typeof(Validators), nameof(Validators.ValidateRunLength))]
-    public string WorkingRunLength
-    {
-        get => _workingRunLength;
-        set => SetProperty(ref _workingRunLength, value, true);
-    }
 
     public RunsAddViewModel(IUnitOfWork unitOfWork)
     {
@@ -59,10 +49,7 @@ public partial class RunsAddViewModel : ViewModelBase
 
         FlagList = _unitOfWork.Flag.GetAllObservable();
         WorkingRun = new WcRun();
-        WorkingRunLength = "00:00:00";
-        PropertyChanged += OnPropertyChanged;
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
-
         WeakReferenceMessenger.Default.Register<RunsAddViewModel, FlagDeleteMessage>(this, Receive);
     }
 
@@ -87,25 +74,6 @@ public partial class RunsAddViewModel : ViewModelBase
     /// <param name="e">The event args</param>
     private void WorkingRun_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
-        SaveRunCommand.NotifyCanExecuteChanged();
-    }
-
-    /// <summary>
-    ///     Used to add our current run length to the working run object
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(WorkingRunLength))
-        {
-            if (WorkingRun is null) return;
-            var isValidTime = TimeSpan.TryParseExact(WorkingRunLength, @"hh\:mm\:ss", null, out _);
-            if (isValidTime && WorkingRun is not null)
-            {
-                WorkingRun.RunLength = TimeSpan.ParseExact(WorkingRunLength, @"hh\:mm\:ss", null);
-            }
-        }
         SaveRunCommand.NotifyCanExecuteChanged();
     }
 
@@ -138,7 +106,6 @@ public partial class RunsAddViewModel : ViewModelBase
         WorkingRun.ErrorsChanged -= WorkingRun_ErrorsChanged;
         WorkingRun = null;
         WorkingRun = new WcRun();
-        WorkingRunLength = "00:00:00";
         WorkingRun.ErrorsChanged += WorkingRun_ErrorsChanged;
     }
 

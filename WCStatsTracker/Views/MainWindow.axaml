@@ -7,21 +7,19 @@
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
+		d:DataContext="{vm:MainWindowViewModel}"
         Width="1800"
         Height="900"
         x:Class="WCStatsTracker.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         x:DataType="vm:MainWindowViewModel"
         Title="Worlds Collide Stats Tracker">
-    <Design.DataContext>
-        <vm:MainWindowViewModel />
-    </Design.DataContext>
 
     <Grid RowDefinitions="50,*">
-        <TextBlock HorizontalAlignment="Center"
+<!--        <TextBlock HorizontalAlignment="Center"
                    FontSize="24"
                    FontWeight="Black"
-                   Text="Worlds Collide Stats Tracker" />
+                   Text="Worlds Collide Stats Tracker" />-->
 
         <ui:NavigationView PaneDisplayMode="Left"
                            MenuItems="{Binding Views}"

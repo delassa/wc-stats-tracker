@@ -94,20 +94,13 @@ public partial class RunsListViewModel : ViewModelBase
         SaveChangesCommand.NotifyCanExecuteChanged();
     }
 
-    #region Relay Commands
-
-    [RelayCommand]
     public void CellEditFinished()
     {
-        // If we are editing the time on the grid parse it out and copy it over to the selected item
-        var isValidTime = TimeSpan.TryParseExact(WorkingRunLength, @"h\:mm\:ss", null, out _);
-        if (isValidTime && SelectedItem is not null)
-        {
-            SelectedItem.RunLength = TimeSpan.ParseExact(WorkingRunLength, @"h\:mm\:ss", null);
-            WorkingRunLength = "";
-        }
         SaveChangesCommand.NotifyCanExecuteChanged();
     }
+
+    #region Relay Commands
+
 
     /// <summary>
     ///     Command to execute when our delete run button is clicked

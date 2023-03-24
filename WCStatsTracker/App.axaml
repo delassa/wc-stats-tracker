@@ -13,11 +13,11 @@
         <Thickness x:Key="AppMargin">5</Thickness>
     </Application.Resources>
     <Application.Styles>
-        <themes:FluentAvaloniaTheme />
         <materialIcons:MaterialIconStyles />
         <StyleInclude Source="/Styles/DataValidationErrors.axaml" />
         <StyleInclude Source="/Styles/AppStyles.axaml" />
         <StyleInclude Source="/Controls/StatCard.axaml" />
         <!--<StyleInclude Source="/Controls/ImageButton.axaml"/>-->
+        <themes:FluentAvaloniaTheme />
     </Application.Styles>
 </Application>

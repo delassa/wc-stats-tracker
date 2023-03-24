@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -35,41 +36,50 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Setup Logger
-        Configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var log = new LoggerConfiguration()
-            .ReadFrom.Configuration(Configuration)
-            .CreateLogger();
-
-        Log.Logger = log;
-        Log.Information("Logger Configured");
-
-        // Configure Livecharts
-        LiveCharts.Configure(config => config
-            .AddSkiaSharp()
-            .AddDefaultMappers()
-            .AddDarkTheme()
-            .HasMap<WcRun>((run, point) =>
-            {
-                point.PrimaryValue = run.RunLength.Ticks;
-                point.SecondaryValue = point.Context.Entity.EntityIndex;
-            })
-        );
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            // Setup Logger
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var log = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
+
+            Log.Logger = log;
+
+            //Set up a trace listener to intercept avalonia logging
+            var listener = new SerilogTraceListener.SerilogTraceListener();
+            Trace.Listeners.Add(listener);
+
+            // Configure Livecharts
+            LiveCharts.Configure(config => config
+                .AddSkiaSharp()
+                .AddDefaultMappers()
+                .AddDarkTheme()
+                .HasMap<WcRun>((run, point) =>
+                {
+                    point.PrimaryValue = run.RunLength.Ticks;
+                    point.SecondaryValue = point.Context.Entity.EntityIndex;
+                })
+            );
             // Put this here to not interfere with design view
             CreateServiceProvider();
+
+            // Migrate database to current migration
             var context = ServiceProvider!.GetRequiredService<WcDbContext>();
             context.GetInfrastructure().GetService<IMigrator>().Migrate();
+
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
+
+            // Change up fluent avalonia theme accent color
             var faTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
             faTheme.CustomAccentColor = Color.FromRgb(0, 140, 120);
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = ServiceProvider!.GetRequiredService<MainWindowViewModel>()
@@ -110,7 +120,7 @@ public class App : Application
         // Add in the Db Context
         // enable logging on our db and sensitive data logging for development
         services.AddDbContext<WcDbContext>(options => options
-            .LogTo(Log.Logger.Information, LogLevel.Information).EnableSensitiveDataLogging()
+            .LogTo(Log.Logger.Warning, LogLevel.Warning).EnableSensitiveDataLogging()
             .UseSqlite(fixedConnectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
         ServiceProvider = services.BuildServiceProvider();
     }

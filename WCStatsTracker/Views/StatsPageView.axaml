@@ -1,43 +1,38 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="WCStatsTracker.Views.StatsPageView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:WCStatsTracker.ViewModels"
              xmlns:icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:WCStatsTracker.Models"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
+             xmlns:vm="using:WCStatsTracker.ViewModels"
+             d:DataContext="{vm:StatsPageViewModel}"
              d:DesignHeight="800"
-             x:Class="WCStatsTracker.Views.StatsPageView"
-             x:DataType="vm:StatsPageViewModel">
-    <Design.DataContext>
-        <vm:StatsPageViewModel />
-    </Design.DataContext>
+             d:DesignWidth="800"
+             x:DataType="vm:StatsPageViewModel"
+             mc:Ignorable="d">
     <Grid>
         <ComboBox Margin="0,8,17,0"
                   HorizontalAlignment="Right"
-                  ZIndex="1"
-                  Items="{Binding FlagNames}"
-                  SelectedItem="{Binding SelectedFlagName}"
-                  SelectedIndex="{Binding SelectedFlagIndex}"
                   FontSize="20"
                   FontWeight="Medium"
-                  PlaceholderText="By Flag Set">
+                  Items="{Binding FlagNames}"
+                  PlaceholderText="By Flag Set"
+                  SelectedIndex="{Binding SelectedFlagIndex}"
+                  SelectedItem="{Binding SelectedFlagName}"
+                  ZIndex="1">
             <ComboBox.ItemTemplate>
                 <DataTemplate x:DataType="models:Flag">
                     <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TabControl Items="{Binding StatViews}"
-                    ZIndex="0">
+        <TabControl Items="{Binding StatViews}" ZIndex="0">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <icon:MaterialIcon Kind="{Binding IconName}"
-                                           Height="24" />
-                        <TextBlock Classes="h3"
-                                   Text="{Binding ViewName}" />
+                        <icon:MaterialIcon Height="24" Kind="{Binding IconName}" />
+                        <TextBlock Classes="h3" Text="{Binding ViewName}" />
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>

@@ -6,9 +6,6 @@
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
+			 d:DataContext="{vm:OptionsPageViewModel}"
              x:Class="WCStatsTracker.Views.OptionsPageView">
-
-    <Design.DataContext>
-        <vm:OptionsPageViewModel />
-    </Design.DataContext>
 </UserControl>

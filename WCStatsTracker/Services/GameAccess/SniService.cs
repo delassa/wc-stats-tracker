@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Serilog;
 using SNI;
@@ -14,7 +15,7 @@ public class SniService : ISniService
     private DeviceMemory.DeviceMemoryClient _deviceMemoryClient;
     private DevicesResponse _devicesResponse;
     private DevicesResponse.Types.Device? _currentDevice = null;
-    public bool IsInit { get; private set; }
+    public bool IsInitialized { get; private set; }
     private MemoryMapping _currentMemoryMapping;
 
     public bool InitClient(string address)
@@ -26,18 +27,28 @@ public class SniService : ISniService
         catch (Exception e)
         {
             Log.Warning(e,"Unable to initialize GRPC client for SNI");
-            IsInit = false;
+            IsInitialized = false;
             return false;
         }
         _devicesClient = new Devices.DevicesClient(_channel);
         _deviceMemoryClient = new DeviceMemory.DeviceMemoryClient(_channel);
-        IsInit = true;
+        try
+        {
+            _devicesResponse = _devicesClient.ListDevices(new DevicesRequest());
+        }
+        catch (RpcException exception)
+        {
+            Log.Warning(exception, "Unable to list devices {0}", exception.Message);
+            IsInitialized = false;
+            return false;
+        }
+        IsInitialized = true;
         return true;
     }
 
     public IEnumerable<string> GetDeviceNames()
     {
-        if (!IsInit)
+        if (!IsInitialized)
         {
             Log.Warning("Attempt to Get Device Names without initializing SNI Service");
             return new List<string>();
@@ -58,7 +69,7 @@ public class SniService : ISniService
 
     public bool SelectDevice(int index)
     {
-        if (!IsInit)
+        if (!IsInitialized)
         {
             Log.Warning("Attempt to select device without initializing SNI Service");
         }
@@ -77,7 +88,7 @@ public class SniService : ISniService
 
     public byte[] ReadMemory(SnesMemoryRead memoryRead)
     {
-        if (!IsInit)
+        if (!IsInitialized)
         {
             Log.Warning("Attempt to Read Memory without initializing SNI Service");
             return Array.Empty<byte>();

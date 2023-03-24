@@ -8,12 +8,9 @@
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
+			 d:DataContext="viewModels:CharacterStatsViewModel"
              x:Class="WCStatsTracker.Views.CharacterStatsView">
-    <Design.DataContext>
-        <viewModels:CharacterStatsViewModel />
-    </Design.DataContext>
-
-    <Grid RowDefinitions="*, *"
+        <Grid RowDefinitions="*, *"
           ColumnDefinitions="*,4*,*">
         <UniformGrid Rows="2"
                      Columns="1">

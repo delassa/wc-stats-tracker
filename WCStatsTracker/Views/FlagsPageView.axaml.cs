@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using WCStatsTracker.ViewModels;
 namespace WCStatsTracker.Views;
 
@@ -13,5 +14,10 @@ public partial class FlagsPageView : UserControl
     {
         var dc = DataContext as FlagsPageViewModel;
         dc?.SaveClickCommand.NotifyCanExecuteChanged();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }
